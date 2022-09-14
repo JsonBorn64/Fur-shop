@@ -1,19 +1,19 @@
 <template>
- <div class="wrapper">
-    <img class="women_part1" src="../assets/images/general screen/Group 3.jpg" alt="women">
-    <img class="women_part2" src="../assets/images/general screen/todd-kent-qWdIX3I5_BY-unsplash 1.jpg" alt="women">
-    <img class="women_part3" src="../assets/images/general screen/todd-kent-qWdIX3I5_BY-unsplash 2.jpg" alt="women">
-    <div class="decore_text1">
+ <section class="general_screen">
+    <img class="women_part1 animate__animated animate__fadeIn" src="../assets/images/general screen/Group 3.jpg" alt="women">
+    <img class="women_part2 animate__animated animate__fadeInRight" src="../assets/images/general screen/todd-kent-qWdIX3I5_BY-unsplash 1.jpg" alt="women">
+    <img class="women_part3 animate__animated animate__fadeInRight" src="../assets/images/general screen/todd-kent-qWdIX3I5_BY-unsplash 2.jpg" alt="women">
+    <div class="decore_text1 animate__animated animate__fadeInLeft">
         <div>NEX</div>
         <div>TED</div>
     </div>
-    <div class="decore_text2">Лучшие шубы в казахстане</div>
-    <div class="decore_text3">
+    <div class="decore_text2 animate__animated animate__fadeInLeft">Лучшие шубы в казахстане</div>
+    <div class="decore_text3 animate__animated animate__fadeInLeft">
         <span>Fur </span>products
         <span>For </span>stylish cats
     </div>
-    <div class="btn">Посмотреть каталог</div>
- </div>
+    <div class="btn animate__animated animate__fadeInLeft">Посмотреть каталог</div>
+ </section>
 </template>
   
 <script>
@@ -21,7 +21,7 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
-    .wrapper {
+    .general_screen {
         display: flex;
         margin-top: 86px;
         position: relative;

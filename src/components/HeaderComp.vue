@@ -1,5 +1,5 @@
 <template>
-  <header class="header">
+  <header class="header animate__animated animate__fadeIn">
     <div class="header_left">
       <nav class="menu">
         <ul>

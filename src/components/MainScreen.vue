@@ -1,5 +1,5 @@
 <template>
- <section class="general_screen">
+ <section class="general_screen" ref="genScreen">
     <img class="women_part1 animate__animated animate__fadeIn" src="../assets/images/general screen/Group 3.jpg" alt="women">
     <img class="women_part2 animate__animated animate__fadeInRight" src="../assets/images/general screen/todd-kent-qWdIX3I5_BY-unsplash 1.jpg" alt="women">
     <img class="women_part3 animate__animated animate__fadeInRight" src="../assets/images/general screen/todd-kent-qWdIX3I5_BY-unsplash 2.jpg" alt="women">
@@ -14,10 +14,36 @@
     </div>
     <div class="btn animate__animated animate__fadeInLeft">Посмотреть каталог</div>
  </section>
+ <section class="mobile">
+    <img src="../assets/images/general screen/Group 5.jpg" alt="">
+    <div class="btn mobile_btn">Посмотреть каталог</div>
+    <img class="decore_text-mobile" src="../assets/images/general screen/svg nexted.svg" alt="nexted" />
+ </section>
 </template>
   
 <script>
-export default {}
+export default {
+    methods: {
+        adaptiveGenScreen() {
+            const settings = () => {
+                const windowWidth = window.innerWidth
+                if (windowWidth < 1000 && windowWidth > 680) {
+                    this.$refs.genScreen.style.transform = "scale(" + (windowWidth / 1000) + ")"
+                    this.$refs.genScreen.style.marginBottom = (0 + ((windowWidth-1000)/1.8)) + "px"
+                    this.$refs.genScreen.style.marginTop = (86 + ((windowWidth-1000)/2.2)) + "px"
+                } else {
+                    this.$refs.genScreen.style.transform = ""
+                    this.$refs.genScreen.style.margin = "86px 85px 0 0"
+                }
+            }
+            settings()
+            window.onresize = settings
+        }
+    },
+    mounted() {
+        this.adaptiveGenScreen()
+    }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -25,7 +51,7 @@ export default {}
         display: flex;
         margin-top: 86px;
         position: relative;
-        margin-right: 102px;
+        margin-right: 85px;
     }
 
     .women_part2 {
@@ -102,6 +128,36 @@ export default {}
         display: grid;
         place-content: center;
         cursor: pointer;
+    }
+
+    .mobile {
+        display: none;
+    }
+
+    @media (max-width: 680px) {
+        .general_screen {
+            display: none;
+        }
+        .mobile {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            margin-bottom: -80px;
+            width: 100%;
+            margin-right: -8px;
+            > img {
+                width: 100%;
+            }
+            .mobile_btn {
+                position: static;
+                margin-top: 40px;
+            }
+            .decore_text_mobile {
+                margin: -20px 0 -30px 0;
+            }
+        }
     }
 </style>
   

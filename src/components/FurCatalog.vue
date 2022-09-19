@@ -25,6 +25,7 @@
                     Ключ. слова: <span>Шуба</span> <span>Леопард</span> <span>Дублёнка</span>
                 </div>
             </div>
+            <div class="line"></div>
         </div>
         <ul class="catalog_cards">
             <li class="card">
@@ -120,16 +121,15 @@
         margin-top: 33px;
         width: 100%;
         max-width: 896px;
+        padding: 0 10px;
         .price, .popular {
             display: flex;
             align-items: center;
             div:first-child {
                 margin-right: 10px;
                 font-family: 'Montserrat';
-                font-style: normal;
+                font-weight: 700;
                 font-size: 15px;
-                line-height: 21px;
-                text-align: justify;
                 letter-spacing: -0.02em;
                 text-transform: uppercase;
                 color: #222222;
@@ -139,6 +139,7 @@
             }
             img:last-child {
                 transform: rotate(180deg);
+                margin-right: 10px;
             }
         }
         .search {
@@ -155,8 +156,6 @@
                     font-family: 'Montserrat';
                     font-weight: 700;
                     font-size: 15px;
-                    line-height: 21px;
-                    text-align: justify;
                     letter-spacing: -0.02em;
                     color: #666666;
                     padding-left: 10px;
@@ -169,8 +168,6 @@
                     font-family: 'Montserrat';
                     font-weight: 700;
                     font-size: 15px;
-                    line-height: 21px;
-                    text-align: justify;
                     letter-spacing: -0.02em;
                     text-transform: uppercase;
                     color: #222222;
@@ -280,5 +277,58 @@
         background: #F5ED2A;
         display: grid;
         place-content: center;
+    }
+
+    .line {
+        display: none;
+        width: 90%;
+        height: 1px;
+        background: black;
+        margin-top: 34px;
+        margin-bottom: 14px;
+    }
+
+    @media (max-width: 660px) {
+        .catalog_filter {
+            flex-wrap: wrap;
+            .search {
+                order: 1;
+                max-width: none;
+            }
+            .price {
+                order: 3;
+            }
+            .popular {
+                order: 4;
+                img:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+        .line {
+            display: flex;
+            margin-left: auto;
+            margin-right: auto;
+            order: 2;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .search {
+            .input_btn {
+                height: 41px !important;
+                > input, div {
+                    font-size: 12px !important;
+                }
+            }
+        }
+        .price, .popular {
+            div {
+                font-size: 12px !important;
+            }
+            img {
+                width: 25px;
+            }
+        }
     }
 </style>

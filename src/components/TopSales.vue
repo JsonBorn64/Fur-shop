@@ -11,6 +11,8 @@
                     <a class="cart_btn" ><img src="../assets/images/top sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
                 </div>
                 <a class="cart_btn-big">В корзину</a>
+                <a class="mobile_btn-big">Перейти к товару</a>
+                <a class="mobile_btn"><img src="../assets/images/top sales/ri_arrow-right-up-line.svg" alt="arrow up"></a>
             </li>
             <li class="card">
                 <img src="../assets/images/top sales/gerardo-marrufo-YkEtgQkPlso-unsplash 1.jpg" alt="fur">
@@ -21,6 +23,8 @@
                     <a class="cart_btn"><img src="../assets/images/top sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
                 </div>
                 <a class="cart_btn-big">В корзину</a>
+                <a class="mobile_btn-big">Перейти к товару</a>
+                <a class="mobile_btn"><img src="../assets/images/top sales/ri_arrow-right-up-line.svg" alt="arrow up"></a>
             </li>
             <li class="card">
                 <img src="../assets/images/top sales/chase-fade-JgmPDzGDgTw-unsplash 1.jpg" alt="fur">
@@ -31,6 +35,8 @@
                     <a class="cart_btn"><img src="../assets/images/top sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
                 </div>
                 <a class="cart_btn-big">В корзину</a>
+                <a class="mobile_btn-big">Перейти к товару</a>
+                <a class="mobile_btn"><img src="../assets/images/top sales/ri_arrow-right-up-line.svg" alt="arrow up"></a>
             </li>
         </ul>
     </section>
@@ -153,6 +159,96 @@
             margin-top: 16px;
             margin-bottom: -34px;
             cursor: pointer;
+        }
+    }
+
+    .mobile_btn-big {
+        display: none;
+        cursor: pointer;
+        place-content: center;
+        width: 215px;
+        height: 48px;
+        background: #F5ED2A;
+        font-family: 'Montserrat';
+        font-weight: 700;
+        font-size: 15px;
+        text-align: justify;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+        color: #222222;
+        position: absolute;
+        bottom: -7px;
+        left: -12px;
+    }
+
+    .mobile_btn {
+        display: none;
+        place-content: center;
+        cursor: pointer;
+        background: #F5ED2A;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        bottom: -6px;
+        right: -5px;
+    }
+
+    @media (max-width: 1060px) {
+        .top_sales {
+            max-width: 600px;
+            padding-top: 140px;
+            line-height: 81px;
+            .top_sales-title {
+                text-align: center;
+                right: 50%;
+                transform: translateX(50%);
+                &::before {
+                    top: -9px;
+                    left: -18px;
+                }
+            }
+            ul {
+                gap: 0;
+                flex-wrap: wrap;
+                align-items: flex-start;
+                justify-content: space-between;
+                padding: 0 10px;
+            }
+        }
+
+        .card {
+            width: 47.5%;
+            position: relative;
+            .title, .size, .card_bottom, .cart_btn-big {
+                display: none !important;
+            }
+        }
+        .card:first-child {
+            width: 100%;
+            margin-bottom: 8%;
+            .mobile_btn-big {
+                display: grid;
+
+            }
+        }
+        .card:not(:first-child) {
+            .mobile_btn {
+                display: grid;
+            }
+        }
+        
+    }
+
+    @media (max-width: 500px) {
+        .top_sales {
+            padding-top: 210px;
+        }
+        .top_sales-title {
+            width: 300px;
+            white-space: normal !important;
+            &::before {
+                left: 28px !important;
+            }
         }
     }
 </style>

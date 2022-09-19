@@ -28,6 +28,11 @@ export default {}
   justify-content: space-between;
   width: 100%;
   margin-top: 30px;
+  padding: 0 20px;
+}
+
+.logo {
+  margin: 0 40px;
 }
 
 .header_left, .header_right {
@@ -61,6 +66,21 @@ export default {}
       font-size: 15px;
       letter-spacing: -0.02em;
     }
+  }
+}
+
+@media (max-width: 680px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+  }
+  .header_left {
+    display: none;
+  }
+  .header_right {
+    margin-top: 20px;
+    border: none;
+    border-top: 1px solid black;
   }
 }
 </style>

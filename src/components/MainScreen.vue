@@ -1,8 +1,8 @@
 <template>
  <section class="general_screen" ref="genScreen">
-    <img class="women_part1 animate__animated animate__fadeIn" src="../assets/images/general screen/Group 3.jpg" alt="women">
-    <img class="women_part2 animate__animated animate__fadeInRight" src="../assets/images/general screen/todd-kent-qWdIX3I5_BY-unsplash 1.jpg" alt="women">
-    <img class="women_part3 animate__animated animate__fadeInRight" src="../assets/images/general screen/todd-kent-qWdIX3I5_BY-unsplash 2.jpg" alt="women">
+    <img class="women_part1 animate__animated animate__fadeIn" src="@/assets/images/general_screen/Group_3.jpg" alt="women">
+    <img class="women_part2 animate__animated animate__fadeInRight" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_1.jpg" alt="women">
+    <img class="women_part3 animate__animated animate__fadeInRight" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_2.jpg" alt="women">
     <div class="decore_text1 animate__animated animate__fadeInLeft">
         <div>NEX</div>
         <div>TED</div>
@@ -12,12 +12,12 @@
         <span>Fur </span>products
         <span>For </span>stylish cats
     </div>
-    <div class="btn animate__animated animate__fadeInLeft">Посмотреть каталог</div>
+    <a class="btn animate__animated animate__fadeInLeft" href="#catalog">Посмотреть каталог</a>
  </section>
  <section class="mobile">
-    <img src="../assets/images/general screen/Group 5.jpg" alt="">
-    <div class="btn mobile_btn">Посмотреть каталог</div>
-    <img class="decore_text-mobile" src="../assets/images/general screen/svg nexted.svg" alt="nexted" />
+    <img src="@/assets/images/general_screen/Group_5.jpg" alt="">
+    <a class="btn mobile_btn" href="#catalog">Посмотреть каталог</a>
+    <img class="decore_text-mobile" src="@/assets/images/general_screen/svg_nexted.svg" alt="nexted" />
  </section>
 </template>
   
@@ -128,6 +128,7 @@ export default {
         display: grid;
         place-content: center;
         cursor: pointer;
+        color: black;
     }
 
     .mobile {
@@ -153,6 +154,7 @@ export default {
             .mobile_btn {
                 position: static;
                 margin-top: 40px;
+                color: black;
             }
             .decore_text_mobile {
                 margin: -20px 0 -30px 0;

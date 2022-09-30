@@ -1,5 +1,5 @@
 <template>
-    <section class="catalog">
+    <section class="catalog" id="catalog">
         <div class="catalog_title">
             <div class="yellow_line"></div>
             <h2>Каталог</h2>
@@ -8,84 +8,94 @@
         <div class="catalog_filter">
             <div class="price">
                 <div>Цена</div>
-                <img src="../assets/images/catalog/ant-design_arrow-up-outlined.svg" alt="arrow">
-                <img src="../assets/images/catalog/ant-design_arrow-up-outlined.svg" alt="arrow">
+                <img
+                    @click="sortBy = 'PriceAsc'"
+                    :src="`/src/assets/images/catalog/${sortBy === 'PriceAsc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`"
+                    alt="arrow"
+                >
+                <img
+                    @click="sortBy = 'PriceDesc'"
+                    :src="`/src/assets/images/catalog/${sortBy === 'PriceDesc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`"
+                    alt="arrow"
+                >
             </div>
             <div class="popular">
                 <div>Популярность</div>
-                <img src="../assets/images/catalog/ant-design_arrow-up-outlined.svg" alt="arrow">
-                <img src="../assets/images/catalog/yellow-ant-design_arrow-up-outlined.svg" alt="arrow">
+                <img
+                    @click="sortBy = 'OrdersAsc'"
+                    :src="`/src/assets/images/catalog/${sortBy === 'OrdersAsc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`"
+                    alt="arrow"
+                >
+                <img
+                    @click="sortBy = 'OrdersDesc'"
+                    :src="`/src/assets/images/catalog/${sortBy === 'OrdersDesc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`"
+                    alt="arrow"
+                >
             </div>
             <div class="search">
                 <div class="input_btn">
-                    <input type="text" placeholder="Введите запрос">
-                    <div class="btn">Поиск</div>
+                    <input v-model="searchQuery" placeholder="Введите запрос" ref="searchInput">
+                    <div class="btn" @click="searchQuery = ''">Очистить</div>
                 </div>
                 <div class="keywords">
-                    Ключ. слова: <span>Шуба</span> <span>Леопард</span> <span>Дублёнка</span>
+                    Ключ. слова:
+                    <span @click="searchQuery = 'Шуба'">Шуба</span>
+                    <span @click="searchQuery = 'Леопард'">Леопард</span>
+                    <span @click="searchQuery = 'Дублёнка'">Дублёнка</span>
                 </div>
             </div>
             <div class="line"></div>
         </div>
         <ul class="catalog_cards">
-            <li class="card">
-                <img src="../assets/images/catalog/alireza-skndari-q0wjrPa_d2o-unsplash 1.jpg" alt="fur">
-                <a class="title" href="#"><strong>Шуба из исскуственного меха</strong></a>
-                <p class="size">m / xl</p>
-                <div class="card_bottom">
-                    <span>250.000 тг</span>
-                    <a class="cart_btn" ><img src="../assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
-                </div>
-            </li>
-            <li class="card">
-                <img src="../assets/images/catalog/chase-fade-JgmPDzGDgTw-unsplash 2.jpg" alt="fur">
-                <a class="title" href="#"><strong>Дублёнка из исскуственного меха </strong></a>
-                <p class="size">m / xl</p>
-                <div class="card_bottom">
-                    <span>150.000 тг</span>
-                    <a class="cart_btn" ><img src="../assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
-                </div>
-            </li>
-            <li class="card">
-                <img src="../assets/images/catalog/gerardo-marrufo-YkEtgQkPlso-unsplash 2.jpg" alt="fur">
-                <a class="title" href="#"><strong>Шуба из исскуственного меха</strong></a>
-                <p class="size">m / xl</p>
-                <div class="card_bottom">
-                    <span>250.000 тг</span>
-                    <a class="cart_btn" ><img src="../assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
-                </div>
-            </li>
-            <li class="card">
-                <img src="../assets/images/catalog/kevin-sicher-KaB0cfqiuPQ-unsplash 2.jpg" alt="fur">
-                <a class="title" href="#"><strong>Шуба из натурального меха</strong></a>
-                <p class="size">m / xl</p>
-                <div class="card_bottom">
-                    <span>550.000 тг</span>
-                    <a class="cart_btn" ><img src="../assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
-                </div>
-            </li>
-            <li class="card">
-                <img src="../assets/images/catalog/nikita-tumbaev-lTQSu5Omd7w-unsplash 1.jpg" alt="fur">
-                <a class="title" href="#"><strong>Шуба из исскуственного меха</strong></a>
-                <p class="size">m / xl</p>
-                <div class="card_bottom">
-                    <span>250.000 тг</span>
-                    <a class="cart_btn" ><img src="../assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
-                </div>
-            </li>
-            <li class="card">
-                <img src="../assets/images/catalog/ronny-sison-tlu2JFV4RzQ-unsplash 1.jpg" alt="fur">
-                <a class="title" href="#"><strong>Шуба из исскуственного меха</strong></a>
-                <p class="size">m / xl</p>
-                <div class="card_bottom">
-                    <span>250.000 тг</span>
-                    <a class="cart_btn" ><img src="../assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
-                </div>
-            </li>
+            <transition-group name="list">
+                <li class="card" v-for="item in sortedAndSearchedFurs" :key="item.id">
+                    <img :src="`/src/assets/images/catalog/${item?.Img}`" alt="fur">
+                    <router-link :to="`/item/${item.id}`" class="title">
+                        <strong>{{item.Name}}</strong>
+                    </router-link>
+                    <p class="size">{{item.Size}}</p>
+                    <div class="card_bottom">
+                        <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
+                        <a class="cart_btn" ><img src="@/assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
+                    </div>
+                </li>
+                <p v-if="sortedAndSearchedFurs.length < 1 && this.$store.state.fursLoaded" class="extra_info">Ничего не найдено</p>
+                <p v-if="!this.$store.state.fursLoaded" class="extra_info">Загрузка...</p>
+            </transition-group>
         </ul>
-        <a class="load_more-btn" href="#">Загрузить ещё</a>
+        <!-- <a v-if="goods.length > 0" class="load_more-btn" href="#">Загрузить ещё</a> -->
     </section>
 </template>
+
+<script>
+    export default {
+        data() {
+            return {
+                furs: this.$store.state.furs,
+                sortBy: 'OrdersDesc',
+                searchQuery: ""
+            }
+        },
+        computed: {
+            sortedFurs() {
+                if (this.sortBy === 'OrdersDesc') {
+                    return [...this.furs].sort((a, b) => b.Orders - a.Orders);
+                } else if (this.sortBy === 'OrdersAsc') {
+                    return [...this.furs].sort((a, b) => a.Orders - b.Orders);
+                } else if (this.sortBy === 'PriceDesc') {
+                    return [...this.furs].sort((a, b) => b.Price - a.Price);
+                } else if (this.sortBy === 'PriceAsc') {
+                    return [...this.furs].sort((a, b) => a.Price - b.Price);
+                }
+            },
+            sortedAndSearchedFurs() {
+                return this.sortedFurs.filter(item => {
+                    return item.Name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                });
+            },
+        }
+    }
+</script>
 
 <style lang="scss" scoped>
     .catalog {
@@ -164,7 +174,7 @@
                     background: #F5ED2A;
                     display: grid;
                     place-content: center;
-                    width: 103px;
+                    width: 133px;
                     font-family: 'Montserrat';
                     font-weight: 700;
                     font-size: 15px;
@@ -202,12 +212,16 @@
         gap: 73px;
         flex-wrap: wrap;
         justify-content: center;
+        transition: all 0.3s ease;
     }
     .card {
         display: flex;
         flex-direction: column;
         width: 250px;
+        height: 423px;
         border: 1px solid black;
+        background-color: white;
+        overflow: hidden;
         > img {
             width: 100%;
         }
@@ -262,6 +276,13 @@
         }
     }
 
+    .extra_info {
+        font-family: 'Montserrat';
+        font-size: 30px;
+        margin-top: 70px;
+        height: 34.5px;
+    }
+
     .load_more-btn {
         width: 215px;
         height: 48px;
@@ -313,6 +334,46 @@
         }
     }
 
+    @media (max-width: 600px) {
+        .catalog_cards {
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .card {
+            width: 156px;
+            height: 284px;
+            .title {
+                font-size: 13px;
+                margin-top: 14px;
+            }
+            .size {
+                display: none;
+            }
+            .card_bottom {
+                font-size: 13px;
+                padding: 6px 10px 10px;
+            }
+            .cart_btn {
+                width: 35px;
+                height: 35px;
+                > img {
+                    width: 60%;
+                }
+            }
+        }
+        .load_more-btn {
+            margin-top: 42px;
+        }
+    }
+
+    @media (max-width: 535px) {
+        .card:nth-child(n+5) {
+            visibility: hidden;
+            opacity: 0;
+            height: 0;
+        }
+    }
+
     @media (max-width: 400px) {
         .search {
             .input_btn {
@@ -330,5 +391,20 @@
                 width: 25px;
             }
         }
+    }
+
+    .card, .extra_info {
+        transition: all 0.3s ease;
+        display: flex;
+    }
+
+    .list-enter-from,
+    .list-leave-to {
+        opacity: 0;
+        // height: 0px;
+    }
+
+    .list-leave-active {
+        position: absolute;
     }
 </style>

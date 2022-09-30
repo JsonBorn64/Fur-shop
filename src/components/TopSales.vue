@@ -2,45 +2,27 @@
     <section class="top_sales">
         <h2 class="top_sales-title">Топ продаж этого месяца</h2>
         <ul>
-            <li class="card">
-                <img src="../assets/images/top sales/kevin-sicher-KaB0cfqiuPQ-unsplash 1.jpg" alt="fur">
-                <a class="title" href="#"><strong>Шуба из исскуственного меха (гепард)</strong></a>
-                <p class="size">m / xl</p>
+            <li class="card" v-for="item in $store.getters.topThreeFurs" :key="item.id">
+                <img :src="`/src/assets/images/catalog/${item?.Img}`" alt="fur">
+                <router-link :to="`/item/${item.id}`" class="title"><strong>{{item.Name}}</strong></router-link>
+                <p class="size">{{item.Size}}</p>
                 <div class="card_bottom">
-                    <span>250.000 тг</span>
-                    <a class="cart_btn" ><img src="../assets/images/top sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
+                    <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
+                    <a class="cart_btn" ><img src="../assets/images/top_sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
                 </div>
                 <a class="cart_btn-big">В корзину</a>
-                <a class="mobile_btn-big">Перейти к товару</a>
-                <a class="mobile_btn"><img src="../assets/images/top sales/ri_arrow-right-up-line.svg" alt="arrow up"></a>
-            </li>
-            <li class="card">
-                <img src="../assets/images/top sales/gerardo-marrufo-YkEtgQkPlso-unsplash 1.jpg" alt="fur">
-                <a class="title" href="#"><strong>Шуба из исскуственного меха (гепард)</strong></a>
-                <p class="size">m / xl</p>
-                <div class="card_bottom">
-                    <span>250.000 тг</span>
-                    <a class="cart_btn"><img src="../assets/images/top sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
-                </div>
-                <a class="cart_btn-big">В корзину</a>
-                <a class="mobile_btn-big">Перейти к товару</a>
-                <a class="mobile_btn"><img src="../assets/images/top sales/ri_arrow-right-up-line.svg" alt="arrow up"></a>
-            </li>
-            <li class="card">
-                <img src="../assets/images/top sales/chase-fade-JgmPDzGDgTw-unsplash 1.jpg" alt="fur">
-                <a class="title" href="#"><strong>Шуба из исскуственного меха</strong></a>
-                <p class="size">m / xl</p>
-                <div class="card_bottom">
-                    <span>250.000 тг</span>
-                    <a class="cart_btn"><img src="../assets/images/top sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
-                </div>
-                <a class="cart_btn-big">В корзину</a>
-                <a class="mobile_btn-big">Перейти к товару</a>
-                <a class="mobile_btn"><img src="../assets/images/top sales/ri_arrow-right-up-line.svg" alt="arrow up"></a>
+                <router-link :to="`/item/${item.id}`" class="mobile_btn-big">Перейти к товару</router-link>
+                <router-link :to="`/item/${item.id}`" class="mobile_btn"><img src="../assets/images/top_sales/ri_arrow-right-up-line.svg" alt="arrow up"></router-link>
             </li>
         </ul>
     </section>
 </template>
+
+<script>
+    export default {
+
+    }
+</script>
 
 <style lang="scss" scoped>
     .top_sales {
@@ -61,7 +43,7 @@
             right: 0;
             margin: 0;
             &::before {
-                content: url('../assets/images/top sales/Rectangle 2.svg');
+                content: url('../assets/images/top_sales/Rectangle2.svg');
                 position: absolute;
                 top: -4px;
                 left: -87px;

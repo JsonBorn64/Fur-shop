@@ -3,13 +3,13 @@
     <div class="header_left">
       <nav class="menu">
         <ul>
-          <li><a href="#">Главная</a></li>
-          <li><a href="#">О нас</a></li>
-          <li><a href="#">Каталог</a></li>
+          <li><router-link to="/">Главная</router-link></li>
+          <li><router-link to="/#about_us">О нас</router-link></li>
+          <li><router-link to="/#catalog">Каталог</router-link></li>
         </ul>
       </nav>
     </div>
-    <img class="logo" src="../assets/images/header/Vector.svg" alt="logo">
+    <img class="logo" src="../assets/images/header/Vector.svg" alt="logo" @click="$router.push('/')">
     <div class="header_right">
       <a href="#"><img src="../assets/images/header/ri_heart-line.svg" alt="heart"></a>
       <a href="#"><img src="../assets/images/header/ri_shopping-cart-2-line.svg" alt="cart"></a>
@@ -27,12 +27,12 @@ export default {}
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 30px;
-  padding: 0 20px;
+  margin: 30px 20px 0 20px;
 }
 
 .logo {
   margin: 0 40px;
+  cursor: pointer;
 }
 
 .header_left, .header_right {

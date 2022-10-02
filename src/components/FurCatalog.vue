@@ -10,12 +10,12 @@
                 <div>Цена</div>
                 <img
                     @click="sortBy = 'PriceAsc'"
-                    :src="`/src/assets/images/catalog/${sortBy === 'PriceAsc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`"
+                    :src="getSrc(`${sortBy === 'PriceAsc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`)"
                     alt="arrow"
                 >
                 <img
                     @click="sortBy = 'PriceDesc'"
-                    :src="`/src/assets/images/catalog/${sortBy === 'PriceDesc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`"
+                    :src="getSrc(`${sortBy === 'PriceDesc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`)"
                     alt="arrow"
                 >
             </div>
@@ -23,12 +23,12 @@
                 <div>Популярность</div>
                 <img
                     @click="sortBy = 'OrdersAsc'"
-                    :src="`/src/assets/images/catalog/${sortBy === 'OrdersAsc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`"
+                    :src="getSrc(`${sortBy === 'OrdersAsc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`)"
                     alt="arrow"
                 >
                 <img
                     @click="sortBy = 'OrdersDesc'"
-                    :src="`/src/assets/images/catalog/${sortBy === 'OrdersDesc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`"
+                    :src="getSrc(`${sortBy === 'OrdersDesc' ? 'yellow-' : ''}ant-design_arrow-up-outlined.svg`)"
                     alt="arrow"
                 >
             </div>
@@ -49,11 +49,11 @@
         <ul class="catalog_cards">
             <transition-group name="list">
                 <li class="card" v-for="item in sortedAndSearchedFurs" :key="item.id">
-                    <img :src="`/src/assets/images/catalog/${item?.Img}`" alt="fur">
-                    <router-link :to="`/item/${item.id}`" class="title">
+                    <img :src="getSrc(item?.Images[0])" alt="fur">
+                    <router-link :to="`/item/${item.id}/#header`" class="title">
                         <strong>{{item.Name}}</strong>
                     </router-link>
-                    <p class="size">{{item.Size}}</p>
+                    <p class="size">{{item.Size.join(' / ')}}</p>
                     <div class="card_bottom">
                         <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
                         <a class="cart_btn" ><img src="@/assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
@@ -74,6 +74,13 @@
                 furs: this.$store.state.furs,
                 sortBy: 'OrdersDesc',
                 searchQuery: ""
+            }
+        },
+        methods: {
+            getSrc(name) {
+                const path = `/src/assets/images/catalog/${name}`;
+                const modules = import.meta.globEager("/src/assets/images/catalog/*");
+                return modules[path].default;
             }
         },
         computed: {
@@ -177,7 +184,7 @@
                     width: 133px;
                     font-family: 'Montserrat';
                     font-weight: 700;
-                    font-size: 15px;
+                    font-size: 14px;
                     letter-spacing: -0.02em;
                     text-transform: uppercase;
                     color: #222222;
@@ -224,6 +231,7 @@
         overflow: hidden;
         > img {
             width: 100%;
+            object-fit: cover;
         }
         .title {
             width: calc(100% - 20px);

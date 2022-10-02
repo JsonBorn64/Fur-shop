@@ -16,34 +16,50 @@
     <section class="card_product">
         <div class="photos_and_btns">
             <div class="photos">
-                <img :src="`/src/assets/images/catalog/${specialFurById?.Img}`" alt="face photo">
-                <img src="@/assets/images/card_product/gerardo-marrufo-wGVZdSZTHjg-unsplash2.jpg" alt="second photo">
-                <img src="@/assets/images/card_product/gerardo-marrufo-YkEtgQkPlso-unsplash3.jpg" alt="second photo">
-                <img src="@/assets/images/card_product/gerardo-marrufo-winMKop6bzQ-unsplash4.jpg" alt="second photo">
+                <img
+                    v-for="img in specialFurById?.Images"
+                    :src="getSrc(img)"
+                    class="second_photo"
+                    alt="fur photo"
+                    ref="image"
+                >
             </div>
             <div class="btns">
                 <div class="cart_btn">В корзину</div>
                 <div class="favorite_btn">Избранное <img src="@/assets/images/card_product/Vector.svg" alt="heart"></div>
             </div>
         </div>
+        <transition name="fade">
+            <div class="photos_popup" v-show="showPhotoPopup">
+                <div @click="showPhotoPopup = false" class="overlay"></div>
+                <div @click="prevPhoto" v-show="activePhoto > 0" class="popup_btn">Назад</div>
+                <img
+                    v-for="img in specialFurById?.Images"
+                    :src="getSrc(img)"
+                    class="popup_photo"
+                    alt="fur photo"
+                    ref="popup_photos"
+                >
+                <div @click="nextPhoto" v-show="activePhoto < specialFurById?.Images.length-1" class="popup_btn">Вперёд</div>
+            </div>
+        </transition>
         <div class="info">
             <div class="title">{{specialFurById?.Name}}</div>
             <div class="price">
-                <div class="old">
-                    <span>300 000 тг</span>
-                    <span>-20%</span>
+                <div v-if="specialFurById?.OldPrice" class="old">
+                    <span>{{specialFurById?.OldPrice}} тг</span>
+                    <span>-{{sailPercent(specialFurById?.OldPrice, specialFurById?.Price)}}%</span>
                 </div>
-                <div class="now">250 000 <span>тг</span></div>
+                <div class="now">{{specialFurById?.Price}} <span>тг</span></div>
             </div>
             <div class="sizes">
-                <div>m</div>
-                <div>xl</div>
+                <div v-for="size in specialFurById?.Size">{{size}}</div>
             </div>
-            <div class="sizes_table">Таблица размеров</div>
+            <div @click="++activePhoto" class="sizes_table">Таблица размеров</div>
             <hr>
             <div class="about">
                 <div>Описание</div>
-                <p>Легкая, удобная в носке шуба, из искусственного меха, в расцветке гепард, подойдет для холодного сезона, так как обладает теплым непродуваемым подкладом из современных теплоизоляционных материалов.</p>
+                <p :class="{ 'about-active': aboutActive }" @click="aboutActive = true">{{specialFurById?.About}}</p>
             </div>
         </div>
     </section>
@@ -54,12 +70,6 @@
             <div class="tab_name">Производство</div>
         </div>
     </div>
-    <!-- <img :src="`/src/assets/images/catalog/${specialFurById?.Img}`" >
-    <p>Название товара: {{specialFurById?.Name}}</p>
-    <p>Размеры товара: {{specialFurById?.Size}}</p>
-    <p>Цена товара: {{specialFurById?.Price}}</p>
-    <p>Продан раз: {{specialFurById?.Orders}}</p>
-    <p>Наличие штук на складе: {{specialFurById?.InStock}}</p> -->
     <footer-comp/>
 </template>
 
@@ -70,7 +80,65 @@ export default {
     components: { HeaderComp, FooterComp },
     data() {
         return {
-            furs: this.$store.state.furs
+            furs: this.$store.state.furs,
+            aboutActive: false,
+            showPhotoPopup: false,
+            activePhoto: 0
+        }
+    },
+    methods: {
+        getSrc(name) {
+            const path = `/src/assets/images/catalog/${name}`;
+            const modules = import.meta.globEager("/src/assets/images/catalog/*");
+            return modules[path].default;
+        },
+        sailPercent(oldPrice, newPrice) {
+            return Math.floor((+oldPrice - +newPrice)/(+oldPrice/100))
+        },
+        imagesInteractive() {
+            if (!this.$refs.image) return
+            const photos = this.$refs.image
+            const popupPhotos = this.$refs.popup_photos
+            photos.forEach((img, idx) => {
+                if (idx === 0) {
+                    photos.forEach(image => image.classList.remove('first_photo'))
+                    img.classList.add('first_photo')
+                }
+                img.onclick = () => {
+                    if (img.classList.contains('first_photo')) {
+                        this.activePhoto = idx
+                        this.showPhotoPopup = true
+                        popupPhotos.forEach(item => item.classList.remove('popup_photo-active'))
+                        popupPhotos[this.activePhoto].classList.add('popup_photo-active')
+                    }
+                    photos.forEach(image => image.classList.remove('first_photo'))
+                    img.classList.add('first_photo')
+                }
+            })
+        },
+        nextPhoto() {
+            if (this.activePhoto < this.specialFurById?.Images.length-1) {
+                ++this.activePhoto
+                this.$refs.popup_photos.forEach(img => img.classList.remove('popup_photo-active'))
+                this.$refs.popup_photos[this.activePhoto].classList.add('popup_photo-active')
+            } else {
+                return
+            }
+        },
+        prevPhoto() {
+            if (this.activePhoto > 0) {
+                --this.activePhoto
+                this.$refs.popup_photos.forEach(img => img.classList.remove('popup_photo-active'))
+                this.$refs.popup_photos[this.activePhoto].classList.add('popup_photo-active')
+            } else {
+                return
+            }
+        },
+        keyEvents() {
+            document.addEventListener('keydown', (e) => {
+                if (e.code == 'ArrowLeft') this.prevPhoto()
+                if (e.code == 'ArrowRight') this.nextPhoto()
+            })
         }
     },
     computed: {
@@ -78,8 +146,15 @@ export default {
             if (this.furs.length > 0) {
                 return this.furs.find(fur => fur.id === this.$route.params.id)
             }
-        }
-    }
+        },
+    },
+    mounted() {
+        this.imagesInteractive()
+        this.keyEvents()
+    },
+    updated() {
+        this.imagesInteractive()
+    },
 }
 </script>
 
@@ -158,25 +233,94 @@ export default {
         width: 100%;
         max-width: 525px;
         .photos {
-            max-width: 525px;
+            max-width: 528px;
             max-height: 390px;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             display: flex;
             flex-direction: column;
             flex-wrap: wrap;
             justify-content: space-between;
-            > img:first-child {
-                height: 100%;
-                max-width: 390px;
-                max-height: 390px;
-                margin-right: 25px;
-            }
-            > img:not(:first-child) {
-                width: 100%;
-                max-width: 114px;
+            align-content: space-between;
+            overflow: hidden;
+            > img {
+                cursor: pointer;
+                object-fit: cover;
             }
         }
+    }
+    .first_photo {
+        height: 100% !important;
+        max-width: 390px !important;
+        max-height: 390px !important;
+        order: -1;
+        animation: fade 300ms ease-in-out;
+    }
+    @keyframes fade {
+        from { opacity: 0; }   
+        to { opacity: 1; }
+   }
+    .second_photo {
+        width: 100%;
+        max-width: 114px;
+        height: 100%;
+        max-height: 114px;
+    }
+
+
+    .photos_popup {
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        left: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        user-select: none;
+        .overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.9);
+            cursor: default;
+        }
+        .popup_photo {
+            z-index: 11;
+            display: none;
+            max-width: calc(100% - 260px);
+            max-height: calc(100% - 0px);
+        }
+        .popup_btn {
+            z-index: 12;
+            font-family: 'Montserrat';
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #222;
+            position: absolute;
+            top: 50%;
+            transform: translateX(50%);
+            left: -20px;
+            background-color: rgba(255, 255, 255, 0.6);
+            &:last-child {
+                right: 80px;
+                left: auto;
+            }
+        }
+    }
+    .popup_photo-active {
+        display: block !important;
+        animation: fade 300ms ease-in-out;
+    }
+    .fade-enter-active,
+    .fade-leave-active {
+    transition: opacity 0.3s ease;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+    opacity: 0;
     }
 
     .btns {
@@ -234,6 +378,7 @@ export default {
                 font-size: 15px;
                 letter-spacing: -0.02em;
                 color: rgba(34, 34, 34, 0.6);
+                margin-bottom: 14px;
                 > span:first-child {
                     text-decoration-line: line-through;
                     margin-right: 7px;
@@ -245,7 +390,6 @@ export default {
                 font-size: 24px;
                 letter-spacing: -0.02em;
                 color: #A31414;
-                margin-top: 14px;
                 > span {
                     font-family: 'Montserrat';
                     font-weight: 700;
@@ -309,10 +453,11 @@ export default {
                 color: #222222;
                 position: relative;
                 margin-top: 24px;
-                -webkit-line-clamp: 4;
+                -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
                 display: -webkit-box;
+                cursor: pointer;
                 // &::after {
                 //     content: 'Показать ещё';
                 //     background-color: white;
@@ -329,6 +474,10 @@ export default {
                 // }
             }
         }
+    }
+    .about-active {
+        display: block !important;
+        cursor: default !important;
     }
     .tabs {
         width: 100%;

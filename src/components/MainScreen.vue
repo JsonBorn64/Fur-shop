@@ -12,11 +12,11 @@
         <span>Fur </span>products
         <span>For </span>stylish cats
     </div>
-    <a class="btn animate__animated animate__fadeInLeft" href="#catalog">Посмотреть каталог</a>
+    <router-link to="/#catalog" class="btn animate__animated animate__fadeInLeft">Посмотреть каталог</router-link>
  </section>
  <section class="mobile">
     <img src="@/assets/images/general_screen/Group_5.jpg" alt="">
-    <a class="btn mobile_btn" href="#catalog">Посмотреть каталог</a>
+    <router-link to="/#catalog" class="btn mobile_btn">Посмотреть каталог</router-link>
     <img class="decore_text-mobile" src="@/assets/images/general_screen/svg_nexted.svg" alt="nexted" />
  </section>
 </template>
@@ -27,6 +27,7 @@ export default {
         adaptiveGenScreen() {
             const settings = () => {
                 const windowWidth = window.innerWidth
+                if (!this.$refs.genScreen) return
                 if (windowWidth < 1000 && windowWidth > 680) {
                     this.$refs.genScreen.style.transform = "scale(" + (windowWidth / 1000) + ")"
                     this.$refs.genScreen.style.marginBottom = (0 + ((windowWidth-1000)/1.8)) + "px"

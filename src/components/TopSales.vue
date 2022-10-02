@@ -1,11 +1,11 @@
 <template>
-    <section class="top_sales">
+    <section class="top_sales" v-show="$store.state.fursLoaded">
         <h2 class="top_sales-title">Топ продаж этого месяца</h2>
         <ul>
             <li class="card" v-for="item in $store.getters.topThreeFurs" :key="item.id">
-                <img :src="`/src/assets/images/catalog/${item?.Img}`" alt="fur">
-                <router-link :to="`/item/${item.id}`" class="title"><strong>{{item.Name}}</strong></router-link>
-                <p class="size">{{item.Size}}</p>
+                <img :src="getSrc(item?.Images[0])" alt="fur">
+                <router-link :to="`/item/${item.id}/#header`" class="title"><strong>{{item.Name}}</strong></router-link>
+                <p class="size">{{item.Size.join(' / ')}}</p>
                 <div class="card_bottom">
                     <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
                     <a class="cart_btn" ><img src="../assets/images/top_sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
@@ -20,7 +20,13 @@
 
 <script>
     export default {
-
+        methods: {
+            getSrc(name) {
+                const path = `/src/assets/images/catalog/${name}`;
+                const modules = import.meta.globEager("/src/assets/images/catalog/*");
+                return modules[path].default;
+            }
+        }
     }
 </script>
 
@@ -75,6 +81,7 @@
         }
         > img {
             width: 100%;
+            object-fit: cover;
         }
         .title {
             width: 100%;

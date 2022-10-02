@@ -1,5 +1,5 @@
 <template>
-  <header class="header animate__animated animate__fadeIn">
+  <header class="header animate__animated animate__fadeIn" id="header">
     <div class="header_left">
       <nav class="menu">
         <ul>
@@ -27,7 +27,8 @@ export default {}
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin: 30px 20px 0 20px;
+  margin: 0 20px;
+  padding-top: 30px;
 }
 
 .logo {

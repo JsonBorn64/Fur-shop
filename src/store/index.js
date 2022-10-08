@@ -10,9 +10,12 @@ export default createStore({
     }
   },
   getters: {
-    topThreeFurs(state) {
-      return [...state.furs].sort((a, b) => b.Orders - a.Orders).slice(0,3);
+    topFurs: (state) => (count) => {
+      return [...state.furs].sort((a, b) => b.Orders - a.Orders).slice(0,count);
     },
+    specialFurById: (state) => (id) => {
+      return state.furs.find(fur => fur.id === id)
+    }
   },
   mutations: {
     pushFur(state, fur) {

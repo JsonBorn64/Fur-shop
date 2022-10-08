@@ -2,7 +2,7 @@
     <section class="top_sales" v-show="$store.state.fursLoaded">
         <h2 class="top_sales-title">Топ продаж этого месяца</h2>
         <ul>
-            <li class="card" v-for="item in $store.getters.topThreeFurs" :key="item.id">
+            <li class="card" v-for="item in $store.getters.topFurs(3)" :key="item.id">
                 <img :src="getSrc(item?.Images[0])" alt="fur">
                 <router-link :to="`/item/${item.id}/#header`" class="title"><strong>{{item.Name}}</strong></router-link>
                 <p class="size">{{item.Size.join(' / ')}}</p>
@@ -11,8 +11,8 @@
                     <a class="cart_btn" ><img src="../assets/images/top_sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
                 </div>
                 <a class="cart_btn-big">В корзину</a>
-                <router-link :to="`/item/${item.id}`" class="mobile_btn-big">Перейти к товару</router-link>
-                <router-link :to="`/item/${item.id}`" class="mobile_btn"><img src="../assets/images/top_sales/ri_arrow-right-up-line.svg" alt="arrow up"></router-link>
+                <router-link :to="`/item/${item.id}/#header`" class="mobile_btn-big">Перейти к товару</router-link>
+                <router-link :to="`/item/${item.id}/#header`" class="mobile_btn"><img src="../assets/images/top_sales/ri_arrow-right-up-line.svg" alt="arrow up"></router-link>
             </li>
         </ul>
     </section>

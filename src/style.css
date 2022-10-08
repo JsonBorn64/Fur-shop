@@ -1,3 +1,4 @@
+/* fonts */
 @font-face {
   font-family: 'Montserrat';
   font-weight: 400;
@@ -22,9 +23,10 @@
   src: url('assets/fonts/DrukCyr-Medium.ttf');
 }
 
+/* reset */
 *::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 0px;
+  height: 0px;
 }
 *::-webkit-scrollbar-track {
   background: transparent;
@@ -239,4 +241,37 @@ template {
 
 [hidden] {
   display: none;
+}
+
+/* animations */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }

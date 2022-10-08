@@ -2,7 +2,7 @@
     <footer class="footer">
         <div class="left">
             <div class="row1">
-                <router-link to="/" class="link">Главная</router-link>
+                <router-link to="/#header" class="link">Главная</router-link>
                 <img src="../assets/images/footer/ri_heart-line.svg" alt="heart">
             </div>
             <div class="row2">
@@ -14,12 +14,45 @@
                 <img src="../assets/images/footer/ri_user-line.svg" alt="user">
             </div>
         </div>
-        <img class="logo" src="../assets/images/footer/Vector.svg" alt="logo">
-        <div class="right">
-            <img src="../assets/images/footer/8fa4e768-f93a-45c4-9f72-3bc5d2b830fe_1.jpg" alt="">
-        </div>
+        <img
+            class="logo"
+            src="../assets/images/footer/Vector.svg"
+            alt="logo"
+            @click="$router.push('/#header')"
+        >
+        <div id="map"></div>
     </footer>
 </template>
+
+<script>
+export default {
+    methods: {
+        mapInit() {
+            const map = L.map('map').setView([51.140801800319586, 71.41488795264996], 13);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                fullscreenControl: true,
+                fullscreenControlOptions: {
+                    position: 'topleft'
+                }
+            }).addTo(map);
+            const marker = L.marker([51.140801800319586, 71.41488795264996]).addTo(map);
+            L.control.fullscreen({
+                position: 'topleft', 
+                title: 'Show me the fullscreen !', 
+                titleCancel: 'Exit fullscreen mode', 
+                content: null,
+                forceSeparateButton: true, 
+                forcePseudoFullscreen: true, 
+                fullscreenElement: false 
+            }).addTo(map);
+        }
+    },
+    mounted() {
+        this.mapInit()
+    },
+}
+</script>
 
 <style lang="scss" scoped>
     .footer {
@@ -35,6 +68,9 @@
         @media (max-width: 980px) {
             justify-content: space-around;
         }
+        @media (max-width: 580px) {
+            height: 190px;
+        }
     }
 
     .left {
@@ -42,11 +78,19 @@
         flex-direction: column;
         gap: 26px;
         width: 210px;
+        @media (max-width: 580px) {
+            width: auto;
+        }
         > div {
             display: flex;
             justify-content: space-between;
             align-items: center;
             width: 100%;
+            > img {
+                @media (max-width: 580px) {
+                    display: none;
+                }
+            }
             .link {
                 font-family: 'Montserrat';
                 font-weight: 700;
@@ -58,14 +102,46 @@
     }
 
     .logo {
+        cursor: pointer;
         @media (max-width: 760px) {
             display: none;
         }
     }
+</style>
 
-    .right {
+<style lang="scss">
+    // Map styles
+    #map {
+        width: 232px;
+        height: 194px;
+        border: 7px solid #F5ED2A;
+        z-index: 9;
         @media (max-width: 580px) {
-            display: none;
+            width: 140px;
+            height: 117px;
         }
+    }
+    .leaflet-top .leaflet-control {
+	    margin-top: 0px;
+	}
+    .leaflet-left .leaflet-control {
+        margin-left: 0px;
+    }
+    .leaflet-bottom {
+        display: none;
+    }
+    .leaflet-touch .leaflet-bar {
+        border: none;
+    }
+    .leaflet-touch .leaflet-bar a {
+        width: 26px;
+        height: 26px;
+        line-height: 26px;
+    }
+    .leaflet-touch .leaflet-control-zoom-out {
+        font-size: 18px;
+    }
+    .leaflet-bar a:last-child {
+        border-bottom: 1px solid #ccc;
     }
 </style>

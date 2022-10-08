@@ -35,7 +35,7 @@
             <div class="search">
                 <div class="input_btn">
                     <input v-model="searchQuery" placeholder="Введите запрос" ref="searchInput">
-                    <div class="btn" @click="searchQuery = ''">Очистить</div>
+                    <div class="btn" @click="searchQuery = ''"><img src="@/assets/images/catalog/lupa.svg" alt="search"></div>
                 </div>
                 <div class="keywords">
                     Ключ. слова:
@@ -48,22 +48,24 @@
         </div>
         <ul class="catalog_cards">
             <transition-group name="list">
-                <li class="card" v-for="item in sortedAndSearchedFurs" :key="item.id">
-                    <img :src="getSrc(item?.Images[0])" alt="fur">
-                    <router-link :to="`/item/${item.id}/#header`" class="title">
-                        <strong>{{item.Name}}</strong>
-                    </router-link>
-                    <p class="size">{{item.Size.join(' / ')}}</p>
-                    <div class="card_bottom">
-                        <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
-                        <a class="cart_btn" ><img src="@/assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
-                    </div>
-                </li>
+                <template v-for="(item, idx) in sortedAndSearchedFurs" :key="item.id">
+                    <li class="card" v-if="idx < cardsToShow">
+                        <img :src="getSrc(item?.Images[0])" alt="fur" height="248">
+                        <router-link :to="`/item/${item.id}/#header`" class="title">
+                            <strong>{{item.Name}}</strong>
+                        </router-link>
+                        <p class="size">{{item.Size.join(' / ')}}</p>
+                        <div class="card_bottom">
+                            <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
+                            <a class="cart_btn" ><img src="@/assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
+                        </div>
+                    </li>
+                </template>
                 <p v-if="sortedAndSearchedFurs.length < 1 && this.$store.state.fursLoaded" class="extra_info">Ничего не найдено</p>
                 <p v-if="!this.$store.state.fursLoaded" class="extra_info">Загрузка...</p>
             </transition-group>
         </ul>
-        <!-- <a v-if="goods.length > 0" class="load_more-btn" href="#">Загрузить ещё</a> -->
+        <a v-if="sortedAndSearchedFurs.length > cardsToShow" @click="cardsToShow += 6" class="load_more-btn">Загрузить ещё</a>
     </section>
 </template>
 
@@ -73,7 +75,8 @@
             return {
                 furs: this.$store.state.furs,
                 sortBy: 'OrdersDesc',
-                searchQuery: ""
+                searchQuery: "",
+                cardsToShow: 6
             }
         },
         methods: {
@@ -100,6 +103,10 @@
                     return item.Name.toLowerCase().includes(this.searchQuery.toLowerCase())
                 });
             },
+        },
+        mounted() {
+            if (window.innerWidth > 535) this.cardsToShow = 6
+            else this.cardsToShow = 4
         }
     }
 </script>
@@ -181,7 +188,7 @@
                     background: #F5ED2A;
                     display: grid;
                     place-content: center;
-                    width: 133px;
+                    min-width: 49px;
                     font-family: 'Montserrat';
                     font-weight: 700;
                     font-size: 14px;
@@ -190,7 +197,6 @@
                     color: #222222;
                     border: 1px solid black;
                     margin-left: -1px;
-                    cursor: pointer;
                 }
             }
             .keywords {
@@ -219,6 +225,7 @@
         gap: 73px;
         flex-wrap: wrap;
         justify-content: center;
+        overflow: hidden;
         transition: all 0.3s ease;
     }
     .card {
@@ -232,6 +239,7 @@
         > img {
             width: 100%;
             object-fit: cover;
+            max-height: 248px;
         }
         .title {
             width: calc(100% - 20px);
@@ -242,6 +250,13 @@
             color: #222222;
             float: left;
             margin: 26px 0 0 10px;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            display: -webkit-box;
+            @media (max-width: 600px) {
+                -webkit-line-clamp: 3;
+            }
         }
         .size {
             font-family: 'Montserrat';
@@ -283,7 +298,6 @@
             cursor: pointer;
         }
     }
-
     .extra_info {
         font-family: 'Montserrat';
         font-size: 30px;
@@ -306,6 +320,7 @@
         background: #F5ED2A;
         display: grid;
         place-content: center;
+        cursor: pointer;
     }
 
     .line {
@@ -350,6 +365,9 @@
         .card {
             width: 156px;
             height: 284px;
+            > img {
+                max-height: 154px;
+            }
             .title {
                 font-size: 13px;
                 margin-top: 14px;
@@ -374,14 +392,6 @@
         }
     }
 
-    @media (max-width: 535px) {
-        .card:nth-child(n+5) {
-            visibility: hidden;
-            opacity: 0;
-            height: 0;
-        }
-    }
-
     @media (max-width: 400px) {
         .search {
             .input_btn {
@@ -403,7 +413,6 @@
 
     .card, .extra_info {
         transition: all 0.3s ease;
-        display: flex;
     }
 
     .list-enter-from,

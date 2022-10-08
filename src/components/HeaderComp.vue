@@ -1,5 +1,5 @@
 <template>
-  <header class="header animate__animated animate__fadeIn" id="header">
+  <header class="header" id="header">
     <div class="header_left">
       <nav class="menu">
         <ul>
@@ -43,6 +43,9 @@ export default {}
   border-bottom: 1px solid black;
   width: 100%;
   max-width: 390px;
+  @media (max-width: 680px) {
+    max-width: 680px;
+  }
 }
 
 .header_right {

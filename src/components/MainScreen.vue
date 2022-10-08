@@ -1,21 +1,21 @@
 <template>
  <section class="general_screen" ref="genScreen">
-    <img class="women_part1 animate__animated animate__fadeIn" src="@/assets/images/general_screen/Group_3.jpg" alt="women">
-    <img class="women_part2 animate__animated animate__fadeInRight" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_1.jpg" alt="women">
-    <img class="women_part3 animate__animated animate__fadeInRight" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_2.jpg" alt="women">
-    <div class="decore_text1 animate__animated animate__fadeInLeft">
+    <img class="women_part1" src="@/assets/images/general_screen/Group_3.jpg" alt="women">
+    <img class="women_part2" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_1.jpg" alt="women">
+    <img class="women_part3" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_2.jpg" alt="women">
+    <div class="decore_text1">
         <div>NEX</div>
         <div>TED</div>
     </div>
-    <div class="decore_text2 animate__animated animate__fadeInLeft">Лучшие шубы в казахстане</div>
-    <div class="decore_text3 animate__animated animate__fadeInLeft">
+    <div class="decore_text2">Лучшие шубы в казахстане</div>
+    <div class="decore_text3">
         <span>Fur </span>products
         <span>For </span>stylish cats
     </div>
-    <router-link to="/#catalog" class="btn animate__animated animate__fadeInLeft">Посмотреть каталог</router-link>
+    <router-link to="/#catalog" class="btn">Посмотреть каталог</router-link>
  </section>
  <section class="mobile">
-    <img src="@/assets/images/general_screen/Group_5.jpg" alt="">
+    <img src="@/assets/images/general_screen/Group_5.jpg" alt="img">
     <router-link to="/#catalog" class="btn mobile_btn">Посмотреть каталог</router-link>
     <img class="decore_text-mobile" src="@/assets/images/general_screen/svg_nexted.svg" alt="nexted" />
  </section>
@@ -38,7 +38,7 @@ export default {
                 }
             }
             settings()
-            window.onresize = settings
+            window.addEventListener('resize', settings)
         }
     },
     mounted() {
@@ -55,16 +55,22 @@ export default {
         margin-right: 85px;
     }
 
+    .women_part1 {
+        animation: 1s fadeIn;
+    }
+
     .women_part2 {
         position: absolute;
         top: 132px;
         right: -202px;
+        animation: 2s fadeInRight;
     }
 
     .women_part3 {
         position: absolute;
         top: 317px;
         right: -292px;
+        animation: 2.3s fadeInRight;
     }
 
     .decore_text1 {
@@ -78,6 +84,7 @@ export default {
         position: absolute;
         top: 36px;
         left: -194px;
+        animation: 2s fadeInLeft;
         div:last-child {
             color: #F8F8F8;
         }
@@ -96,6 +103,7 @@ export default {
         max-width: 175px;
         top: 295px;
         left: -181px;
+        animation: 2s fadeInLeft;
     }
 
     .decore_text3 {
@@ -108,6 +116,7 @@ export default {
         position: absolute;
         top: 497px;
         right: -175px;
+        animation: 2s fadeInRight;
         span {
             color: #F8F8F8;
         }
@@ -130,6 +139,7 @@ export default {
         place-content: center;
         cursor: pointer;
         color: black;
+        animation: 2s fadeInLeft;
     }
 
     .mobile {

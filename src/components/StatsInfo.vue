@@ -28,8 +28,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin: 0 29px 60px 29px;
             max-width: 124px;
+            margin: 0px 29px;
+            @media (max-width: 569px) {
+                margin: 30px 29px;
+            }
             .num {
                 width: 83px;
                 height: 83px;

@@ -118,6 +118,9 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        @media (max-width: 540px) {
+            margin-top: 60px;
+        }
     }
     .catalog_title {
         display: flex;

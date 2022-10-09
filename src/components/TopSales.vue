@@ -62,6 +62,9 @@
             align-items: flex-end;
             gap: 50px;
         }
+        @media (max-width: 540px) {
+            margin-top: 60px;
+        }
     }
     .card {
         display: flex;

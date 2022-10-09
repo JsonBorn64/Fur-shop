@@ -1,6 +1,9 @@
 <template>
     <section class="decore_section" ref="decoreBlock">
-        <img src="../assets/images/decore_section/png.png" alt="decore">
+        <picture>
+            <source media="(min-width: 550px)" srcset="@/assets/images/decore_section/png.png">
+            <img src="@/assets/images/decore_section/png2.png" alt="decore">
+        </picture>
     </section>
 </template>
 
@@ -9,6 +12,9 @@
         margin-top: 120px;
         img {
             width: 100%;
+        }
+        @media (max-width: 550px) {
+            margin: 70px -10px 0 -10px;
         }
     }
 </style>

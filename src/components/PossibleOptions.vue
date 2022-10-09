@@ -43,6 +43,7 @@ export default {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
+        margin-bottom: -60px;
         .card {
             position: relative;
             margin: 0 11px 30px 11px;
@@ -83,6 +84,9 @@ export default {
         .cart_btn {
             bottom: -14px;
             background-color: #F5ED2A;
+        }
+        @media (max-width: 540px) {
+            margin-bottom: -100px;
         }
     }
 </style>

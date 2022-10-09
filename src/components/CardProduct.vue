@@ -4,21 +4,38 @@
             <div class="title">{{furById?.Name}}</div>
             <div class="price">
                 <div v-if="furById?.OldPrice" class="old">
-                    <span>{{furById?.OldPrice}} тг</span>
+                    <span>{{new Intl.NumberFormat('ru-RU').format(furById?.OldPrice)}} тг</span>
                     <span>-{{sailPercent(furById?.OldPrice, furById?.Price)}}%</span>
                 </div>
                 <div class="now">{{new Intl.NumberFormat('ru-RU').format(furById?.Price)}} <span>тг</span></div>
             </div>
         </div>
             <div class="photos_and_btns">
-                <div class="photos" :style="{'height': furById?.Images.length < 2 ? '100%' : '110vh' }">
-                    <img
-                        v-for="img in furById?.Images"
-                        :src="getSrc(img)"
-                        class="second_photo"
-                        alt="fur photo"
-                        ref="image"
-                    >
+                <div class="photos" v-if="photos?.length > 0">
+                    <img class="first_photo" :src="getSrc(photos[0])" @click="showPopup" alt="fur">
+                    <div class="second_photos">
+                        <img
+                            class="second_photo"
+                            :src="getSrc(photos[1])"
+                            v-if="photos?.length > 1"
+                            @click="switchPhotos(1)"
+                            alt="fur"
+                        >
+                        <img
+                            class="second_photo"
+                            :src="getSrc(photos[2])"
+                            v-if="photos?.length > 2"
+                            @click="switchPhotos(2)"
+                            alt="fur"
+                        >
+                        <img
+                            class="second_photo"
+                            :src="getSrc(photos[3])"
+                            v-if="photos?.length > 3"
+                            @click="switchPhotos(3)"
+                            alt="fur"
+                        >
+                    </div>
                 </div>
                 <div class="btns">
                     <div class="cart_btn">В корзину</div>
@@ -33,7 +50,7 @@
             <div class="title">{{furById?.Name}}</div>
             <div class="price">
                 <div v-if="furById?.OldPrice" class="old">
-                    <span>{{furById?.OldPrice}} тг</span>
+                    <span>{{new Intl.NumberFormat('ru-RU').format(furById?.OldPrice)}} тг</span>
                     <span>-{{sailPercent(furById?.OldPrice, furById?.Price)}}%</span>
                 </div>
                 <div class="now">{{new Intl.NumberFormat('ru-RU').format(furById?.Price)}} <span>тг</span></div>
@@ -48,29 +65,31 @@
                 <p :class="{ 'about-active': aboutActive }" @click="aboutActive = true">{{furById?.About}}</p>
             </div>
         </div>
-        <transition name="fade">
+        <transition name="fade" v-if="photos?.length > 0">
             <div class="photos_popup" v-show="showPhotoPopup">
                 <div @click="showPhotoPopup = false" class="overlay"></div>
-                <div @click="prevPhoto" v-show="activePhoto > 0" class="popup_btn">Назад</div>
+                <div @click="prevPhoto" v-show="activePhoto > 0" class="popup_btn"><img src="../assets/images/card_product/prev.svg" alt="Назад"></div>
                 <img
-                    v-for="img in furById?.Images"
+                    v-for="img in photos"
                     :src="getSrc(img)"
                     class="popup_photo"
                     alt="fur photo"
                     ref="popup_photos"
                 >
-                <div @click="nextPhoto" v-show="activePhoto < furById?.Images.length-1" class="popup_btn">Вперёд</div>
+                <div @click="nextPhoto" v-show="activePhoto < photos.length-1" class="popup_btn"><img src="../assets/images/card_product/next.svg" alt="Вперёд"></div>
             </div>
         </transition>
     </section>
 </template>
 
 <script>
+
 export default {
     data() {
         return {
             aboutActive: false,
             showPhotoPopup: false,
+            photos: [],
             activePhoto: 0
         }
     },
@@ -81,28 +100,26 @@ export default {
             return modules[path].default;
         },
         sailPercent(oldPrice, newPrice) {
-            return Math.floor((+oldPrice - +newPrice)/(+oldPrice/100))
+            return Math.floor((oldPrice - newPrice)/(oldPrice/100))
         },
-        imagesInteractive() {
-            if (!this.$refs.image) return
-            const photos = this.$refs.image
-            const popupPhotos = this.$refs.popup_photos
-            photos.forEach((img, idx) => {
-                if (idx === 0) {
-                    photos.forEach(image => image.classList.remove('first_photo'))
-                    img.classList.add('first_photo')
-                }
-                img.onclick = () => {
-                    if (img.classList.contains('first_photo')) {
-                        this.activePhoto = idx
-                        this.showPhotoPopup = true
-                        popupPhotos.forEach(item => item.classList.remove('popup_photo-active'))
-                        popupPhotos[this.activePhoto].classList.add('popup_photo-active')
-                    }
-                    photos.forEach(image => image.classList.remove('first_photo'))
-                    img.classList.add('first_photo')
-                }
-            })
+        switchPhotos(num) {
+            const firstPhoto = document.querySelector('.first_photo')
+            const secondPhotos = document.querySelectorAll('.second_photo')
+            firstPhoto.classList.remove('fadeInAnimate')
+            secondPhotos.forEach(item => item.classList.remove('fadeInAnimate'))
+            setTimeout(() => {
+                firstPhoto.classList.add('fadeInAnimate')
+                secondPhotos[num-1].classList.add('fadeInAnimate');
+            }, 0);
+            setTimeout(() => {
+                [this.photos[0], this.photos[num]] = [this.photos[num], this.photos[0]]
+            }, 0);
+        },
+        showPopup() {
+            this.activePhoto = 0
+            this.showPhotoPopup = true
+            this.$refs.popup_photos.forEach(img => img.classList.remove('popup_photo-active'))
+            this.$refs.popup_photos[this.activePhoto].classList.add('popup_photo-active')
         },
         nextPhoto() {
             if (this.activePhoto < this.furById?.Images.length-1 && this.showPhotoPopup) {
@@ -131,16 +148,13 @@ export default {
     },
     computed: {
         furById() {
+            this.photos = this.$store.getters.specialFurById(this.$route.params.id)?.Images.slice()
             return this.$store.getters.specialFurById(this.$route.params.id)
         },
     },
     mounted() {
-        this.imagesInteractive()
         this.keyEvents()
-    },
-    updated() {
-        this.imagesInteractive()
-    },
+    }
 }
 </script>
 
@@ -151,90 +165,100 @@ export default {
         justify-content: space-between;
         margin-top: 76px;
         animation: .5s fadeIn;
-        @media (max-width: 840px) {
+        @media (max-width: 710px) {
             flex-direction: column;
-            align-items: center;
         }
     }
 
     .photos_and_btns {
         display: flex;
         flex-direction: column;
-        width: 100%;
-        max-width: 528px;
-        .photos {
-            max-width: 528px;
-            max-height: 390px;
-            // width: 100vw;
-            height: 110vh;
-            display: flex;
-            flex-direction: column;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-content: space-between;
-            overflow: hidden;
-            @media (max-width: 976px) {
-                flex-direction: row;
-                max-width: 390px;
-                // max-height: 528px;
-            }
-            @media (max-width: 840px) {
-                max-width: 700px;
-                max-height: 9000px;
-            }
-            > img {
-                cursor: pointer;
-                object-fit: cover;
-            }
-        }
-        @media (max-width: 976px) {
-            max-width: 390px;
-        }
+        margin-right: 24px;
         @media (max-width: 840px) {
-            max-width: 700px;
-            max-height: calc(132vw);
+            min-width: 390px;
         }
-        @media (max-width: 700px) {
-            max-height: calc(135vw);
+        @media (max-width: 710px) {
+            min-width: 528px;
         }
-        @media (max-width: 500px) {
-            max-height: calc(142vw);
+        @media (max-width: 550px) {
+            width: 100%;
+            min-width: auto;
         }
     }
-    .first_photo {
-        height: 100% !important;
-        max-width: 390px !important;
-        max-height: 390px !important;
-        order: -1;
-        animation: fadeIn 300ms;
-        @media (max-width: 840px) {
-            max-width: 700px !important;
-            max-height: 90vw !important;
+    
+    .photos {
+        display: flex;
+        @media (max-width: 550px) {
+            flex-direction: column;
         }
     }
 
+    .first_photo {
+        object-fit: cover;
+        width: 100vw;
+        height: 100vh;
+        max-width: 390px;
+        max-height: 390px;
+        cursor: pointer;
+        @media (max-width: 550px) {
+            max-width: calc(100vw - 20px);
+            max-height: calc(100vw - 20px);
+        }
+    }
+    
+    .second_photos {
+        display: flex;
+        flex-direction: column;
+        margin-left: 24px;
+        @media (max-width: 962px) {
+            display: none;
+        }
+        @media (max-width: 710px) {
+            display: flex;
+        }
+        @media (max-width: 550px) {
+            margin-left: 0px;
+            margin-top: 16px;
+            flex-direction: row;
+        }
+    }
+    
     .second_photo {
-        width: 100%;
-        height: 100%;
         max-width: 114px;
         max-height: 114px;
-        @media (max-width: 840px) {
-            max-width: 29%;
-            max-height: 22%;
+        width: 100vw;
+        height: 100vw;
+        cursor: pointer;
+        object-fit: cover;
+        @media (max-width: 550px) {
+            max-width: calc(100vw/3 - 17.3px);
+            max-height: calc(100vw/3 - 17.3px);
         }
+    }
+
+    .second_photo:not(:first-child) {
+        margin-top: 24px;
+        @media (max-width: 550px) {
+            margin-left: 16px;
+            margin-top: 0px;
+        }
+    }
+
+    .fadeInAnimate {
+        animation: fadeIn 300ms;
     }
 
     .mobile {
         display: none;
         margin-bottom: 30px;
-        @media (max-width: 840px) {
+        @media (max-width: 710px) {
             display: block;
         }
     }
 
     .desctop {
         .title, .price {
-            @media (max-width: 840px) {
+            @media (max-width: 710px) {
                 display: none !important;
             }
         }
@@ -267,17 +291,37 @@ export default {
         .popup_btn {
             z-index: 12;
             font-family: 'Montserrat';
-            padding: 10px 20px;
+            display: grid;
+            place-content: center;
             cursor: pointer;
-            border: 1px solid #222;
             position: absolute;
-            top: 50%;
+            height: 100vh;
+            width: 100px;
+            top: 0;
             transform: translateX(50%);
-            left: -20px;
-            background-color: rgba(255, 255, 255, 0.6);
+            left: -50px;
+            background: linear-gradient(270deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0);
+            transition: 300ms;
+            opacity: 0.3;
+            user-select: none;
             &:last-child {
-                right: 80px;
+                background: linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 100%);
+                right: 50px;
                 left: auto;
+            }
+            &:hover {
+                opacity: 0.7;
+            }
+            > img {
+                width: 30px;
+            }
+            @media (max-width: 550px) {
+                width: 60px;
+                left: -30px;
+                &:last-child {
+                    right: 30px;
+                }
             }
         }
     }
@@ -344,15 +388,13 @@ export default {
                 height: 42px;
             }
         }
-        @media (max-width: 840px) {
-            justify-content: space-evenly;
-        }
     }
 
     .info {
         width: 100%;
         max-width: 390px;
-        @media (max-width: 840px) {
+        overflow: hidden;
+        @media (max-width: 962px) {
             max-width: 700px;
         }
         .title {
@@ -463,10 +505,9 @@ export default {
                 display: -webkit-box;
                 cursor: pointer;
                 // &::after {
-                //     content: 'Показать ещё';
+                //     content: '... Показать ещё';
                 //     background-color: white;
                 //     font-size: 12px;
-                //     line-height: 140.9%;
                 //     letter-spacing: -0.02em;
                 //     text-decoration-line: underline;
                 //     color: #666666;
@@ -474,7 +515,7 @@ export default {
                 //     position: absolute;
                 //     bottom: 0;
                 //     right: 0;
-                //     box-shadow: 0 40px 10px 40px white;
+                //     box-shadow: 0 20px 10px 20px white;
                 // }
             }
         }

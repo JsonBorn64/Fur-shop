@@ -3,7 +3,7 @@
     <div class="names">
         <div
             class="tab_name"
-            @click="activeTab = 1"
+            @click="activeTab = activeTab === 1 ? -1 : 1"
             :class="{'tab_name-active': activeTab === 1}"
         >
             Отзывы
@@ -13,48 +13,58 @@
         </div>
         <div
             class="tab_name"
-            @click="activeTab = 2"
+            @click="activeTab = activeTab === 2 ? -2 : 2"
             :class="{'tab_name-active': activeTab === 2}"
         >
             Характеристики
             <div class="mobile_tab_content" :class="{'active': activeTab === 2}">
                 <div class="characteristics" v-if="activeTab === 2">
-            <div class="row">
-                Модель................................................Шуба
-            </div>
-            <div class="row">
-                Фасон...................................................Кокон
-            </div>
-            <div class="row">
-                Мех........................................................Норка
-            </div>
-            <div class="row">
-                Ворот....................................................Стойка
-            </div>
-            <div class="row">
-                Длина&nbspизделия.................................110 см
-            </div>
-            <div class="row">
-                Узор.......................................................Поперечный
-            </div>
-            <div class="row">
-                Застёжка.............................................Крючки
-            </div>
-            <div class="row">
-                КиЗ.........................................................KZ-7656756-7HJ76OL
-            </div>
-            <div class="row">
-                Страна<br>производитель.................................Россия
-            </div>
-            <div class="row">
-                Дополнительная<br>информация......................................Ворот из меха куницы
-            </div>
+            <div class="row">Модель................................................Шуба</div>
+            <div class="row">Фасон...................................................Кокон</div>
+            <div class="row">Мех........................................................Норка</div>
+            <div class="row">Ворот....................................................Стойка</div>
+            <div class="row">Длина&nbspизделия.................................110 см</div>
+            <div class="row">Узор.......................................................Поперечный</div>
+            <div class="row">Застёжка.............................................Крючки</div>
+            <div class="row">КиЗ.........................................................KZ-7656756-7HJ76OL</div>
+            <table class="table">
+                <tr>
+                    <td>Rus</td>
+                    <td>Обхват груди</td>
+                    <td>Обхват талии</td>
+                    <td>Обхват бёдер</td>
+                </tr>
+                <tr>
+                    <td>44</td>
+                    <td>46</td>
+                    <td>48</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>88-90</td>
+                    <td>92-94</td>
+                    <td>96-98</td>
+                    <td>100-102</td>
+                </tr>
+                <tr>
+                    <td>68-72</td>
+                    <td>74-76</td>
+                    <td>78-80</td>
+                    <td>82-86</td>
+                </tr>
+                <tr>
+                    <td>92-96</td>
+                    <td>98-102</td>
+                    <td>102-104</td>
+                    <td>106-110</td>
+                </tr>
+            </table>
         </div>
             </div>
         </div>
         <div
             class="tab_name"
-            @click="activeTab = 3"
+            @click="activeTab = activeTab === 3 ? -3 : 3"
             :class="{'tab_name-active': activeTab === 3}"
         >
             Производство
@@ -66,36 +76,48 @@
     <div class="tab_content">
         <div class="comments" v-if="activeTab === 1">Отзывы</div>
         <div class="characteristics" v-if="activeTab === 2">
-            <div class="row">
-                Модель................................................Шуба
+            <div class="wrapper">
+                <div class="row">Модель................................................Шуба</div>
+                <div class="row">Фасон...................................................Кокон</div>
+                <div class="row">Мех........................................................Норка</div>
+                <div class="row">Ворот....................................................Стойка</div>
+                <div class="row">Длина&nbspизделия.................................110 см</div>
+                <div class="row">Узор.......................................................Поперечный</div>
+                <div class="row">Застёжка.............................................Крючки</div>
+                <div class="row">КиЗ.........................................................KZ-7656756-7HJ76OL</div>
             </div>
-            <div class="row">
-                Фасон...................................................Кокон
-            </div>
-            <div class="row">
-                Мех........................................................Норка
-            </div>
-            <div class="row">
-                Ворот....................................................Стойка
-            </div>
-            <div class="row">
-                Длина&nbspизделия.................................110 см
-            </div>
-            <div class="row">
-                Узор.......................................................Поперечный
-            </div>
-            <div class="row">
-                Застёжка.............................................Крючки
-            </div>
-            <div class="row">
-                КиЗ.........................................................KZ-7656756-7HJ76OL
-            </div>
-            <div class="row">
-                Страна<br>производитель.................................Россия
-            </div>
-            <div class="row">
-                Дополнительная<br>информация......................................Ворот из меха куницы
-            </div>
+            <table class="table">
+                <tr>
+                    <td>Rus</td>
+                    <td>Обхват груди</td>
+                    <td>Обхват талии</td>
+                    <td>Обхват бёдер</td>
+                </tr>
+                <tr>
+                    <td>44</td>
+                    <td>46</td>
+                    <td>48</td>
+                    <td>50</td>
+                </tr>
+                <tr>
+                    <td>88-90</td>
+                    <td>92-94</td>
+                    <td>96-98</td>
+                    <td>100-102</td>
+                </tr>
+                <tr>
+                    <td>68-72</td>
+                    <td>74-76</td>
+                    <td>78-80</td>
+                    <td>82-86</td>
+                </tr>
+                <tr>
+                    <td>92-96</td>
+                    <td>98-102</td>
+                    <td>102-104</td>
+                    <td>106-110</td>
+                </tr>
+            </table>
         </div>
         <div class="made_by" v-if="activeTab === 3">Производство</div>
     </div>
@@ -141,6 +163,7 @@ export default {
                 display: grid;
                 place-content: center;
                 position: relative;
+                user-select: none;
                 &::before, &::after {
                     content: '';
                     position: absolute;
@@ -197,7 +220,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 300px;
+        padding: 20px 0;
         @media (max-width: 600px) {
             display: none;
         }
@@ -216,12 +239,15 @@ export default {
         }
     }
     .active {
-        height: 300px;
+        height: 400px;
     }
     .comments {
         animation: fadeIn 300ms;
         font-size: 30px;
         font-family: 'Montserrat';
+        height: 240px;
+        display: grid;
+        place-content: center;
     }
     .characteristics {
         display: flex;
@@ -231,9 +257,16 @@ export default {
         font-size: 12px !important;
         line-height: 146.4%;
         color: #222222;
+        width: 100%;
+        padding: 20px 0;
         .row {
             display: flex;
             margin-bottom: 3px;
+        }
+        @media (min-width: 600px) {
+            justify-content: space-evenly;
+            align-items: center;
+            flex-direction: row;
         }
     }
 
@@ -241,5 +274,30 @@ export default {
         animation: fadeIn 300ms;
         font-size: 30px;
         font-family: 'Montserrat';
+        height: 240px;
+        display: grid;
+        place-content: center;
+    }
+
+    .table {
+        font-family: 'Montserrat';
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 146.4%;
+        color: #222222;
+        border-collapse: collapse;
+        max-width: 390px;
+        width: 100%;
+        @media (max-width: 600px) {
+            margin-top: 20px;
+        }
+        td {
+            border: 1px solid black;
+            text-align: center;
+            vertical-align: middle;
+            width: 70px;
+            height: 30px;
+            padding: 6px 5px;
+        }
     }
 </style>

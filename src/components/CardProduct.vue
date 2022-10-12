@@ -12,25 +12,25 @@
         </div>
             <div class="photos_and_btns">
                 <div class="photos" v-if="photos?.length > 0">
-                    <img class="first_photo" :src="getSrc(photos[0])" @click="showPopup" alt="fur">
+                    <img class="first_photo" :src="`upload/${photos[0]}`" @click="showPopup" alt="fur">
                     <div class="second_photos">
                         <img
                             class="second_photo"
-                            :src="getSrc(photos[1])"
+                            :src="`upload/${photos[1]}`"
                             v-if="photos?.length > 1"
                             @click="switchPhotos(1)"
                             alt="fur"
                         >
                         <img
                             class="second_photo"
-                            :src="getSrc(photos[2])"
+                            :src="`upload/${photos[2]}`"
                             v-if="photos?.length > 2"
                             @click="switchPhotos(2)"
                             alt="fur"
                         >
                         <img
                             class="second_photo"
-                            :src="getSrc(photos[3])"
+                            :src="`upload/${photos[3]}`"
                             v-if="photos?.length > 3"
                             @click="switchPhotos(3)"
                             alt="fur"
@@ -68,15 +68,15 @@
         <transition name="fade" v-if="photos?.length > 0">
             <div class="photos_popup" v-show="showPhotoPopup">
                 <div @click="showPhotoPopup = false" class="overlay"></div>
-                <div @click="prevPhoto" v-show="activePhoto > 0" class="popup_btn"><img src="../assets/images/card_product/prev.svg" alt="Назад"></div>
+                <div @click="prevPhoto" v-show="activePhoto > 0" class="popup_btn"><img src="@/assets/images/card_product/prev.svg" alt="Назад"></div>
                 <img
                     v-for="img in photos"
-                    :src="getSrc(img)"
+                    :src="`upload/${img}`"
                     class="popup_photo"
                     alt="fur photo"
                     ref="popup_photos"
                 >
-                <div @click="nextPhoto" v-show="activePhoto < photos.length-1" class="popup_btn"><img src="../assets/images/card_product/next.svg" alt="Вперёд"></div>
+                <div @click="nextPhoto" v-show="activePhoto < photos.length-1" class="popup_btn"><img src="@/assets/images/card_product/next.svg" alt="Вперёд"></div>
             </div>
         </transition>
     </section>
@@ -94,11 +94,6 @@ export default {
         }
     },
     methods: {
-        getSrc(name) {
-            const path = `/src/assets/images/catalog/${name}`;
-            const modules = import.meta.globEager("/src/assets/images/catalog/*");
-            return modules[path].default;
-        },
         sailPercent(oldPrice, newPrice) {
             return Math.floor((oldPrice - newPrice)/(oldPrice/100))
         },
@@ -199,7 +194,7 @@ export default {
         height: 100vh;
         max-width: 390px;
         max-height: 390px;
-        cursor: pointer;
+        cursor: zoom-in;
         @media (max-width: 550px) {
             max-width: calc(100vw - 20px);
             max-height: calc(100vw - 20px);

@@ -3,31 +3,23 @@
         <h2 class="top_sales-title">Топ продаж этого месяца</h2>
         <ul>
             <li class="card" v-for="item in $store.getters.topFurs(3)" :key="item.id">
-                <img :src="getSrc(item?.Images[0])" alt="fur">
+                <img :src="`upload/${item?.Images[0]}`" alt="fur">
                 <router-link :to="`/item/${item.id}/#header`" class="title"><strong>{{item.Name}}</strong></router-link>
                 <p class="size">{{item.Size.join(' / ')}}</p>
                 <div class="card_bottom">
                     <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
-                    <a class="cart_btn" ><img src="../assets/images/top_sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
+                    <a class="cart_btn" ><img src="@/assets/images/top_sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
                 </div>
                 <a class="cart_btn-big">В корзину</a>
                 <router-link :to="`/item/${item.id}/#header`" class="mobile_btn-big">Перейти к товару</router-link>
-                <router-link :to="`/item/${item.id}/#header`" class="mobile_btn"><img src="../assets/images/top_sales/ri_arrow-right-up-line.svg" alt="arrow up"></router-link>
+                <router-link :to="`/item/${item.id}/#header`" class="mobile_btn"><img src="@/assets/images/top_sales/ri_arrow-right-up-line.svg" alt="arrow up"></router-link>
             </li>
         </ul>
     </section>
 </template>
 
 <script>
-    export default {
-        methods: {
-            getSrc(name) {
-                const path = `/src/assets/images/catalog/${name}`;
-                const modules = import.meta.globEager("/src/assets/images/catalog/*");
-                return modules[path].default;
-            }
-        }
-    }
+    export default {}
 </script>
 
 <style lang="scss" scoped>
@@ -82,9 +74,24 @@
                 display: grid;
             }
         }
+        &:not(:first-child) {
+            > img {
+                max-height: 250px;
+                @media (max-width: 1060px) {
+                    max-height: 275.5px;
+                }
+            }
+            .title {
+                height: 42px;
+            }
+        }
         > img {
             width: 100%;
             object-fit: cover;
+            max-height: 445px;
+            @media (max-width: 1060px) {
+                max-height: 580px;
+            }
         }
         .title {
             width: 100%;
@@ -97,6 +104,9 @@
             color: #222222;
             float: left;
             margin-top: 4px;
+            height: 25px;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .size {
             font-family: 'Montserrat';

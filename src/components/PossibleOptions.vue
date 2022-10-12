@@ -3,7 +3,7 @@
         <div class="title">Возможно вам понравится</div>
         <ul class="cards_wrapper">
             <li class="card" v-for="fur in $store.getters.topFurs(6)">
-                <img :src="getSrc(fur.Images[0])" alt="fur">
+                <img :src="`upload/${fur.Images[0]}`" width="149" alt="fur">
                 <div class="favorite_btn">
                     <img src="@/assets/images/header/ri_heart-line.svg" alt="heart">
                 </div>
@@ -16,15 +16,7 @@
 </template>
 
 <script>
-export default {
-    methods: {
-        getSrc(name) {
-            const path = `/src/assets/images/catalog/${name}`;
-            const modules = import.meta.globEager("/src/assets/images/catalog/*");
-            return modules[path].default;
-        }
-    }
-}
+export default {}
 </script>
 
 <style lang="scss" scoped>
@@ -48,7 +40,7 @@ export default {
             position: relative;
             margin: 0 11px 30px 11px;
             > img {
-                width: 149px;
+                min-width: 149px;
                 height: 149px;
                 object-fit: cover;
             }

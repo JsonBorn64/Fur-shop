@@ -50,11 +50,11 @@
             <transition-group name="list">
                 <template v-for="(item, idx) in sortedAndSearchedFurs" :key="item.id">
                     <li class="card" v-if="idx < cardsToShow">
-                        <img :src="getSrc(item?.Images[0])" alt="fur" height="248">
+                        <img :src="`upload/${item?.Images[0]}`" alt="fur" height="248">
                         <router-link :to="`/item/${item.id}/#header`" class="title">
                             <strong>{{item.Name}}</strong>
                         </router-link>
-                        <p class="size">{{item.Size.join(' / ')}}</p>
+                        <p class="size">{{item?.Size.join(' / ')}}</p>
                         <div class="card_bottom">
                             <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
                             <a class="cart_btn" ><img src="@/assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
@@ -81,9 +81,7 @@
         },
         methods: {
             getSrc(name) {
-                const path = `/src/assets/images/catalog/${name}`;
-                const modules = import.meta.globEager("/src/assets/images/catalog/*");
-                return modules[path].default;
+                return new URL(`/src/assets/images/catalog/${name}`, import.meta.url).href
             }
         },
         computed: {

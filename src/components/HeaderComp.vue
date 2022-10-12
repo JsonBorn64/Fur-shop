@@ -9,20 +9,111 @@
         </ul>
       </nav>
     </div>
-    <img class="logo" src="../assets/images/header/Vector.svg" alt="logo" @click="$router.push('/')">
+    <img class="logo" src="@/assets/images/header/Vector.svg" alt="logo" @click="$router.push('/')">
     <div class="header_right">
-      <a href="#"><img src="../assets/images/header/ri_heart-line.svg" alt="heart"></a>
-      <a href="#"><img src="../assets/images/header/ri_shopping-cart-2-line.svg" alt="cart"></a>
-      <a href="#"><img src="../assets/images/header/ri_user-line.svg" alt="heart"></a>
+      <a><img src="@/assets/images/header/ri_heart-line.svg" alt="heart"></a>
+      <a><img src="@/assets/images/header/ri_shopping-cart-2-line.svg" alt="cart"></a>
+      <a @click="showAuthPopup = true"><img src="@/assets/images/header/ri_user-line.svg" alt="user"></a>
+      <router-link v-if="$store.state.uid === 'yd8ne2Ab5yYipJ1Uj0GE0hdAfX33'" to="/admin">
+        <img src="@/assets/images/header/ri_admin-line.svg" alt="user">
+      </router-link>
     </div>
   </header>
+  <div class="auth_popup" v-if="showAuthPopup">
+    <div class="overlay" @click="showAuthPopup = false"></div>
+    <form @submit.prevent="singIn">
+      <p>Sing in</p>
+      <input type="email" placeholder="email" v-model="authEmail" required>
+      <input type="password" placeholder="password" v-model="authPassword" required>
+      <button type="submit">Login</button>
+      <a @click="showRegistrationPopup = true">Registration</a>
+    </form>
+  </div>
+  <div class="registration_popup" v-if="showRegistrationPopup">
+    <div class="overlay" @click="showRegistrationPopup = false"></div>
+    <form @submit.prevent="registerNewUser">
+      <p>Registration</p>
+      <input type="email" placeholder="email" v-model="registerEmail" required>
+      <input type="password" placeholder="password" v-model="registerPassword" required>
+      <button type="submit">Register</button>
+    </form>
+  </div>
 </template>
 
 <script>
-export default {}
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '@/firebase/firebase.js'
+export default {
+  data() {
+    return {
+      showRegistrationPopup: false,
+      registerEmail: '',
+      registerPassword: '',
+      showAuthPopup: false,
+      authEmail: '',
+      authPassword: ''
+    }
+  },
+  methods: {
+    registerNewUser() {
+      createUserWithEmailAndPassword(auth, this.registerEmail, this.registerPassword)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          if (user) console.log('Success registered')
+          this.showRegistrationPopup = false
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage)
+        });
+    },
+    singIn() {
+      signInWithEmailAndPassword(auth, this.authEmail, this.authPassword)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          if (user) console.log('Success logined')
+          this.showAuthPopup = false
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorMessage)
+        });
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
+
+.registration_popup, .auth_popup {
+  position: fixed;
+  z-index: 20;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .overlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+  }
+  form {
+    width: 360px;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 340px;
+    align-items: center;
+    z-index: 22;
+    background-color: white;
+  }
+}
 .header {
   display: flex;
   justify-content: space-between;
@@ -51,8 +142,10 @@ export default {}
 .header_right {
   a {
     display: flex;
+    cursor: pointer;
     img {
       margin: 10px 0;
+      width: 25px;
     }
   }
 }

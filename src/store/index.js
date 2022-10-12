@@ -1,12 +1,15 @@
 import { createStore } from 'vuex'
-import { db } from '@/firebase/firebase.js'
+import { db, auth } from '@/firebase/firebase.js'
 import { collection, getDocs } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default createStore({
   state () {
     return {
       furs: [],
-      fursLoaded: false
+      fursLoaded: false,
+      isAuth: false,
+      uid: null
     }
   },
   getters: {
@@ -24,10 +27,20 @@ export default createStore({
     setFursLoaded(state, bool) {
       state.fursLoaded = bool
     },
+    setIsAuth(state, bool) {
+      state.isAuth = bool
+    },
+    setUid(state, uid) {
+      state.uid = uid
+    },
+    clearFurs(state) {
+      state.furs = []
+    }
   },
   actions: {
     async getData({state, commit}) {
       commit('setFursLoaded', false);
+      commit('clearFurs');
       const querySnapshot = await getDocs(collection(db, "Furs"));
       querySnapshot.forEach(doc => {
         commit('pushFur', {
@@ -37,5 +50,17 @@ export default createStore({
       })
       commit('setFursLoaded', true);
     },
+    getAuthState({state, commit}) {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          const uid = user.uid;
+          commit('setIsAuth', true);
+          commit('setUid', uid);
+        } else {
+          commit('setIsAuth', false);
+          commit('setUid', null);
+        }
+      });
+    }
   }
 })

@@ -23,6 +23,7 @@
         align-items: flex-start;
         width: 100%;
         margin-top: 120px;
+        margin-bottom: 120px;
         .item {
             display: flex;
             flex-direction: column;

@@ -35,7 +35,7 @@ export default {}
         display: flex;
         flex-wrap: wrap;
         justify-content: space-around;
-        margin-bottom: -60px;
+        margin-bottom: 40px;
         .card {
             position: relative;
             margin: 0 11px 30px 11px;
@@ -78,7 +78,7 @@ export default {}
             background-color: #F5ED2A;
         }
         @media (max-width: 540px) {
-            margin-bottom: -100px;
+            margin-bottom: 20px;
         }
     }
 </style>

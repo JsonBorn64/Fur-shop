@@ -13,7 +13,7 @@
     <div class="header_right">
       <a><img src="@/assets/images/header/ri_heart-line.svg" alt="heart"></a>
       <a><img src="@/assets/images/header/ri_shopping-cart-2-line.svg" alt="cart"></a>
-      <a @click="showAuthPopup = true"><img src="@/assets/images/header/ri_user-line.svg" alt="user"></a>
+      <a @click="userIconClick"><img src="@/assets/images/header/ri_user-line.svg" alt="user"></a>
       <router-link v-if="$store.state.uid === 'yd8ne2Ab5yYipJ1Uj0GE0hdAfX33'" to="/admin">
         <img src="@/assets/images/header/ri_admin-line.svg" alt="user">
       </router-link>
@@ -80,8 +80,15 @@ export default {
           const errorMessage = error.message;
           console.log(errorMessage)
         });
+    },
+    userIconClick() {
+      if (this.$store.state.isAuth) {
+        this.$router.push('/profile')
+      } else {
+        this.showAuthPopup = true
+      }
     }
-  },
+  }
 }
 </script>
 

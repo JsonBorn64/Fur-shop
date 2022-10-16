@@ -19,14 +19,9 @@
             Характеристики
             <div class="mobile_tab_content" :class="{'active': activeTab === 2}">
                 <div class="characteristics" v-if="activeTab === 2">
-            <div class="row">Модель................................................Шуба</div>
-            <div class="row">Фасон...................................................Кокон</div>
-            <div class="row">Мех........................................................Норка</div>
-            <div class="row">Ворот....................................................Стойка</div>
-            <div class="row">Длина&nbspизделия.................................110 см</div>
-            <div class="row">Узор.......................................................Поперечный</div>
-            <div class="row">Застёжка.............................................Крючки</div>
-            <div class="row">КиЗ.........................................................KZ-7656756-7HJ76OL</div>
+                    <div class="wrapper">
+                        {{furById?.Characteristics}}
+                    </div>
             <table class="table">
                 <tr>
                     <td>Rus</td>
@@ -77,14 +72,7 @@
         <div class="comments" v-if="activeTab === 1">Отзывы</div>
         <div class="characteristics" v-if="activeTab === 2">
             <div class="wrapper">
-                <div class="row">Модель................................................Шуба</div>
-                <div class="row">Фасон...................................................Кокон</div>
-                <div class="row">Мех........................................................Норка</div>
-                <div class="row">Ворот....................................................Стойка</div>
-                <div class="row">Длина&nbspизделия.................................110 см</div>
-                <div class="row">Узор.......................................................Поперечный</div>
-                <div class="row">Застёжка.............................................Крючки</div>
-                <div class="row">КиЗ.........................................................KZ-7656756-7HJ76OL</div>
+                {{furById?.Characteristics}}
             </div>
             <table class="table">
                 <tr>
@@ -259,9 +247,8 @@ export default {
         color: #222222;
         width: 100%;
         padding: 20px 0;
-        .row {
-            display: flex;
-            margin-bottom: 3px;
+        .wrapper {
+            max-width: 293px;
         }
         @media (min-width: 600px) {
             justify-content: space-evenly;

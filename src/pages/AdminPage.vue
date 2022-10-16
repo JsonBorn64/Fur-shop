@@ -1,6 +1,6 @@
 <template>
     <header-comp/>
-    <h1 class="title">Одменка</h1>
+    <h1 class="title">Одменка</h1> 
     <form @submit.prevent="addNewFur" class="add_form" >
         <h2>Форма добавления товара</h2>
         <input type="text" placeholder="Название товара" v-model="formData.Name" minlength="10" required>
@@ -12,6 +12,7 @@
             <input type="checkbox" value="xl" v-model="formData.Size"> <p>xl</p>
             <input type="checkbox" value="xxl" v-model="formData.Size"> <p>xxl</p>
         </div>
+        <textarea rows="9" v-model="formData.Characteristics"></textarea>
         <input type="number" placeholder="Цена" v-model="formData.Price" required>
         <input type="number" placeholder="Зачёркнутая цена" v-model="formData.OldPrice">
         <input type="number" placeholder="Количество на складе" v-model="formData.InStock">
@@ -36,7 +37,7 @@
                     <router-link :to="`/item/${item.id}/#header`" style="font-weight: 600; margin-bottom: 8px; color: black;">
                         {{item.Name}}
                     </router-link>
-                    <p>Дата создания: {{item?.Created}}</p>
+                    <p>Дата создания: {{new Date(item?.Created?.seconds*1000).toLocaleString()}}</p>
                     <p>Цена: {{item.Price}}</p>
                     <p>Количество покупок: {{item.Orders}}</p>
                     <p>Наличие на складе: {{item.InStock}}</p>
@@ -52,7 +53,7 @@
 <script>
 import HeaderComp from '@/components/HeaderComp.vue'
 import FooterComp from '@/components/FooterComp.vue'
-import { collection, addDoc, doc, deleteDoc  } from "firebase/firestore";
+import { collection, addDoc, doc, deleteDoc, serverTimestamp } from "firebase/firestore";
 import { db } from '@/firebase/firebase.js'
 export default {
   components: { HeaderComp, FooterComp },
@@ -66,7 +67,8 @@ export default {
             Price: null,
             InStock: null,
             Images: [],
-            Created: this.utcStamp()
+            Created: serverTimestamp(),
+            Characteristics: 'Модель................................................Шуба Фасон...................................................Кокон Мех........................................................Норка Ворот....................................................Стойка   Длина изделия.................................110 см Узор.......................................................Поперечный Застёжка.............................................Крючки КиЗ.........................................................KZ-7656756-7HJ76OL',
         }
     }
   },
@@ -81,9 +83,6 @@ export default {
             names.push(item.name)
         }
         this.formData.Images = names
-    },
-    utcStamp() {
-        return new Date().toUTCString()
     },
     deleteGood(id) {
         deleteDoc(doc(db, "Furs", id))
@@ -104,6 +103,10 @@ export default {
         display: flex;
         flex-direction: column;
         align-self: flex-start;
+        textarea {
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
         h2 {
             margin-bottom: 40px;
         }
@@ -132,6 +135,7 @@ export default {
         width: 100%;
         padding: 60px 80px;
         border: 1px solid black;
+        margin-bottom: 100px;
     }
     .list {
         margin-top: 40px;

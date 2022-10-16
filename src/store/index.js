@@ -9,7 +9,8 @@ export default createStore({
       furs: [],
       fursLoaded: false,
       isAuth: false,
-      uid: null
+      uid: null,
+      userName: null
     }
   },
   getters: {
@@ -24,6 +25,9 @@ export default createStore({
     pushFur(state, fur) {
       state.furs.push(fur)
     },
+    clearFurs(state) {
+      state.furs = []
+    },
     setFursLoaded(state, bool) {
       state.fursLoaded = bool
     },
@@ -33,9 +37,9 @@ export default createStore({
     setUid(state, uid) {
       state.uid = uid
     },
-    clearFurs(state) {
-      state.furs = []
-    }
+    setUserName(state, name) {
+      state.userName = name
+    },
   },
   actions: {
     async getData({state, commit}) {
@@ -54,11 +58,14 @@ export default createStore({
       onAuthStateChanged(auth, (user) => {
         if (user) {
           const uid = user.uid;
+          const name = user.displayName
           commit('setIsAuth', true);
           commit('setUid', uid);
+          commit('setUserName', name);
         } else {
           commit('setIsAuth', false);
           commit('setUid', null);
+          commit('setUserName', null);
         }
       });
     }

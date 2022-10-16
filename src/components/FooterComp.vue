@@ -56,7 +56,7 @@ export default {
 
 <style lang="scss" scoped>
     .footer {
-        margin-top: 120px;
+        margin-top: auto;
         height: 284px;
         width: 100%;
         max-width: 870px;

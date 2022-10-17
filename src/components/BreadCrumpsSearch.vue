@@ -3,7 +3,6 @@
         <div class="bread_crumps">
             <span>Каталог</span>
             <span>Шубы</span>
-            <span>Искусственный мех</span>
         </div>
         <div class="search">
             <div class="input_btn">

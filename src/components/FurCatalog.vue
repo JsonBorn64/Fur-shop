@@ -2,10 +2,10 @@
     <section class="catalog" id="catalog">
         <div class="catalog_title">
             <div class="yellow_line"></div>
-            <h2>Каталог</h2>
+            <h2 @click="$router.push('/catalog#header')">Каталог</h2>
             <div class="yellow_line"></div>
         </div>
-        <div class="catalog_filter">
+        <div class="catalog_sort">
             <div class="price">
                 <div>Цена</div>
                 <img
@@ -140,7 +140,7 @@
         }
     }
 
-    .catalog_filter {
+    .catalog_sort {
         display: flex;
         justify-content: space-between;
         margin-top: 33px;
@@ -334,7 +334,7 @@
     }
 
     @media (max-width: 660px) {
-        .catalog_filter {
+        .catalog_sort {
             flex-wrap: wrap;
             .search {
                 order: 1;

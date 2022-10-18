@@ -1,6 +1,6 @@
 <template>
     <header-comp/>
-    <bread-crumps-search/>
+    <bread-crumps-search :searchQuery="searchQuery" v-model="searchQuery"/>
     <section class="catalog">
         <header class="catalog_header">
             <div class="catalog_sort">
@@ -45,42 +45,42 @@
         </header>
         <div class="cards_and_filter">
             <div class="filter">
-                <div class="filter_type" :style="{'max-height': !filterTypeOpen ? '16px' : '100px'}">
+                <div class="filter_type" :style="{'max-height': !filterTypeOpen ? '17px' : '100px'}">
                     <div class="title" @click="filterTypeOpen = !filterTypeOpen" :class="{'filter_close': !filterTypeOpen}">Тип</div>
                     <div class="options">
-                        <p>Шубы</p>
-                        <p>Куртки</p>
-                        <p>Дублёнки</p>
+                        <p @click="type = type ? '' : 'Шуба'" :style="{'text-decoration': type == 'Шуба' ? 'underline' : 'none'}">Шубы</p>
+                        <p @click="type = type ? '' : 'Куртка'" :style="{'text-decoration': type == 'Куртка' ? 'underline' : 'none'}">Куртки</p>
+                        <p @click="type = type ? '' : 'Дублёнка'" :style="{'text-decoration': type == 'Дублёнка' ? 'underline' : 'none'}">Дублёнки</p>
                     </div>
                 </div>
                 <div class="filter_line"></div>
-                <div class="filter_price" :style="{'max-height': !filterPriceOpen ? '16px' : '80.4px'}">
+                <div class="filter_price" :style="{'max-height': !filterPriceOpen ? '17px' : '80.4px'}">
                     <div class="title" @click="filterPriceOpen = !filterPriceOpen" :class="{'filter_close': !filterPriceOpen}"
                     >Цена</div>
                     <div class="options">
                         <div>
-                            От <input type="number">
+                            От <input type="number" v-model="priceFrom">
                         </div>
                         <div>
-                            До <input type="number">
+                            До <input type="number" v-model="priceTo">
                         </div>
                     </div>
                 </div>
                 <div class="filter_line"></div>
-                <div class="filter_size" :style="{'max-height': !filterSizeOpen ? '16px' : '120px'}">
+                <div class="filter_size" :style="{'max-height': !filterSizeOpen ? '17px' : '126px'}">
                     <div class="title" @click="filterSizeOpen = !filterSizeOpen" :class="{'filter_close': !filterSizeOpen}">Размер</div>
                     <div class="options">
-                        <div>s</div>
-                        <div>m</div>
-                        <div>l</div>
-                        <div>xl</div>
-                        <div>xxl</div>
+                        <div @click="size = size ? '' : 's'" :style="{'box-shadow': size == 's' ? '0 0 0 2px' : 'none'}">s</div>
+                        <div @click="size = size ? '' : 'm'" :style="{'box-shadow': size == 'm' ? '0 0 0 2px' : 'none'}">m</div>
+                        <div @click="size = size ? '' : 'l'" :style="{'box-shadow': size == 'l' ? '0 0 0 2px' : 'none'}">l</div>
+                        <div @click="size = size ? '' : 'xl'" :style="{'box-shadow': size == 'xl' ? '0 0 0 2px' : 'none'}">xl</div>
+                        <div @click="size = size ? '' : 'xxl'" :style="{'box-shadow': size == 'xxl' ? '0 0 0 2px' : 'none'}">xxl</div>
                     </div>
                 </div>
             </div>
             <ul class="catalog_cards">
                 <transition-group name="list">
-                    <template v-for="(item, idx) in sortedAndSearchedFurs" :key="item.id">
+                    <template v-for="(item, idx) in sortedSearchedAndFilterd" :key="item.id">
                         <li class="card">
                             <img :src="`upload/${item?.Images[0]}`" alt="fur" height="248">
                             <router-link :to="`/item/${item.id}/#header`" class="title">
@@ -93,7 +93,7 @@
                             </div>
                         </li>
                     </template>
-                    <p v-if="sortedAndSearchedFurs.length < 1 && this.$store.state.fursLoaded" class="extra_info">Ничего не найдено</p>
+                    <p v-if="sortedSearchedAndFilterd.length < 1 && this.$store.state.fursLoaded" class="extra_info">Ничего не найдено</p>
                     <p v-if="!this.$store.state.fursLoaded" class="extra_info">Загрузка...</p>
                 </transition-group>
             </ul>
@@ -122,6 +122,10 @@ export default {
             furs: this.$store.state.furs,
             sortBy: 'OrdersDesc',
             searchQuery: "",
+            type: '',
+            priceFrom: 0,
+            priceTo: 0,
+            size: '',
             filterTypeOpen: true,
             filterPriceOpen: true,
             filterSizeOpen: true
@@ -149,6 +153,15 @@ export default {
                 return item.Name.toLowerCase().includes(this.searchQuery.toLowerCase())
             });
         },
+        sortedSearchedAndFilterd() {
+            return this.sortedAndSearchedFurs.filter(item => {
+                const filterType = this.type ? (item.Type == this.type) : true
+                const filterPriceFrom = this.priceFrom ? (item.Price >= this.priceFrom) : true
+                const filterPriceTo = this.priceTo > this.priceFrom ? (item.Price <= this.priceTo) : true
+                const filterSize = this.size ? item.Size.includes(this.size) : true
+                return filterType && filterPriceTo && filterPriceFrom && filterSize
+            })
+        }
     },
 }
 </script>
@@ -162,13 +175,20 @@ export default {
     }
     .catalog {
         width: 100%;
+        @media (max-width: 740px) {
+            margin-top: 60px;
+        }
     }
     .catalog_sort {
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
         margin-top: 12px;
         width: 100%;
         padding: 0 0px;
+        @media (max-width: 819px) {
+            justify-content: space-around;
+        }
         .price_and_popular {
             display: flex;
             width: 100%;
@@ -176,6 +196,7 @@ export default {
             justify-content: space-between;
             border-bottom: 1px solid rgba(34, 34, 34, 0.33);
             padding-bottom: 30px;
+            margin-right: 20px
         }
         .price, .popular {
             display: flex;
@@ -250,7 +271,7 @@ export default {
                     margin-top: 10px;
                 }
                 input {
-                    width: 57px;
+                    width: 80px;
                     height: 21px;
                     border: 1px solid #222222;
                     margin-left: 10px;
@@ -269,9 +290,8 @@ export default {
                 text-transform: uppercase;
                 > div {
                     border: 1px solid #666666;
-                    margin-right: 28px;
+                    margin: 15px 28px 2px 2px;
                     padding: 0 7px;
-                    margin-top: 15px;
                 }
             }
         }
@@ -291,13 +311,14 @@ export default {
         > .title {
             position: relative;
             max-width: fit-content;
+            padding-right: 40px;
             &::before, &::after {
                 content: '';
                 position: absolute;
                 top: 7px;
                 height: 2px;
                 width: 16px;
-                right: -24px;
+                right: 14px;
                 background-color: #222;
                 transition: 500ms;
             }
@@ -311,14 +332,13 @@ export default {
         > .filter_close {
             &::before, &::after {
                 width: 10px;
-                right: -24px;
             }
             &::before {
-                right: -18px;
+                right: 20px;
                 transform: translateY(50%) rotate(36deg);
             }
             &::after {
-                right: -26px;
+                right: 13px;
                 transform: translateY(50%) rotate(-36deg);
             }
         }
@@ -332,6 +352,7 @@ export default {
         justify-content: center;
         overflow: hidden;
         transition: all 0.3s ease;
+        width: 100%;
         max-width: 830px;
     }
     .card {
@@ -402,6 +423,36 @@ export default {
             justify-content: center;
             align-items: center;
             cursor: pointer;
+        }
+    }
+    @media (max-width: 760px) {
+        .catalog_cards {
+            gap: 20px;
+        }
+        .card {
+            width: 156px;
+            height: 284px;
+            > img {
+                max-height: 154px;
+            }
+            .title {
+                font-size: 13px;
+                margin-top: 14px;
+            }
+            .size {
+                display: none;
+            }
+            .card_bottom {
+                font-size: 13px;
+                padding: 6px 10px 10px;
+            }
+            .cart_btn {
+                width: 35px;
+                height: 35px;
+                > img {
+                    width: 60%;
+                }
+            }
         }
     }
     .extra_info {

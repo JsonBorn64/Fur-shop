@@ -69,7 +69,23 @@
         </div>
     </div>
     <div class="tab_content">
-        <div class="comments" v-if="activeTab === 1">Отзывы</div>
+        <div class="comments" v-if="activeTab === 1">
+            <div class="comments_wrapper">
+                <div class="comment">
+                    <div class="comment_name">Patrick Jane</div>
+                    <div class="comment_text">I am a shop and have bought many pieces. The seller's service is very good, the delivery speed is fast, and the quality reassures me that I will buy more</div>
+                </div>
+                <div class="comment">
+                    <div class="comment_name">Patrick Jane</div>
+                    <div class="comment_text">I am a shop and have bought many pieces. The seller's service is very good, the delivery speed is fast, and the quality reassures me that I will buy more</div>
+                </div>
+            </div>
+            <form @submit.prevent="addNewComment">
+                <input type="text" v-model="formData.name" placeholder="Введите ваше имя" minlength="2" required>
+                <textarea rows="4" v-model="formData.text" placeholder="Введите отзыв" minlength="10" required></textarea>
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
         <div class="characteristics" v-if="activeTab === 2">
             <div class="wrapper">
                 {{furById?.Characteristics}}
@@ -113,11 +129,25 @@
 </template>
 
 <script>
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { db } from '@/firebase/firebase.js'
 export default {
     data() {
         return {
-            activeTab: 2
+            activeTab: 2,
+            formData: {
+                name: this.$store.state.userName || '',
+                text: '',
+                created: serverTimestamp()
+            }
         }
+    },
+    methods: {
+        addNewComment() {
+            setDoc(doc(db, "Comments", this.$route.params.id), this.formData);
+            this.formData.name = ''
+            this.formData.text = ''
+        },
     },
     computed: {
         furById() {
@@ -231,11 +261,44 @@ export default {
     }
     .comments {
         animation: fadeIn 300ms;
-        font-size: 30px;
         font-family: 'Montserrat';
-        height: 240px;
-        display: grid;
-        place-content: center;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        > .comments_wrapper {
+            display: flex;
+            flex-direction: column;
+            margin: 20px 0;
+            .comment {
+                padding: 20px;
+                border: 1px solid #666;
+                margin-bottom: 20px;
+            }
+            .comment_name {
+                margin-bottom: 10px;
+                border-bottom: 1px solid #666;
+            }
+        }
+        > form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            > input {
+                margin-bottom: 10px;
+                margin-top: 20px;
+                padding: 4px 10px;
+            }
+            > textarea {
+                padding: 4px 10px;
+            }
+            > button {
+                margin-top: 10px;
+                padding: 4px 0;
+                min-width: 200px;
+                margin-left: auto;
+            }
+        }
     }
     .characteristics {
         display: flex;

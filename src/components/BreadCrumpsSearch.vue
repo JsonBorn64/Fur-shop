@@ -1,13 +1,15 @@
 <template>
     <div class="bread_crumps_and_search">
         <div class="bread_crumps">
-            <span>Каталог</span>
-            <span>Шубы</span>
+            <span @click="$router.push('/#header')">Главная страница</span>
+            <span v-if="$route.name == 'Страница товара'" @click="$router.push('/catalog#header')">Каталог</span>
+            <span v-if="$route.name == 'Страница товара'">{{getType}}</span>
+            <span v-if="$route.name != 'Страница товара'">{{$route.name}}</span>
         </div>
         <div class="search">
             <div class="input_btn">
-                <input placeholder="Введите запрос" ref="searchInput">
-                <div class="btn" @click="searchQuery = ''"><img src="@/assets/images/catalog/lupa.svg" alt="search"></div>
+                <input placeholder="Введите запрос" :value="modelValue" @input="updateInput" ref="searchInput">
+                <div class="btn"><img src="@/assets/images/catalog/lupa.svg" alt="search"></div>
             </div>
         </div>
     </div>
@@ -15,7 +17,29 @@
 
 <script>
 export default {
-    
+    props: {
+        modelValue: {
+            type: [String, Number]
+        },
+    },
+    methods: {
+        updateInput(e) {
+            this.$emit('update:modelValue', e.target.value);
+        }
+    },
+    computed: {
+        furById() {
+            return this.$store.getters.specialFurById(this.$route.params.id)
+        },
+        getType() {
+            const cases = {
+                Шуба: "Шубы",
+                Куртка: "Куртки",
+                Дублёнка: "Дублёнки"
+            }
+            return cases[this.furById?.Type]
+        }
+    }
 }
 </script>
 
@@ -35,9 +59,14 @@ export default {
             font-weight: 700;
             font-size: 15px;
             letter-spacing: -0.02em;
-            text-transform: capitalize;
             color: #666666;
             margin-right: 20px;
+            > span {
+                cursor: pointer;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
             > span:not(:last-child) {
                 margin-right: 21px;
                 position: relative;

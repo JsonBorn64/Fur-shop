@@ -1,9 +1,10 @@
 <template>
     <header-comp/>
-    <h1 class="title">Одменка</h1> 
+    <bread-crumps-search/>
     <form @submit.prevent="addNewFur" class="add_form" >
         <h2>Форма добавления товара</h2>
         <input type="text" placeholder="Название товара" v-model="formData.Name" minlength="10" required>
+        <input type="text" placeholder="Тип" v-model="formData.Type" minlength="3" required>
         <input type="text" placeholder="Описание" v-model="formData.About" minlength="50" maxlength="300" required>
         <div class="sizes_wrapper">
             <input type="checkbox" value="s" v-model="formData.Size"> <p>s</p>
@@ -52,15 +53,17 @@
 
 <script>
 import HeaderComp from '@/components/HeaderComp.vue'
+import BreadCrumpsSearch from '@/components/BreadCrumpsSearch.vue';
 import FooterComp from '@/components/FooterComp.vue'
 import { collection, addDoc, doc, deleteDoc, serverTimestamp } from "firebase/firestore";
 import { db } from '@/firebase/firebase.js'
 export default {
-  components: { HeaderComp, FooterComp },
+  components: { HeaderComp, FooterComp, BreadCrumpsSearch },
   data() {
     return {
         formData: {
             Name: '',
+            Type: '',
             About: '',
             Size: [],
             OldPrice: null,
@@ -103,6 +106,7 @@ export default {
         display: flex;
         flex-direction: column;
         align-self: flex-start;
+        margin-top: 50px;
         textarea {
             font-size: 13px;
             margin-bottom: 15px;

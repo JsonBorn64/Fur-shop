@@ -6,11 +6,11 @@ import CatalogPage from '@/pages/CatalogPage.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
-    { path: '/', component: Main },
-    { path: '/item/:id', component: ItemPage },
-    { path: '/admin', component: AdminPage },
-    { path: '/profile', component: ProfilePage },
-    { path: '/catalog', component: CatalogPage },
+    { path: '/', component: Main, name: 'Главная страница' },
+    { path: '/item/:id', component: ItemPage, name: 'Страница товара' },
+    { path: '/admin', component: AdminPage, name: 'Админка' },
+    { path: '/profile', component: ProfilePage, name: 'Мой профиль' },
+    { path: '/catalog', component: CatalogPage, name: 'Каталог' },
 ]
 
 const router = createRouter({

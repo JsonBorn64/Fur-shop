@@ -8,7 +8,20 @@
         >
             Отзывы
             <div class="mobile_tab_content" :class="{'active': activeTab === 1}">
-                <div class="comments" v-if="activeTab === 1">Отзывы</div>
+                <div class="comments" v-if="activeTab === 1">
+                    <div class="comments_wrapper">
+                        <p v-if="comments.length < 1">Отзывов нет</p>
+                        <div class="comment" v-for="comment in comments" key="comment.created">
+                            <div class="comment_name">{{comment.name}}</div>
+                            <div class="comment_text">{{comment.text}}</div>
+                        </div>
+                    </div>
+                    <form @submit.prevent="addNewComment">
+                        <input type="text" v-model="formData.name" placeholder="Введите ваше имя" minlength="2" required>
+                        <textarea rows="4" v-model="formData.text" placeholder="Введите отзыв" minlength="10" required></textarea>
+                        <button type="submit">Отправить</button>
+                    </form>
+                </div>
             </div>
         </div>
         <div
@@ -71,13 +84,10 @@
     <div class="tab_content">
         <div class="comments" v-if="activeTab === 1">
             <div class="comments_wrapper">
-                <div class="comment">
-                    <div class="comment_name">Patrick Jane</div>
-                    <div class="comment_text">I am a shop and have bought many pieces. The seller's service is very good, the delivery speed is fast, and the quality reassures me that I will buy more</div>
-                </div>
-                <div class="comment">
-                    <div class="comment_name">Patrick Jane</div>
-                    <div class="comment_text">I am a shop and have bought many pieces. The seller's service is very good, the delivery speed is fast, and the quality reassures me that I will buy more</div>
+                <p v-if="comments.length < 1">Отзывов нет</p>
+                <div class="comment" v-for="comment in sortedComments" key="comment.created">
+                    <div class="comment_name">{{comment.name}}</div>
+                    <div class="comment_text">{{comment.text}}</div>
                 </div>
             </div>
             <form @submit.prevent="addNewComment">
@@ -129,7 +139,7 @@
 </template>
 
 <script>
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { getDocs, addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from '@/firebase/firebase.js'
 export default {
     data() {
@@ -139,20 +149,41 @@ export default {
                 name: this.$store.state.userName || '',
                 text: '',
                 created: serverTimestamp()
-            }
+            },
+            comments: [],
         }
+    },
+    watch: { 
+        '$route.params.id': {
+            handler: function(id) {
+                this.getComments()
+            },
+            deep: true,
+            immediate: true
+        },
     },
     methods: {
         addNewComment() {
-            setDoc(doc(db, "Comments", this.$route.params.id), this.formData);
+            addDoc(collection(db, "Comments", this.$route.params.id, 'Special comments'), this.formData);
             this.formData.name = ''
             this.formData.text = ''
+            this.getComments()
         },
+        async getComments() {
+            this.comments = [];
+            const querySnapshot = await getDocs(collection(db, "Comments", this.$route.params.id, 'Special comments'));
+            querySnapshot.forEach((doc) => {
+                this.comments.push(doc.data())
+            });
+        }
     },
     computed: {
         furById() {
             return this.$store.getters.specialFurById(this.$route.params.id)
         },
+        sortedComments() {
+            return this.comments.sort((a, b) => a.created?.seconds - b.created?.seconds)
+        }
     },
 }
 </script>
@@ -250,7 +281,8 @@ export default {
         width: calc(100vw - 20px);
         height: 0;
         font-weight: 400;
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: scroll;
         transition: 500ms;
         @media (min-width: 600px) {
             display: none;
@@ -278,6 +310,11 @@ export default {
             .comment_name {
                 margin-bottom: 10px;
                 border-bottom: 1px solid #666;
+                padding-bottom: 10px;
+            }
+            > p {
+                text-align: center;
+                font-size: 26px;
             }
         }
         > form {

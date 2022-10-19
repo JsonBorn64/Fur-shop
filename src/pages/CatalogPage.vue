@@ -102,6 +102,7 @@
     <div class="line"></div>
     <possible-options/>
     <div style="margin: -70px 0"></div>
+    <div class="sep"></div>
     <decore-section/>
     <subscribe-form/>
     <div style="margin: 60px 0"></div>
@@ -186,9 +187,6 @@ export default {
         margin-top: 12px;
         width: 100%;
         padding: 0 0px;
-        @media (max-width: 819px) {
-            justify-content: space-around;
-        }
         .price_and_popular {
             display: flex;
             width: 100%;
@@ -230,6 +228,9 @@ export default {
                 color: rgba(34, 34, 34, 0.6);
                 margin-top: 4px;
                 margin-bottom: -20px;
+                @media (max-width: 820px) {
+                    display: none;
+                }
                 span {
                     text-decoration: underline;
                     margin-left: 7px;
@@ -473,5 +474,10 @@ export default {
 
     .list-leave-active {
         position: absolute;
+    }
+    .sep {
+        @media (max-width: 550px) {
+            margin: 40px 0;
+        }
     }
 </style>

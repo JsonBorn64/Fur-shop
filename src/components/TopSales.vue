@@ -80,6 +80,9 @@
                 @media (max-width: 1060px) {
                     max-height: 275.5px;
                 }
+                @media (max-width: 620px) {
+                    max-height: calc(50vw - 30px);
+                }
             }
             .title {
                 height: 42px;

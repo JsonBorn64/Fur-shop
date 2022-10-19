@@ -29,12 +29,12 @@
             <div class="sep_line"></div>
             <form class="pay_data_form" @submit.prevent="saveCard">
                 <label>Номер карты</label> <br>
-                <input type="number" v-model="card.number" minlength="16" maxlength="16" placeholder="Fill the blank" required>
+                <input type="number" v-model="card.number" minlength="1000000000000000" max="9999999999999999" placeholder="Fill the blank" required>
                 <div>
                     <label>Срок действия</label>
                     <input type="text" v-model="card.validity" minlength="5" maxlength="5" placeholder="MM/HH" required>
                     <label>Security code</label>
-                    <input type="number" v-model="card.securityCode" minlength="3" max="999" placeholder="Fill the blank" required>
+                    <input type="number" v-model="card.securityCode" min="000" max="999" placeholder="Fill the blank" required>
                 </div>
                 <div>
                     <label>Имя</label>

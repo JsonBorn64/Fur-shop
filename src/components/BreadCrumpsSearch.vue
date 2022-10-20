@@ -3,14 +3,14 @@
         <div class="bread_crumps">
             <span @click="$router.push('/#header')">Главная страница</span>
             <span v-if="$route.name == 'Страница товара'" @click="$router.push('/catalog#header')">Каталог</span>
-            <span v-if="$route.name == 'Страница товара'">{{getType}}</span>
+            <span v-if="$route.name == 'Страница товара'" @click="goCatalogWithSearchQuery(getType)">{{getType}}</span>
             <span v-if="$route.name != 'Страница товара'">{{$route.name}}</span>
         </div>
         <div class="search">
-            <div class="input_btn">
-                <input placeholder="Введите запрос" :value="modelValue" @input="updateInput" ref="searchInput">
-                <div class="btn"><img src="@/assets/images/catalog/lupa.svg" alt="search"></div>
-            </div>
+            <form class="input_btn" @submit.prevent="goCatalogWithSearchQuery($event.target.elements[0].value)" ref="searchForm">
+                <input placeholder="Введите запрос" :value="modelValue" @input="updateInput" ref="searchInput" required>
+                <button class="btn"><img src="@/assets/images/catalog/lupa.svg" alt="search"></button>
+            </form>
         </div>
     </div>
 </template>
@@ -25,7 +25,14 @@ export default {
     methods: {
         updateInput(e) {
             this.$emit('update:modelValue', e.target.value);
-        }
+        },
+        goCatalogWithSearchQuery(query) {
+            if (query === 'Шубы') query = 'Шуба'
+            if (query === 'Куртки') query = 'Куртка'
+            if (query === 'Дублёнки') query = 'Дублёнка'
+            sessionStorage.setItem('searchQuery', query);
+            this.$router.push('/catalog#header')
+        },
     },
     computed: {
         furById() {
@@ -105,7 +112,7 @@ export default {
                     font-size: 12px;
                 }
             }
-            > div {
+            > button {
                 background: #F5ED2A;
                 display: grid;
                 place-content: center;
@@ -118,6 +125,7 @@ export default {
                 color: #222222;
                 border: 1px solid black;
                 margin-left: -1px;
+                cursor: pointer;
                 @media (max-width: 500px) {
                     min-width: 41px;
                 }

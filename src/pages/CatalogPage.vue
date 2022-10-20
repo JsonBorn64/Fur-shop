@@ -135,6 +135,12 @@ export default {
     methods: {
         getSrc(name) {
             return new URL(`/src/assets/images/catalog/${name}`, import.meta.url).href
+        },
+        getSearchQuery() {
+            if (sessionStorage.getItem('searchQuery')) {
+                this.searchQuery = sessionStorage.getItem('searchQuery')
+                sessionStorage.removeItem('searchQuery')                
+            }
         }
     },
     computed: {
@@ -151,7 +157,7 @@ export default {
         },
         sortedAndSearchedFurs() {
             return this.sortedFurs.filter(item => {
-                return item.Name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                return item.Name.toLowerCase().includes(this.searchQuery?.toLowerCase())
             });
         },
         sortedSearchedAndFilterd() {
@@ -164,6 +170,9 @@ export default {
             })
         }
     },
+    mounted() {
+        this.getSearchQuery()
+    }
 }
 </script>
 

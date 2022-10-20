@@ -132,6 +132,7 @@
             text-transform: uppercase;
             color: #222222;
             margin: 0 35px;
+            cursor: pointer;
         }
         .yellow_line {
             height: 10px;

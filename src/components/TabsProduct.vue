@@ -3,15 +3,14 @@
     <div class="names">
         <div
             class="tab_name"
-            @click="activeTab = activeTab === 1 ? -1 : 1"
+            @click.stop="activeTab = activeTab === 1 ? -1 : 1"
             :class="{'tab_name-active': activeTab === 1}"
-        >
-            Отзывы
+        >Отзывы</div>
             <div class="mobile_tab_content" :class="{'active': activeTab === 1}">
                 <div class="comments" v-if="activeTab === 1">
                     <div class="comments_wrapper">
                         <p v-if="comments.length < 1">Отзывов нет</p>
-                        <div class="comment" v-for="comment in comments" key="comment.created">
+                        <div class="comment" v-for="comment in sortedComments" key="comment.created">
                             <div class="comment_name">{{comment.name}}</div>
                             <div class="comment_text">{{comment.text}}</div>
                         </div>
@@ -23,13 +22,11 @@
                     </form>
                 </div>
             </div>
-        </div>
         <div
             class="tab_name"
             @click="activeTab = activeTab === 2 ? -2 : 2"
             :class="{'tab_name-active': activeTab === 2}"
-        >
-            Характеристики
+        >Характеристики</div>
             <div class="mobile_tab_content" :class="{'active': activeTab === 2}">
                 <div class="characteristics" v-if="activeTab === 2">
                     <div class="wrapper">
@@ -67,19 +64,16 @@
                     <td>106-110</td>
                 </tr>
             </table>
-        </div>
             </div>
         </div>
         <div
             class="tab_name"
             @click="activeTab = activeTab === 3 ? -3 : 3"
             :class="{'tab_name-active': activeTab === 3}"
-        >
-            Производство
+        >Производство</div>
             <div class="mobile_tab_content" :class="{'active': activeTab === 3}">
                 <div class="made_by" v-if="activeTab === 3">Производство</div>
             </div>
-        </div>
     </div>
     <div class="tab_content">
         <div class="comments" v-if="activeTab === 1">
@@ -275,9 +269,6 @@ export default {
         }
     }
     .mobile_tab_content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
         width: calc(100vw - 20px);
         height: 0;
         font-weight: 400;
@@ -290,6 +281,7 @@ export default {
     }
     .active {
         height: 400px;
+        border-bottom: 1px solid #222;
     }
     .comments {
         animation: fadeIn 300ms;
@@ -311,6 +303,7 @@ export default {
                 margin-bottom: 10px;
                 border-bottom: 1px solid #666;
                 padding-bottom: 10px;
+                font-weight: 600;
             }
             > p {
                 text-align: center;
@@ -321,6 +314,7 @@ export default {
             display: flex;
             flex-direction: column;
             width: 100%;
+            margin-bottom: 20px;
             > input {
                 margin-bottom: 10px;
                 margin-top: 20px;
@@ -346,7 +340,8 @@ export default {
         line-height: 146.4%;
         color: #222222;
         width: 100%;
-        padding: 20px 0;
+        padding: 26px 0 20px;
+        margin: auto 0;
         .wrapper {
             max-width: 293px;
         }
@@ -361,9 +356,13 @@ export default {
         animation: fadeIn 300ms;
         font-size: 30px;
         font-family: 'Montserrat';
-        height: 240px;
         display: grid;
         place-content: center;
+        margin: auto;
+        height: 220px;
+        @media (max-width: 600px) {
+            height: 400px;
+        }
     }
 
     .table {

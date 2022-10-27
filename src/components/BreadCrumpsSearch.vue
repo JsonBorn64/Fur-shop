@@ -11,6 +11,12 @@
                 <input placeholder="Введите запрос" :value="modelValue" @input="updateInput" ref="searchInput" required>
                 <button class="btn"><img src="@/assets/images/catalog/lupa.svg" alt="search"></button>
             </form>
+            <div class="keywords" v-if="$route.path == '/favorites'">
+                Ключ. слова:
+                <span @click="goCatalogWithSearchQuery('Шуба')">Шуба</span>
+                <span @click="goCatalogWithSearchQuery('Леопард')">Леопард</span>
+                <span @click="goCatalogWithSearchQuery('Дублёнка')">Дублёнка</span>
+            </div>
         </div>
     </div>
 </template>
@@ -137,5 +143,21 @@ export default {
         @media (max-width: 741px) {
             max-width: 3900px;
         }
+        .keywords {
+                font-family: 'Montserrat';
+                font-weight: 700;
+                font-size: 13px;
+                line-height: 140.9%;
+                text-align: justify;
+                letter-spacing: -0.02em;
+                color: rgba(34, 34, 34, 0.6);
+                margin-top: 4px;
+                margin-bottom: -20px;
+                span {
+                    text-decoration: underline;
+                    margin-left: 7px;
+                    cursor: pointer;
+                }
+            }
     }
 </style>

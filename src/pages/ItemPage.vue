@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import HeaderComp from '../components/HeaderComp.vue';
-import FooterComp from '../components/FooterComp.vue';
-import BreadCrumpsSearch from '../components/BreadCrumpsSearch.vue';
-import CardProduct from '../components/CardProduct.vue';
-import TabsProduct from '../components/TabsProduct.vue';
-import PossibleOptions from '../components/PossibleOptions.vue';
+import HeaderComp from '@/components/HeaderComp.vue';
+import FooterComp from '@/components/FooterComp.vue';
+import BreadCrumpsSearch from '@/components/BreadCrumpsSearch.vue';
+import CardProduct from '@/components/CardProduct.vue';
+import TabsProduct from '@/components/TabsProduct.vue';
+import PossibleOptions from '@/components/PossibleOptions.vue';
 export default {
     components: { HeaderComp, FooterComp, BreadCrumpsSearch, CardProduct, TabsProduct, PossibleOptions }
 }

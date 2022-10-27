@@ -195,7 +195,6 @@ export default {
         position: absolute;
         right: -24px;
     }
-
     .personal_data {
         width: 100%;
         max-width: 545px;

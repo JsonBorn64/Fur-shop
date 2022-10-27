@@ -4,7 +4,12 @@
     <form @submit.prevent="addNewFur" class="add_form" >
         <h2>Форма добавления товара</h2>
         <input type="text" placeholder="Название товара" v-model="formData.Name" minlength="10" required>
-        <input type="text" placeholder="Тип" v-model="formData.Type" minlength="3" required>
+        <!-- <input type="text" placeholder="Тип" v-model="formData.Type" minlength="3" required> -->
+        <select v-model="formData.Type" required>
+            <option value="Шубы">Шубы</option>
+            <option value="Куртки">Куртки</option>
+            <option value="Дублёнки">Дублёнки</option>
+        </select>
         <input type="text" placeholder="Описание" v-model="formData.About" minlength="50" maxlength="300" required>
         <div class="sizes_wrapper">
             <input type="checkbox" value="s" v-model="formData.Size"> <p>s</p>
@@ -26,13 +31,13 @@
     <section class="goods">
         <div class="sort_wrap">
             <p style="margin-bottom: 10px">Сортировать по:</p>
-            <input type="radio"> Дате создания
-            <input type="radio"> Количеству продаж
-            <input type="radio"> Количеству на складе
-            <input type="radio"> Цене
+            <input type="radio" name="sort" value="Data" v-model="sortBy"> Дате создания
+            <input type="radio" name="sort" value="Orders" v-model="sortBy"> Количеству продаж
+            <input type="radio" name="sort" value="InStock" v-model="sortBy"> Количеству на складе
+            <input type="radio" name="sort" value="Price" v-model="sortBy"> Цене
         </div>
         <ul class="list">
-            <li class="good" v-for="item in $store.state.furs">
+            <li class="good" v-for="item in sortedFurs">
                 <img :src="`upload/${item.Images[0]}`">
                 <div class="good_wrap">
                     <router-link :to="`/item/${item.id}/#header`" style="font-weight: 600; margin-bottom: 8px; color: black;">
@@ -40,7 +45,7 @@
                     </router-link>
                     <p>Дата создания: {{new Date(item?.Created?.seconds*1000).toLocaleString()}}</p>
                     <p>Цена: {{item.Price}}</p>
-                    <p>Количество покупок: {{item.Orders}}</p>
+                    <p>Количество покупок: {{item.Orders || 0}}</p>
                     <p>Наличие на складе: {{item.InStock}}</p>
                 </div>
                 <a href="https://console.firebase.google.com/project/fur-shop-696b1/firestore/data/~2FFurs" target="_blank" class="editBtn">Редактировать</a>
@@ -63,7 +68,7 @@ export default {
     return {
         formData: {
             Name: '',
-            Type: '',
+            Type: 'Шубы',
             About: '',
             Size: [],
             OldPrice: null,
@@ -72,7 +77,9 @@ export default {
             Images: [],
             Created: serverTimestamp(),
             Characteristics: 'Модель................................................Шуба Фасон...................................................Кокон Мех........................................................Норка Ворот....................................................Стойка   Длина изделия.................................110 см Узор.......................................................Поперечный Застёжка.............................................Крючки КиЗ.........................................................KZ-7656756-7HJ76OL',
-        }
+        },
+        furs: this.$store.state.furs,
+        sortBy: 'Data',
     }
   },
   methods: {
@@ -91,7 +98,20 @@ export default {
         deleteDoc(doc(db, "Furs", id))
         this.$store.dispatch('getData')
     }
-  }
+  },
+  computed: {
+    sortedFurs() {
+        if (this.sortBy === 'Data') {
+            return [...this.furs].sort((a, b) => a.Created.seconds - b.Created.seconds);
+        } else if (this.sortBy === 'Orders') {
+            return [...this.furs].sort((a, b) => b.Orders - a.Orders);
+        } else if (this.sortBy === 'InStock') {
+            return [...this.furs].sort((a, b) => a.InStock - b.InStock);
+        } else if (this.sortBy === 'Price') {
+            return [...this.furs].sort((a, b) => b.Price - a.Price);
+        }
+    }
+  },
 }
 </script>
 
@@ -107,6 +127,9 @@ export default {
         flex-direction: column;
         align-self: flex-start;
         margin-top: 50px;
+        select {
+            margin-bottom: 15px;
+        }
         textarea {
             font-size: 13px;
             margin-bottom: 15px;

@@ -1,12 +1,17 @@
 <template>
     <section class="about_us" id="about_us">
         <div class="about_us-wrapper">
-            <p>NEXTED - уже 12 лет радует своих покупателей роскошными шубами, элегантными жилетками, стильными куртками из натурального меха и лучшими условиями покупки. В NEXTED каждое изделие характеризуется удобным покроем, стильным и изящным видом, высокими эксплуатационными показателями, практичностью и долговечностью. В нашем салоне Вы найдёте меховые изделия разной категорий и для любого возраста: как для юной девушки, так и для взрослой женщины, поскольку размеры от самого маленького до самых больших.</p>
+            <p @blur="updateContent($event, 'AboutUs-p1')" :contenteditable="$store.state.uid === 'yd8ne2Ab5yYipJ1Uj0GE0hdAfX33' ? true : false">
+                {{$store.state.editableContent['AboutUs-p1']}}
+            </p>
         <div>
             <h2 class="title">Немного о нас</h2>
-            <p>В на­ших тер­ми­на­лах при­ни­ма­ют­ся пла­теж­ные сред­ства прак­ти­че­ски всех си­стем, вклю­чая Visa, Master Card, Maestro, Amex и др. Также принимаем карты Kaspi Red. Приходите примерить любое количество роскошных меховых изделий, попить чаю и получить консультации от наших специалистов по меховым изделиям.</p>
+            <p @blur="updateContent($event, 'AboutUs-p2')" :contenteditable="$store.state.uid === 'yd8ne2Ab5yYipJ1Uj0GE0hdAfX33' ? true : false">
+                {{$store.state.editableContent['AboutUs-p2']}}
+            </p>
         </div>
-        <p>В 2019, 2020, 2021 году Бренд NExted представил новую коллекцию на неделе моды Kazakhstan Fashion Week.  Коллекция сочетают в себе  красоту и комфорт, стиль и роскошь. В этом же году наш бренд был отмечен известной премией PEOPLE AWARDS, наградив главного дизайнера званием "дизайнер меховых и кожаных изделий года"</p>
+        <p @blur="updateContent($event, 'AboutUs-p3')" :contenteditable="$store.state.uid === 'yd8ne2Ab5yYipJ1Uj0GE0hdAfX33' ? true : false">
+            {{$store.state.editableContent['AboutUs-p3']}}</p>
         </div>
     </section>
     <section class="about_us-mobile">
@@ -16,16 +21,30 @@
             <div class="rectangle"></div>
             <div class="line"></div>
             <p>
-                NEXTED - уже 12 лет радует своих покупателей роскошными шубами, элегантными жилетками, стильными куртками из натурального меха и лучшими условиями покупки. В NEXTED каждое изделие характеризуется удобным покроем, стильным и изящным видом, высокими эксплуатационными показателями, практичностью и долговечностью. В нашем салоне Вы найдёте меховые изделия разной категорий и для любого возраста: как для юной девушки, так и для взрослой женщины, поскольку размеры от самого маленького до самых больших.
-                В на­ших тер­ми­на­лах при­ни­ма­ют­ся пла­теж­ные прак­ти­че­ски всех си­стем, вклю­чая Visa, Master Card, Maestro, Amex и др. Также принимаем карты Kaspi Red. 
-                Приходите примерить любое количество роскошных меховых изделий, попить чаю и получить консультации от наших специалистов по меховым изделиям.
+                {{$store.state.editableContent['AboutUs-p1']}}
+                {{$store.state.editableContent['AboutUs-p2']}}
             </p>
         </div>
         <p class="bottom_text">
-            В 2019, 2020, 2021 году Бренд NExted представил новую коллекцию на неделе моды Kazakhstan Fashion Week.  Коллекция сочетают в себе  красоту и комфорт, стиль и роскошь. В этом же году наш бренд был отмечен известной премией PEOPLE AWARDS, наградив главного дизайнера званием "дизайнер меховых и кожаных изделий года"
+            {{$store.state.editableContent['AboutUs-p3']}}
         </p>
     </section>
 </template>
+
+<script>
+import { doc, updateDoc  } from "firebase/firestore";
+import { db } from '@/firebase/firebase.js'
+
+export default {
+    methods: {
+        updateContent(e, field) {
+            updateDoc(doc(db, "EditableContent", "fields"), {
+                [field]: e.target.textContent
+            });
+        }
+    },
+}
+</script>
 
 <style lang="scss" scoped>
 

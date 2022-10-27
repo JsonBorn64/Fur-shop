@@ -1,24 +1,25 @@
 <template>
- <section class="general_screen" ref="genScreen">
-    <img class="women_part1" src="@/assets/images/general_screen/Group_3.jpg" alt="women">
-    <img class="women_part2" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_1.jpg" alt="women">
-    <img class="women_part3" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_2.jpg" alt="women">
-    <div class="decore_text1">
-        <div>NEX</div>
-        <div>TED</div>
-    </div>
-    <div class="decore_text2">Лучшие шубы в казахстане</div>
-    <div class="decore_text3">
-        <span>Fur </span>products
-        <span>For </span>stylish cats
-    </div>
-    <router-link to="/#catalog" class="btn">Посмотреть каталог</router-link>
- </section>
- <section class="mobile">
-    <img src="@/assets/images/general_screen/Group_5.jpg" alt="img">
-    <router-link to="/#catalog" class="btn mobile_btn">Посмотреть каталог</router-link>
-    <img class="decore_text-mobile" src="@/assets/images/general_screen/svg_nexted.svg" alt="nexted" />
- </section>
+    <div v-if="!this.$store.state.fursLoaded" style="height: 700px;"></div>
+    <section class="general_screen" ref="genScreen" v-show="this.$store.state.fursLoaded">
+        <img class="women_part1" src="@/assets/images/general_screen/Group_3.jpg" alt="women">
+        <img class="women_part2" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_1.jpg" alt="women">
+        <img class="women_part3" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_2.jpg" alt="women">
+        <div class="decore_text1">
+            <div>NEX</div>
+            <div>TED</div>
+        </div>
+        <div class="decore_text2">Лучшие шубы в казахстане</div>
+        <div class="decore_text3">
+            <span>Fur </span>products
+            <span>For </span>stylish cats
+        </div>
+        <router-link to="/#catalog" class="btn">Посмотреть каталог</router-link>
+    </section>
+    <section class="mobile">
+        <img src="@/assets/images/general_screen/Group_5.jpg" alt="img">
+        <router-link to="/#catalog" class="btn mobile_btn">Посмотреть каталог</router-link>
+        <img class="decore_text-mobile" src="@/assets/images/general_screen/svg_nexted.svg" alt="nexted" />
+    </section>
 </template>
   
 <script>

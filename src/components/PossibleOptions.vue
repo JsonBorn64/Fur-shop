@@ -1,22 +1,31 @@
 <template>
     <section class="possible_options">
-        <div class="title">Возможно вам понравится</div>
+        <div class="title" v-if="!$store.getters?.topFileredFurs(6, [...favoritesIds, $route.params.id])">Вы добавили абсолютно все товары магазина в избранные, вы нормальный?</div>
+        <div class="title" v-else>Возможно вам понравится</div>
         <ul class="cards_wrapper">
-            <li class="card" v-for="fur in $store.getters.topFurs(6)">
-                <img :src="`upload/${fur.Images[0]}`" width="149" alt="fur">
-                <div class="favorite_btn">
-                    <img src="@/assets/images/header/ri_heart-line.svg" alt="heart">
-                </div>
-                <router-link :to="`/item/${fur.id}/#header`" class="cart_btn">
-                    <img src="@/assets/images/top_sales/ri_arrow-right-up-line.svg" alt="arrow">
-                </router-link>
-            </li>
+            <transition-group name="list">
+                <li class="card" v-for="fur in $store.getters.topFileredFurs(6, [...favoritesIds, $route.params.id])" key="fur.id">
+                    <img :src="`upload/${fur.Images[0]}`" width="149" alt="fur">
+                    <div class="favorite_btn" @click="addFavorite(fur.id)" :style="{
+                        // background: favoritesIds.includes(fur.id) ? '#F5ED2A' : '#fff'
+                    }">
+                        <img src="@/assets/images/header/ri_heart-line.svg" alt="heart">
+                    </div>
+                    <router-link :to="`/item/${fur.id}/#header`" class="cart_btn">
+                        <img src="@/assets/images/top_sales/ri_arrow-right-up-line.svg" alt="arrow">
+                    </router-link>
+                </li>
+            </transition-group>
         </ul>
     </section>
 </template>
 
 <script>
-export default {}
+import favoritesMixin from '@/mixins/favoritesMixin';
+
+export default {
+    mixins: [favoritesMixin]
+}
 </script>
 
 <style lang="scss" scoped>
@@ -45,13 +54,16 @@ export default {}
                 object-fit: cover;
             }
             @media (max-width: 370px) {
-                margin: 0 7px 30px 7px;
+                margin: 0 7px 30px 7px;                
             }
         }
         @media (max-width: 540px) {
-            .card:nth-child(-n+2) {
+            .card:nth-child(n+5) {
                 display: none;
             }
+        }
+        @media (max-width: 370px) {
+            justify-content: space-between;              
         }
         .favorite_btn, .cart_btn {
             position: absolute;
@@ -80,5 +92,16 @@ export default {}
         @media (max-width: 540px) {
             margin-bottom: 20px;
         }
+    }
+    .card, .extra_info {
+        transition: all 0.3s ease;
+    }
+    .list-enter-from,
+    .list-leave-to {
+        opacity: 0;
+    }
+
+    .list-leave-active {
+        position: absolute;
     }
 </style>

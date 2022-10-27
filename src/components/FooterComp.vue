@@ -3,7 +3,7 @@
         <div class="left">
             <div class="row1">
                 <router-link to="/#header" class="link">Главная</router-link>
-                <img src="../assets/images/footer/ri_heart-line.svg" alt="heart">
+                <img @click="$router.push('/favorites#header')" src="../assets/images/footer/ri_heart-line.svg" alt="heart">
             </div>
             <div class="row2">
                 <router-link to="/#about_us" class="link">О нас</router-link>
@@ -11,7 +11,7 @@
             </div>
             <div class="row3">
                 <router-link to="/#catalog" class="link">Каталог</router-link>
-                <img src="../assets/images/footer/ri_user-line.svg" alt="user">
+                <user-icon :footer="true"/>
             </div>
         </div>
         <img
@@ -25,31 +25,33 @@
 </template>
 
 <script>
+import UserIcon from './UserIcon.vue';
 export default {
+    components: { UserIcon },
     methods: {
         mapInit() {
-            const map = L.map('map').setView([51.140801800319586, 71.41488795264996], 13);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            const map = L.map("map").setView([51.140801800319586, 71.41488795264996], 13);
+            L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 maxZoom: 18,
                 fullscreenControl: true,
                 fullscreenControlOptions: {
-                    position: 'topleft'
+                    position: "topleft"
                 }
             }).addTo(map);
             const marker = L.marker([51.140801800319586, 71.41488795264996]).addTo(map);
             L.control.fullscreen({
-                position: 'topleft', 
-                title: 'Show me the fullscreen !', 
-                titleCancel: 'Exit fullscreen mode', 
+                position: "topleft",
+                title: "Show me the fullscreen !",
+                titleCancel: "Exit fullscreen mode",
                 content: null,
-                forceSeparateButton: true, 
-                forcePseudoFullscreen: true, 
-                fullscreenElement: false 
+                forceSeparateButton: true,
+                forcePseudoFullscreen: true,
+                fullscreenElement: false
             }).addTo(map);
         }
     },
     mounted() {
-        this.mapInit()
+        this.mapInit();
     },
 }
 </script>
@@ -87,6 +89,7 @@ export default {
             align-items: center;
             width: 100%;
             > img {
+                cursor: pointer;
                 @media (max-width: 580px) {
                     display: none;
                 }

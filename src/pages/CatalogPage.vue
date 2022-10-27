@@ -1,4 +1,4 @@
-<template>
+<template class="fadeIn">
     <header-comp/>
     <bread-crumps-search :searchQuery="searchQuery" v-model="searchQuery"/>
     <section class="catalog">

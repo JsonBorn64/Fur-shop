@@ -3,6 +3,7 @@ import ItemPage from '@/pages/ItemPage.vue'
 import AdminPage from '@/pages/AdminPage.vue'
 import ProfilePage from '@/pages/ProfilePage.vue'
 import CatalogPage from '@/pages/CatalogPage.vue'
+import FavoritesPage from '@/pages/FavoritesPage.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
@@ -11,6 +12,7 @@ const routes = [
     { path: '/admin', component: AdminPage, name: 'Админка' },
     { path: '/profile', component: ProfilePage, name: 'Мой профиль' },
     { path: '/catalog', component: CatalogPage, name: 'Каталог' },
+    { path: '/favorites', component: FavoritesPage, name: 'Избранное' },
 ]
 
 const router = createRouter({

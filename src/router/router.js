@@ -1,9 +1,11 @@
 import Main from '@/pages/Main.vue'
+import CartPage from '@/pages/CartPage.vue'
 import ItemPage from '@/pages/ItemPage.vue'
 import AdminPage from '@/pages/AdminPage.vue'
 import ProfilePage from '@/pages/ProfilePage.vue'
 import CatalogPage from '@/pages/CatalogPage.vue'
 import FavoritesPage from '@/pages/FavoritesPage.vue'
+import OrderPage from '@/pages/OrderPage.vue'
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
@@ -13,6 +15,8 @@ const routes = [
     { path: '/profile', component: ProfilePage, name: 'Мой профиль' },
     { path: '/catalog', component: CatalogPage, name: 'Каталог' },
     { path: '/favorites', component: FavoritesPage, name: 'Избранное' },
+    { path: '/cart', component: CartPage, name: 'Корзина' },
+    { path: '/order', component: OrderPage, name: 'Оформление заказа' },
 ]
 
 const router = createRouter({

@@ -12,7 +12,7 @@
     <img class="logo" src="@/assets/images/header/Vector.svg" alt="logo" @click="$router.push('/')">
     <div class="header_right">
       <a @click="$router.push('/favorites#header')"><img src="@/assets/images/header/ri_heart-line.svg" alt="heart"></a>
-      <a><img src="@/assets/images/header/ri_shopping-cart-2-line.svg" alt="cart"></a>
+      <a @click="$router.push('/cart#header')"><img src="@/assets/images/header/ri_shopping-cart-2-line.svg" alt="cart"></a>
       <user-icon/>
       <router-link v-if="$store.state.uid === 'yd8ne2Ab5yYipJ1Uj0GE0hdAfX33'" to="/admin">
         <img src="@/assets/images/header/ri_admin-line.svg" alt="user">

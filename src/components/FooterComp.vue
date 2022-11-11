@@ -7,7 +7,7 @@
             </div>
             <div class="row2">
                 <router-link to="/#about_us" class="link">О нас</router-link>
-                <img src="../assets/images/footer/ri_shopping-cart-2-line.svg" alt="cart">
+                <img @click="$router.push('/cart#header')" src="../assets/images/footer/ri_shopping-cart-2-line.svg" alt="cart">
             </div>
             <div class="row3">
                 <router-link to="/#catalog" class="link">Каталог</router-link>

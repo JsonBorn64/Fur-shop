@@ -1,10 +1,10 @@
 <template>
     <div class="bread_crumps_and_search">
         <div class="bread_crumps">
-            <span @click="$router.push('/#header')">Главная страница</span>
+            <span @click="$router.push('/#header')">Главная</span>
             <span v-if="$route.name == 'Страница товара'" @click="$router.push('/catalog#header')">Каталог</span>
             <span v-if="$route.name == 'Страница товара'" @click="goCatalogWithSearchQuery(getType)">{{getType}}</span>
-            <span v-if="$route.name != 'Страница товара'">{{$route.name}}</span>
+            <span v-if="$route.name != 'Страница товара'" class="unclickable">{{$route.name}}</span>
         </div>
         <div class="search">
             <form class="input_btn" @submit.prevent="goCatalogWithSearchQuery($event.target.elements[0].value)" ref="searchForm">
@@ -89,6 +89,10 @@ export default {
                     right: -13px;
                     top: -1px;
                 }
+            }
+            .unclickable {
+                cursor: default;
+                text-decoration: none !important;
             }
             @media (max-width: 741px) {
                 margin-top: 24px;

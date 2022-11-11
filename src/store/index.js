@@ -11,9 +11,11 @@ export default createStore({
       isAuth: false,
       uid: null,
       userName: null,
+      editableContent: {},
       favorites: JSON.parse(localStorage.getItem('favorites')),
       favoritesIds: JSON.parse(localStorage.getItem('favorites'))?.map(item => item.id) || [],
-      editableContent: {},
+      cartItems: JSON.parse(localStorage.getItem('cart')),
+      cartItemsIds: JSON.parse(localStorage.getItem('cart'))?.map(item => item.id) || [],
     }
   },
   getters: {
@@ -52,6 +54,10 @@ export default createStore({
     updateFavorites(state) {
       state.favorites = JSON.parse(localStorage.getItem('favorites'))
       state.favoritesIds = JSON.parse(localStorage.getItem('favorites')).map(item => item.id)
+    },
+    updateCart(state) {
+      state.cartItems = JSON.parse(localStorage.getItem('cart'))
+      state.cartItemsIds = JSON.parse(localStorage.getItem('cart')).map(item => item.id)
     },
     setEditableContent(state, content) {
       state.editableContent = content

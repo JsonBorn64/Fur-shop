@@ -89,7 +89,9 @@
                             <p class="size">{{item?.Size.join(' / ')}}</p>
                             <div class="card_bottom">
                                 <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
-                                <a class="cart_btn" ><img src="@/assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
+                                <a class="cart_btn" @click="$router.push(`/item/${item.id}/#header`)">
+                                    <img src="@/assets/images/catalog/ri_shopping-cart-2-line.svg" alt="cart-icon">
+                                </a>
                             </div>
                         </li>
                     </template>

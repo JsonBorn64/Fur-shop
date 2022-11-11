@@ -8,11 +8,15 @@
                 <p class="size">{{item.Size.join(' / ')}}</p>
                 <div class="card_bottom">
                     <span>{{new Intl.NumberFormat('de-DE').format(item.Price)}} тг</span>
-                    <a class="cart_btn" ><img src="@/assets/images/top_sales/ri_shopping-cart-2-line.svg" alt="cart-icon"></a>
+                    <a class="cart_btn" @click="$router.push(`/item/${item.id}/#header`)">
+                        <img src="@/assets/images/top_sales/ri_shopping-cart-2-line.svg" alt="cart-icon">
+                    </a>
                 </div>
-                <a class="cart_btn-big">В корзину</a>
+                <a class="cart_btn-big" @click="$router.push(`/item/${item.id}/#header`)">В корзину</a>
                 <router-link :to="`/item/${item.id}/#header`" class="mobile_btn-big">Перейти к товару</router-link>
-                <router-link :to="`/item/${item.id}/#header`" class="mobile_btn"><img src="@/assets/images/top_sales/ri_arrow-right-up-line.svg" alt="arrow up"></router-link>
+                <router-link :to="`/item/${item.id}/#header`" class="mobile_btn">
+                    <img src="@/assets/images/top_sales/ri_arrow-right-up-line.svg" alt="arrow up">
+                </router-link>
             </li>
         </ul>
     </section>

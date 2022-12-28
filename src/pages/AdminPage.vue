@@ -22,7 +22,7 @@
         <input type="number" placeholder="Цена" v-model="formData.Price" required>
         <input type="number" placeholder="Зачёркнутая цена" v-model="formData.OldPrice">
         <input type="number" placeholder="Количество на складе" v-model="formData.InStock">
-        <form action="upload.php" method="post" enctype="multipart/form-data" ref="fileForm">
+        <form action="php/upload.php" method="post" enctype="multipart/form-data" ref="fileForm">
             <label style="font-size: 14px">Все названия файлов должны быть уникальны. <br>Размер не больше 2мб</label><br>
             <input type="file" name="images[]" @change="inputFile($event)" multiple required>
         </form>

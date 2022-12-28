@@ -22,7 +22,7 @@ export default {
                 cartArr.push(fur)
                 localStorage.setItem('cart', JSON.stringify(cartArr))
             } else {
-                const cartArr = JSON.parse(localStorage.getItem('cart'))
+                const cartArr = JSON.parse(localStorage.getItem('cart')) || [];
                 const index = cartArr.map(item => item.id).indexOf(fur.id)
                 if (index != -1) {
                     cartArr.splice(index, 1)

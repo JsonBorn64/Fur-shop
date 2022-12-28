@@ -1,18 +1,18 @@
 <template>
-    <header-comp/>
-    <bread-crumps-search/>
+    <header-comp />
+    <bread-crumps-search />
     <section class="checkpoints">
         <div class="line"></div>
         <div class="points">
-            <div class="point" :class="{'point-yellow': stage == 0 ? true : false}">Адрес доставки</div>
-            <div class="point" :class="{'point-yellow': stage == 1 ? true : false}">Способ оплаты</div>
-            <div class="point" :class="{'point-yellow': stage == 2 ? true : false}">Подтверждение</div>
-            <div class="point" :class="{'point-yellow': stage == 3 ? true : false}">Готово</div>
+            <div class="point" :class="{ 'point-yellow': stage == 0 ? true : false }">Адрес доставки</div>
+            <div class="point" :class="{ 'point-yellow': stage == 1 ? true : false }">Способ оплаты</div>
+            <div class="point" :class="{ 'point-yellow': stage == 2 ? true : false }">Подтверждение</div>
+            <div class="point" :class="{ 'point-yellow': stage == 3 ? true : false }">Готово</div>
         </div>
     </section>
     <section class="screens">
         <div class="screen-1 anim" v-if="stage == 0">
-            <form class="user-info_form" @submit="stage = 1">
+            <form class="user-info_form" @submit.prevent="stage = 1">
                 <input v-model="formData.name" type="text" placeholder="ФИО получателя" required>
                 <input v-model="formData.tel" type="tel" placeholder="Мобильный телефон" required>
                 <input v-model="formData.country" type="text" placeholder="Страна" required>
@@ -36,21 +36,21 @@
                         <p>Платёжная карта (Online)</p>
                         <p>Оплата на сайте, через карту.</p>
                     </div>
-                    <button @click="stage = 2; payMethod = 'Платёжная карта (Online)'">Выбрать</button>
+                    <button @click="stage = 2; formData.payMethod = 'Платёжная карта (Online)'">Выбрать</button>
                 </div>
                 <div class="method">
                     <div class="text">
                         <p>Наличными</p>
                         <p>Оплата наличными курьеру, при получении.</p>
                     </div>
-                    <button @click="stage = 2; payMethod = 'Наличными'">Выбрать</button>
+                    <button @click="stage = 2; formData.payMethod = 'Наличными'">Выбрать</button>
                 </div>
                 <div class="method">
                     <div class="text">
                         <p>Платёжная карта (POS-терминал)</p>
                         <p>Оплата картой курьеру, при получении.</p>
                     </div>
-                    <button @click="stage = 2; payMethod = 'Платёжная карта (POS-терминал)'">Выбрать</button>
+                    <button @click="stage = 2; formData.payMethod = 'Платёжная карта (POS-терминал)'">Выбрать</button>
                 </div>
             </div>
         </div>
@@ -59,34 +59,36 @@
                 <div class="adress">
                     <p>Адрес доставки <span @click="stage = 0">Изменить</span></p>
                     <div class="adress_wrapper">
-                        <p>{{formData.name}}</p>
-                        <p>{{formData.tel}}</p>
-                        <p>{{formData.country}}</p>
-                        <p>{{formData.city}}</p>
-                        <p>ул. {{formData.street}}, {{formData.number}}<span v-if="formData.apart">, кв.{{formData.apart}}</span></p>
-                        <p>{{formData.zip}}</p>
-                        <p>{{formData.comment}}</p>
+                        <p>{{ formData.name }}</p>
+                        <p>{{ formData.tel }}</p>
+                        <p>{{ formData.country }}</p>
+                        <p>{{ formData.city }}</p>
+                        <p>ул. {{ formData.street }}, {{ formData.number }}<span v-if="formData.apart">,
+                                кв.{{ formData.apart }}</span></p>
+                        <p>{{ formData.zip }}</p>
+                        <p>{{ formData.comment }}</p>
                     </div>
                 </div>
                 <div class="pay">
                     <p>Способ оплаты <span @click="stage = 1">Изменить</span></p>
-                    <p>{{payMethod}}</p>
+                    <p>{{ formData.payMethod }}</p>
                 </div>
-                <button @click="stage = 3">Подтвердить заказ</button>
+                <button @click="sendForm">Подтвердить заказ</button>
             </div>
             <div class="goods">
                 <ul class="list">
-                    <li v-for="item in items">
-                        <img :src="`../upload/${item.Images[0]}`" alt="img">
+                    <li v-for="item in formData.items">
+                        <img :src="`upload/${item.Images[0]}`" alt="img">
                         <div class="wrapper">
-                            <p>{{item.Name}}</p>
-                            <div class="size">{{item.Size}}</div>
-                            <div class="price">{{new Intl.NumberFormat('ru-RU').format(item.Price)}} <span>тг</span></div>
+                            <p>{{ item.Name }}</p>
+                            <div class="size">{{ item.Size }}</div>
+                            <div class="price">{{ new Intl.NumberFormat('ru-RU').format(item.Price) }} <span>тг</span>
+                            </div>
                         </div>
                     </li>
                 </ul>
                 <div class="total">
-                    Сумма заказа: <span>{{new Intl.NumberFormat('ru-RU').format(totalPrice)}} <span>тг</span></span>
+                    Сумма заказа: <span>{{ new Intl.NumberFormat('ru-RU').format(totalPrice) }} <span>тг</span></span>
                 </div>
             </div>
         </div>
@@ -97,7 +99,7 @@
             </div>
         </div>
     </section>
-    <footer-comp/>
+    <footer-comp />
 </template>
 
 <script>
@@ -120,348 +122,405 @@ export default {
                 apart: '',
                 zip: '',
                 comment: '',
+                payMethod: '',
+                items: JSON.parse(localStorage.getItem('order'))
             },
-            payMethod: '',
-            items: JSON.parse(localStorage.getItem('order'))
         }
     },
     computed: {
         totalPrice() {
-            return this.items.reduce((prev, current) => prev + current.Price, 0);
+            return this.formData.items.reduce((prev, current) => prev + current.Price, 0);
         }
     },
+    methods: {
+        sendForm() {
+            this.$store.commit('setFursLoaded', false)
+            this.formData.totalPrice = this.totalPrice
+            const body = JSON.stringify(this.formData)
+            fetch('/5/php/sendForm.php', {
+                method: 'POST',
+                body: body,
+                headers: { 'Content-Type': 'application/json' }
+            }).then(res => {
+                if (res.ok) this.stage = 3, this.$store.commit('setFursLoaded', true)
+            }).catch(error => {
+                this.$store.commit('setFursLoaded', true)
+                console.error(error);
+            });
+
+        }
+    }
 }
 </script>
 
 <style lang="scss" scoped>
-    .screens {
-        width: 100%;
+.screens {
+    width: 100%;
+}
+
+.checkpoints {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 730px;
+    width: 100%;
+    margin-top: 60px;
+    font-family: 'Montserrat';
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.02em;
+    color: #222222;
+
+    @media (max-width: 741px) {
+        margin-top: 110px;
     }
-    .checkpoints {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        max-width: 730px;
+
+    .line {
+        background: #DBDBDB;
+        height: 6px;
+        width: calc(100% - 120px);
+        margin-bottom: 21px;
+        margin-left: 36px;
+
+        @media (max-width: 522px) {
+            width: calc(100% - 100px);
+        }
+    }
+
+    .points {
         width: 100%;
-        margin-top: 60px;
+        display: flex;
+        justify-content: space-between;
+
+        .point {
+            position: relative;
+            text-align: center;
+            margin: 0 10px;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: -30px;
+                left: calc(50% - 6px);
+                width: 12px;
+                height: 12px;
+                background-color: #DBDBDB;
+            }
+        }
+
+        .point-yellow::before {
+            background-color: #F5ED2A;
+        }
+    }
+}
+
+.user-info_form {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 70px;
+    max-width: 500px;
+
+    >* {
+        margin-bottom: 24px;
+    }
+
+    input {
+        border: 1px solid #222222;
+        padding-left: 18px;
+        height: 48px;
+        font-family: 'Montserrat';
+        font-weight: 400;
+        font-size: 13px;
+        letter-spacing: -0.02em;
+    }
+
+    input::placeholder {
+        color: rgba(34, 34, 34, 0.44);
+    }
+
+    button {
+        width: 256px;
+        height: 40px;
+        background: #F5ED2A;
+        border: none;
         font-family: 'Montserrat';
         font-weight: 700;
         font-size: 15px;
-        letter-spacing: -0.02em;
         color: #222222;
-        @media (max-width: 741px) {
-            margin-top: 110px;
-        }
-        .line {
-            background: #DBDBDB;
-            height: 6px;
-            width: calc(100% - 120px);
-            margin-bottom: 21px;
-            margin-left: 36px;
-            @media (max-width: 522px) {
-                width: calc(100% - 100px);
-            }
-        }
-        .points {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            .point {
-                position: relative;
-                text-align: center;
-                margin: 0 10px;
-                &::before {
-                    content: '';
-                    position: absolute;
-                    top: -30px;
-                    left: calc(50% - 6px);
-                    width: 12px;
-                    height: 12px;
-                    background-color: #DBDBDB;
-                }
-            }
-            .point-yellow::before {
-                background-color: #F5ED2A;
-            }
-        }
+        margin-bottom: 55px;
+        cursor: pointer;
     }
 
-    .user-info_form {
-        display: flex;
-        flex-direction: column;
-        margin: 0 auto;
-        margin-top: 70px;
-        max-width: 500px;
-        > * {
-            margin-bottom: 24px;
-        }
-        input {
-            border: 1px solid #222222;
-            padding-left: 18px;
-            height: 48px;
-            font-family: 'Montserrat';
-            font-weight: 400;
-            font-size: 13px;
-            letter-spacing: -0.02em;
-        }
-        input::placeholder {
-            color: rgba(34, 34, 34, 0.44);
-        }
-        button {
-            width: 256px;
-            height: 40px;
-            background: #F5ED2A;
-            border: none;
-            font-family: 'Montserrat';
-            font-weight: 700;
-            font-size: 15px;
-            color: #222222;
-            margin-bottom: 55px;
-            cursor: pointer;
-        }
-        .city_group {
-            display: flex;
-            justify-content: space-between;
-            > input:first-child {
-                width: calc(100% - 179px);
-            }
-            > input:last-child {
-                width: 155px;
-            }
-        }
-        .numbers_group {
-            display: flex;
-            justify-content: space-between;
-            > input:first-child {
-                width: calc(100% - 168px);
-            }
-            > input:not(:first-child) {
-                min-width: 60px;
-                max-width: 60px;
-                padding: 6px;
-            }
-            /* Chrome, Safari, Edge, Opera */
-            > input:not(:first-child)::-webkit-outer-spin-button,
-            > input:not(:first-child)::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-
-            /* Firefox */
-            > input:not(:first-child)[type=number] {
-                -moz-appearance: textfield;
-            }
-        }
-    }
-
-    .screen-2 {
-        width: 100%;
-    }
-    .pay_methods {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        max-width: 500px;
-        margin: 0 auto;
-        margin-top: 80px;
-        .method {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 55px;
-            .text {
-                p:first-child {
-                    font-weight: 700;
-                    font-size: 15px;
-                    letter-spacing: -0.02em;
-                    color: #222222;
-                    margin-bottom: 2px;
-                }
-                p:last-child {
-                    font-weight: 400;
-                    font-size: 13px;
-                    letter-spacing: -0.02em;
-                    color: rgba(34, 34, 34, 0.86);
-                }
-            }
-            button {
-                min-width: 115px;
-                height: 40px;
-                background: #F5ED2A;
-                cursor: pointer;
-                border: none;
-                font-family: 'Montserrat';
-                font-weight: 700;
-                font-size: 15px;
-                color: #222222;
-                margin-left: 10px;
-            }
-        }
-    }
-
-    .screen-3 {
+    .city_group {
         display: flex;
         justify-content: space-between;
-        width: 100%;
-        margin-top: 70px;
-        margin-bottom: 100px;
-    }
 
-    .user-info {
-        > button {
-            margin-top: 50px;
-            width: 202px;
-            height: 39px;
-            background: #F5ED2A;
-            box-shadow: 1px 1px 15px #F5ED2A;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 15px;
+        >input:first-child {
+            width: calc(100% - 179px);
+        }
+
+        >input:last-child {
+            width: 155px;
         }
     }
 
-    .adress, .pay {
-        font-family: 'Montserrat';
-        font-weight: 700;
-        > p {
-            > span {
+    .numbers_group {
+        display: flex;
+        justify-content: space-between;
+
+        >input:first-child {
+            width: calc(100% - 168px);
+        }
+
+        >input:not(:first-child) {
+            min-width: 60px;
+            max-width: 60px;
+            padding: 6px;
+        }
+
+        /* Chrome, Safari, Edge, Opera */
+        >input:not(:first-child)::-webkit-outer-spin-button,
+        >input:not(:first-child)::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        >input:not(:first-child)[type=number] {
+            appearance: textfield;
+        }
+    }
+}
+
+.screen-2 {
+    width: 100%;
+}
+
+.pay_methods {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    margin-top: 80px;
+
+    .method {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 55px;
+
+        .text {
+            p:first-child {
+                font-weight: 700;
+                font-size: 15px;
+                letter-spacing: -0.02em;
+                color: #222222;
+                margin-bottom: 2px;
+            }
+
+            p:last-child {
                 font-weight: 400;
                 font-size: 13px;
                 letter-spacing: -0.02em;
                 color: rgba(34, 34, 34, 0.86);
-                border: 1px solid;
-                padding: 2px 4px;
-                margin-left: 8px;
-                cursor: pointer;
             }
         }
-        > .adress_wrapper {
-            margin: 14px 0 0 6px;
-            font-family: 'Montserrat';
-            font-weight: 400;
-            font-size: 15px;
-            letter-spacing: -0.02em;
-            color: #222222;
-            > p {
-                margin-bottom: 6px;
-            }
-        }
-    }
 
-    .pay {
-        margin-top: 22px;
-        > p:last-child {
-            margin: 14px 0 0 6px;
+        button {
+            min-width: 115px;
+            height: 40px;
+            background: #F5ED2A;
+            cursor: pointer;
+            border: none;
             font-family: 'Montserrat';
-            font-weight: 400;
+            font-weight: 700;
             font-size: 15px;
-            letter-spacing: -0.02em;
             color: #222222;
-        }
-    }
-    .list {
-        > li {
-            display: flex;
-            flex-direction: row-reverse;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(34, 34, 34, 0.33);
-            img {
-                width: 150px;
-                height: 150px;
-                object-fit: cover;
-                margin-left: 6px;
-            }
-            .wrapper {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                align-items: flex-end;
-                font-family: 'Montserrat';
-                font-weight: 700;
-                font-size: 15px;
-                max-width: 280px;
-                text-align: right;
-                .size {
-                    margin-bottom: auto;
-                    margin-top: 14px;
-                    text-transform: uppercase;
-                    border: 1px solid #222;
-                    padding: 1px 4px;
-                }
-                .price {
-                    font-weight: 500;
-                    font-size: 20px;
-                    letter-spacing: -0.02em;
-                    color: #A31414;
-                    > span {
-                        font-size: 15px;
-                        color: rgba(34, 34, 34, 0.6);
-                        font-weight: 700;
-                    }
-                }
-            }
-        }
-    }
-
-    .total {
-        font-size: 15px;
-        font-weight: 700;
-        margin-left: 10px;
-        margin-top: -10px;
-        font-family: 'Montserrat';
-        font-weight: 700;
-        > span {
-            font-weight: 500;
-            font-size: 20px;
-            letter-spacing: -0.02em;
-            color: #A31414;
             margin-left: 10px;
-            > span {
-                font-size: 15px;
-                color: rgba(34, 34, 34, 0.6);
-                font-weight: 700;
+        }
+    }
+}
+
+.screen-3 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 70px;
+    margin-bottom: 100px;
+}
+
+.user-info {
+    >button {
+        margin-top: 50px;
+        width: 202px;
+        height: 39px;
+        background: #F5ED2A;
+        box-shadow: 1px 1px 15px #F5ED2A;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 15px;
+    }
+}
+
+.adress,
+.pay {
+    font-family: 'Montserrat';
+    font-weight: 700;
+
+    >p {
+        >span {
+            font-weight: 400;
+            font-size: 13px;
+            letter-spacing: -0.02em;
+            color: rgba(34, 34, 34, 0.86);
+            border: 1px solid;
+            padding: 2px 4px;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+    }
+
+    >.adress_wrapper {
+        margin: 14px 0 0 6px;
+        font-family: 'Montserrat';
+        font-weight: 400;
+        font-size: 15px;
+        letter-spacing: -0.02em;
+        color: #222222;
+
+        >p {
+            margin-bottom: 6px;
+        }
+    }
+}
+
+.pay {
+    margin-top: 22px;
+
+    >p:last-child {
+        margin: 14px 0 0 6px;
+        font-family: 'Montserrat';
+        font-weight: 400;
+        font-size: 15px;
+        letter-spacing: -0.02em;
+        color: #222222;
+    }
+}
+
+.list {
+    >li {
+        display: flex;
+        flex-direction: row-reverse;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(34, 34, 34, 0.33);
+
+        img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-left: 6px;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-family: 'Montserrat';
+            font-weight: 700;
+            font-size: 15px;
+            max-width: 280px;
+            text-align: right;
+
+            .size {
+                margin-bottom: auto;
+                margin-top: 14px;
+                text-transform: uppercase;
+                border: 1px solid #222;
+                padding: 1px 4px;
+            }
+
+            .price {
+                font-weight: 500;
+                font-size: 20px;
+                letter-spacing: -0.02em;
+                color: #A31414;
+
+                >span {
+                    font-size: 15px;
+                    color: rgba(34, 34, 34, 0.6);
+                    font-weight: 700;
+                }
             }
         }
     }
+}
 
-    .screen-4 {
-        display: grid;
-        place-content: center;
-        margin-top: 150px;
-        margin-bottom: 150px;
-        > p {
-            font-family: 'Druk Cyr';
-            font-weight: 500;
-            font-size: 64px;
-            letter-spacing: 0.025em;
-            text-transform: uppercase;
-            color: #222222;
-            text-align: center;
-        }
-        > div {
-            border: 8px solid #F5ED2A;
-            border-radius: 50%;
-            width: fit-content;
-            padding: 20px 18px;
-            margin: 60px auto 0 auto;
+.total {
+    font-size: 15px;
+    font-weight: 700;
+    margin-left: 10px;
+    margin-top: -10px;
+    font-family: 'Montserrat';
+    font-weight: 700;
+
+    >span {
+        font-weight: 500;
+        font-size: 20px;
+        letter-spacing: -0.02em;
+        color: #A31414;
+        margin-left: 10px;
+
+        >span {
+            font-size: 15px;
+            color: rgba(34, 34, 34, 0.6);
+            font-weight: 700;
         }
     }
-    
-    .anim {
-        animation: 300ms fadeInRight;
+}
+
+.screen-4 {
+    display: grid;
+    place-content: center;
+    margin-top: 150px;
+    margin-bottom: 150px;
+
+    >p {
+        font-family: 'Druk Cyr';
+        font-weight: 500;
+        font-size: 64px;
+        letter-spacing: 0.025em;
+        text-transform: uppercase;
+        color: #222222;
+        text-align: center;
     }
 
-    @keyframes fadeInRight {
-        0% {
-            opacity: 0;
-            transform: translateX(100px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateX(0px);
-        }
+    >div {
+        border: 8px solid #F5ED2A;
+        border-radius: 50%;
+        width: fit-content;
+        padding: 20px 18px;
+        margin: 60px auto 0 auto;
+    }
+}
+
+.anim {
+    animation: 300ms fadeInRight;
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(100px);
     }
 
+    100% {
+        opacity: 1;
+        transform: translateX(0px);
+    }
+}
 </style>

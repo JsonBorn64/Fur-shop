@@ -21,7 +21,7 @@
                     </div>
                 </li>
             </template>
-            <p v-if="favorites?.length < 1 && this.$store.state.fursLoaded" class="extra_info">У вас нет избранных товаров</p>
+            <p v-if="favoritesIds?.length == 0 && this.$store.state.fursLoaded" class="extra_info">У вас нет избранных товаров</p>
         </transition-group>
     </ul>
     <div class="line"></div>

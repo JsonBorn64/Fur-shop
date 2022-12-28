@@ -3,14 +3,22 @@
         <div class="text">
             Заполните форму чтобы узнавать первым об акциях и скидках
         </div>
-        <form>
-            <input type="text" placeholder="Введите имя">
-            <input type="email" placeholder="Введите почту">
-            <div class="form_btn">Отправить</div>
+        <form @submit.prevent="" ref='subscribeForm'>
+            <input type="text" placeholder="Введите имя" name="name" min="2" required>
+            <input type="email" placeholder="Введите почту" name="email" required>
+            <button class="form_btn" type="submit">Отправить</button>
         </form>
         <div class="decore"></div>
     </section>
 </template>
+
+<script>
+export default {
+    methods: {
+
+    }
+}
+</script>
 
 <style lang="scss" scoped>
     .subscribe {
@@ -59,12 +67,13 @@
                 font-family: 'Montserrat';
                 font-weight: 700;
                 font-size: 15px;
-                line-height: 119.18%;
                 text-transform: uppercase;
                 color: #222222;
                 display: grid;
                 place-content: center;
                 margin: 0 auto;
+                border: none;
+                cursor: pointer;
             }
         }
         .decore {

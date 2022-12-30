@@ -8,7 +8,7 @@
             <div class="sep_line"></div>
             <p class="editable_icon" @blur="setUserName" ref="userName" contenteditable>{{$store.state.userName || 'Имя пользователя'}}</p>
             <div class="sep_line"></div>
-            <p>pochta@mail.com</p>
+            <p>{{$store.state.userEmail || 'Email пользователя'}}</p>
             <div class="sep_line"></div>
             <form class="change_pass_form">
                 <div>
@@ -29,12 +29,29 @@
             <div class="sep_line"></div>
             <form class="pay_data_form" @submit.prevent="saveCard">
                 <label>Номер карты</label> <br>
-                <input type="number" v-model="card.number" minlength="1000000000000000" max="9999999999999999" placeholder="Fill the blank" required>
+                <input
+                    type="text"
+                    v-model="card.number"
+                    pattern="[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}"
+                    minlength="19" maxlength="19"
+                    placeholder="1234 1234 1234 1234"
+                    required
+                    title="Enter a valid card number"
+                    @keyup="formatCardNumber"
+                >
                 <div>
                     <label>Срок действия</label>
-                    <input type="text" v-model="card.validity" minlength="5" maxlength="5" placeholder="MM/HH" required>
+                    <input
+                        type="text"
+                        v-model="card.validity"
+                        maxlength="5"
+                        pattern="(0[1-9]|1[0-2])\/[0-9]{2}"
+                        placeholder="MM/HH"
+                        required
+                        @keyup="formatExpirationDate"
+                    >
                     <label>Security code</label>
-                    <input type="number" v-model="card.securityCode" min="000" max="999" placeholder="Fill the blank" required>
+                    <input type="text" v-model="card.securityCode" pattern="[0-9]{3}" placeholder="123" minlength="3" maxlength="3" required>
                 </div>
                 <div>
                     <label>Имя</label>
@@ -47,6 +64,7 @@
             </form>
         </div>
     </section>
+    <button class="logout" @click="logout">Выйти из учетной записи</button>
     <footer-comp/>
 </template>
 
@@ -54,7 +72,7 @@
 import HeaderComp from '@/components/HeaderComp.vue';
 import BreadCrumpsSearch from '@/components/BreadCrumpsSearch.vue';
 import FooterComp from '@/components/FooterComp.vue';
-import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential, updateProfile } from "firebase/auth";
+import { getAuth, updatePassword, EmailAuthProvider, reauthenticateWithCredential, updateProfile, signOut } from "firebase/auth";
 export default {
     components: { HeaderComp, BreadCrumpsSearch, FooterComp },
     data() {
@@ -133,7 +151,24 @@ export default {
                 this.card.firstName = card.firstName
                 this.card.lastName = card.lastName
             }
-        }
+        },
+        formatCardNumber() {
+          this.card.number = this.card.number.replace(/\D/g, "");
+          this.card.number = this.card.number.replace(/(\d{4})(?!$)/g, "$1 ");
+        },
+        formatExpirationDate() {
+            this.card.validity = this.card.validity.replace(/\D/g, "");
+            this.card.validity = this.card.validity.replace(/(\d{2})(?!$)/g, "$1/");
+        },
+        logout() {
+            const auth = getAuth();
+            auth.signOut().then(() => {
+                console.log('Successfully logged out');
+                this.$router.push('/')
+            }).catch((error) => {
+                console.error(error);
+            });
+        },
     },
     mounted() {
         this.showSavedCard()
@@ -157,8 +192,10 @@ export default {
             font-weight: 400;
             font-size: 13px;
             letter-spacing: -0.02em;
-            color: rgba(34, 34, 34, 0.44);
             padding-left: 18px;
+        }
+        input::placeholder {
+            color: rgba(34, 34, 34, 0.44);
         }
         p, label {
             position: relative;
@@ -242,6 +279,7 @@ export default {
                 margin-bottom: 22px;
                 height: 36px;
                 width: 249px;
+                color: black;
             }
             > div {
                 display: flex;
@@ -265,7 +303,7 @@ export default {
             margin-right: 0px;
         }
     }
-    .save_btn {
+    .save_btn, .logout {
         display: grid;
         place-content: center;
         width: 120px;
@@ -276,5 +314,14 @@ export default {
         font-family: 'Montserrat';
         font-weight: 700;
         font-size: 15px;
+    }
+
+    .logout {
+        width: auto;
+        padding: 0 20px;
+        align-self: start;
+        margin-bottom: 60px;
+        margin-top: 20px;
+        background: #F5ED2A;
     }
 </style>

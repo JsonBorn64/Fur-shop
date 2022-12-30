@@ -2,6 +2,7 @@
 
 $data = json_decode(file_get_contents('php://input'), true);
 $name = $data['name'];
+$email = $data['email'];
 $tel = $data['tel'];
 $country = $data['country'];
 $city = $data['city'];
@@ -15,7 +16,7 @@ $items = $data['items'];
 $totalPrice = $data['totalPrice'];
 $currentDate = date("d.m.Y");
 
-$to = 'xaker_@ukr.net';
+$to = "xaker6444@gmail.com, $email";
 $subject = 'Ваш заказ из магазина шуб';
 $headers = "From: Магазин шуб <furs@shop.com>\r\nReply-To: <furs@shop.com>\r\nContent-Type: text/html; charset=utf-8\r\n";
 $body = "
@@ -127,6 +128,10 @@ $body = "
         <tr>
           <td>Имя:</td>
           <td>$name</td>
+        </tr>
+        <tr>
+          <td>Email:</td>
+          <td>$email</td>
         </tr>
         <tr>
           <td>Телефон:</td>

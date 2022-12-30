@@ -11,6 +11,7 @@ export default createStore({
       isAuth: false,
       uid: null,
       userName: null,
+      userEmail: null,
       editableContent: {},
       favorites: JSON.parse(localStorage.getItem('favorites')),
       favoritesIds: JSON.parse(localStorage.getItem('favorites'))?.map(item => item.id) || [],
@@ -51,6 +52,9 @@ export default createStore({
     setUserName(state, name) {
       state.userName = name
     },
+    setUserEmail(state, email) {
+      state.userEmail = email
+    },
     updateFavorites(state) {
       state.favorites = JSON.parse(localStorage.getItem('favorites'))
       state.favoritesIds = JSON.parse(localStorage.getItem('favorites')).map(item => item.id)
@@ -79,11 +83,13 @@ export default createStore({
     getAuthState({state, commit}) {
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          const uid = user.uid;
+          const uid = user.uid
           const name = user.displayName
+          const email = user.email
           commit('setIsAuth', true);
           commit('setUid', uid);
           commit('setUserName', name);
+          commit('setUserEmail', email);
         } else {
           commit('setIsAuth', false);
           commit('setUid', null);

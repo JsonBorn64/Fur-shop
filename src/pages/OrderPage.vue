@@ -14,6 +14,7 @@
         <div class="screen-1 anim" v-if="stage == 0">
             <form class="user-info_form" @submit.prevent="stage = 1">
                 <input v-model="formData.name" type="text" placeholder="ФИО получателя" required>
+                <input v-model="formData.email" type="email" placeholder="Email" required>
                 <input v-model="formData.tel" type="tel" placeholder="Мобильный телефон" required>
                 <input v-model="formData.country" type="text" placeholder="Страна" required>
                 <div class="city_group">
@@ -33,10 +34,10 @@
             <div class="pay_methods">
                 <div class="method">
                     <div class="text">
-                        <p>Платёжная карта (Online)</p>
-                        <p>Оплата на сайте, через карту.</p>
+                        <p>Наложенный платёж</p>
+                        <p>Оплата на кассе, в почтовом отделении.</p>
                     </div>
-                    <button @click="stage = 2; formData.payMethod = 'Платёжная карта (Online)'">Выбрать</button>
+                    <button @click="stage = 2; formData.payMethod = 'Наложенный платёж'">Выбрать</button>
                 </div>
                 <div class="method">
                     <div class="text">
@@ -60,6 +61,7 @@
                     <p>Адрес доставки <span @click="stage = 0">Изменить</span></p>
                     <div class="adress_wrapper">
                         <p>{{ formData.name }}</p>
+                        <p>{{ formData.email }}</p>
                         <p>{{ formData.tel }}</p>
                         <p>{{ formData.country }}</p>
                         <p>{{ formData.city }}</p>
@@ -113,7 +115,8 @@ export default {
         return {
             stage: 0,
             formData: {
-                name: '',
+                name: this.$store.state.userName || '',
+                email: this.$store.state.userEmail || '',
                 tel: '',
                 country: '',
                 city: '',

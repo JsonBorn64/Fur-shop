@@ -20,12 +20,14 @@ export default {
             if (!localStorage.getItem('cart') && this.selectedSize) {
                 const cartArr = [];
                 cartArr.push(fur)
+                this.$store.commit('setAlert', [`${fur.Name} добавлена в корзину`, 'green'])
                 localStorage.setItem('cart', JSON.stringify(cartArr))
             } else {
                 const cartArr = JSON.parse(localStorage.getItem('cart')) || [];
                 const index = cartArr.map(item => item.id).indexOf(fur.id)
                 if (index != -1) {
                     cartArr.splice(index, 1)
+                    this.$store.commit('setAlert', [`${fur.Name} убрана из корзины`, 'green'])
                     localStorage.setItem('cart', JSON.stringify(cartArr))
                 } else {
                     if (!this.selectedSize) {
@@ -33,6 +35,7 @@ export default {
                         return
                     }
                     cartArr.push(fur)
+                    this.$store.commit('setAlert', [`${fur.Name} добавлена в корзину`, 'green'])
                     localStorage.setItem('cart', JSON.stringify(cartArr))
                 }
             }

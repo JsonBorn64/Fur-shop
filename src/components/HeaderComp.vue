@@ -18,13 +18,15 @@
         <img src="@/assets/images/header/ri_admin-line.svg" alt="user">
       </router-link>
     </div>
+    <alert-comp/>
   </header>
 </template>
 
 <script>
+import AlertComp from "./AlertComp.vue";
 import UserIcon from "./UserIcon.vue";
 export default {
-    components: { UserIcon }
+    components: { UserIcon, AlertComp }
 }
 </script>
 

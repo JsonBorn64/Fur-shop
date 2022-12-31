@@ -20,12 +20,13 @@ $to = "xaker6444@gmail.com, $email";
 $subject = 'Ваш заказ из магазина шуб';
 $headers = "From: Магазин шуб <furs@shop.com>\r\nReply-To: <furs@shop.com>\r\nContent-Type: text/html; charset=utf-8\r\n";
 $body = "
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html ⚡4email data-css-strict>
   <head>
     <meta charset='utf-8'>
-    <title>Заказ шубы</title>
-    <style>
+    <script async src='https://cdn.ampproject.org/v0.js'></script>
+    <style amp4email-boilerplate>body{visibility:hidden}</style>
+    <style amp-custom>
       /* Общие стили */
       body {
         font-family: Arial, sans-serif;

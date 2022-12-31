@@ -96,6 +96,7 @@ export default {
     },
     deleteGood(id) {
         deleteDoc(doc(db, "Furs", id))
+        this.$store.commit('setAlert', [`Товар с id ${id} удален из каталога сайта`, 'green'])
         this.$store.dispatch('getData')
     }
   },

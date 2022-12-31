@@ -17,6 +17,7 @@ export default createStore({
       favoritesIds: JSON.parse(localStorage.getItem('favorites'))?.map(item => item.id) || [],
       cartItems: JSON.parse(localStorage.getItem('cart')),
       cartItemsIds: JSON.parse(localStorage.getItem('cart'))?.map(item => item.id) || [],
+      alert: []
     }
   },
   getters: {
@@ -65,6 +66,9 @@ export default createStore({
     },
     setEditableContent(state, content) {
       state.editableContent = content
+    },
+    setAlert(state, text) {
+      state.alert = text
     }
   },
   actions: {
@@ -103,7 +107,7 @@ export default createStore({
       if (docSnap.exists()) {
         commit('setEditableContent', docSnap.data());
       } else {
-        console.log("No such document!");
+        console.log("Getting editable content error");
       }
     }
   }

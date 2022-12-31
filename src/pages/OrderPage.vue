@@ -148,6 +148,7 @@ export default {
                 if (res.ok) this.stage = 3, this.$store.commit('setFursLoaded', true)
             }).catch(error => {
                 this.$store.commit('setFursLoaded', true)
+                this.$store.commit('setAlert', ['Ошибка отправления заказа', 'red'])
                 console.error(error);
             });
 

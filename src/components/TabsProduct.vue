@@ -159,6 +159,7 @@ export default {
     methods: {
         addNewComment() {
             addDoc(collection(db, "Comments", this.$route.params.id, 'Special comments'), this.formData);
+            this.$store.commit('setAlert', ['Комментарий добавлен успешно', 'green'])
             this.formData.name = ''
             this.formData.text = ''
             this.getComments()

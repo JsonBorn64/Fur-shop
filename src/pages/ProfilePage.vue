@@ -20,8 +20,6 @@
                     <input type="password" v-model="password2" placeholder="Подтвердите пароль">
                 </div>
             </form>
-            <p style="color: red; margin: 10px 0 30px;" ref="red"></p>
-            <p style="color: green; margin: 10px 0 30px;" ref="green"></p>
             <div class="save_btn" @click="setNewPassword">Сохранить</div>
         </div>
         <div class="pay_data">
@@ -59,7 +57,6 @@
                     <label>Фамилия</label>
                     <input type="text" v-model="card.lastName" placeholder="Last name" required>
                 </div>
-                <p style="color: green; margin: 0" ref="green2"></p>
                 <button class="save_btn" type="submit">Сохранить</button>
             </form>
         </div>
@@ -90,19 +87,14 @@ export default {
     },
     methods: {
         setNewPassword() {
-            this.$refs.red.innerHTML = "Загрузка..."
-
             if (this.password.length < 6) {
-                this.$refs.red.innerHTML = "Минимальная длина пароля 6 символов"
+                this.$store.commit('setAlert', ['Минимальная длинна пароля 6 символов', 'red'])
                 return
             }
             if (this.password !== this.password2) {
-                this.$refs.red.innerHTML = "Пароли не совпадают"
+                this.$store.commit('setAlert', ['Пароли не совпадают', 'red'])
                 return
             }
-
-            this.$refs.red.innerHTML = ''
-            this.$refs.green.innerHTML = ''
             const auth = getAuth();
             const user = auth.currentUser;
             const userProvidedPassword = prompt("Введите текущий пароль")
@@ -110,17 +102,17 @@ export default {
                 auth.currentUser.email,
                 userProvidedPassword
             )
-
             reauthenticateWithCredential(user, credential).then(() => {
-            // User re-authenticated.
             }).catch((error) => {
-                this.$refs.red.innerHTML = `${error}`
+                this.$store.commit('setAlert', [error, 'red'])
+                console.log(error)
             });
-
             updatePassword(user, this.password).then(() => {
-                this.$refs.green.innerHTML = "Пароль успешно изменён"
+                this.$store.commit('setAlert', ['Пароль успешно изменен', 'green'])
+                this.password = '', this.password2 = ''
             }).catch((error) => {
-                this.$refs.red.innerHTML = `${error}`
+                this.$store.commit('setAlert', [error, 'red'])
+                console.log(error)
             });
         },
         setUserName() {
@@ -133,14 +125,15 @@ export default {
             updateProfile(auth.currentUser, {
                 displayName: name
             }).then(() => {
-                console.log('Username changed')
+                this.$store.commit('setAlert', ['Имя успешно изменено', 'green'])
             }).catch((error) => {
+                this.$store.commit('setAlert', ['Ошибка изменения имени', 'red'])
                 console.log(error)
             });
         },
         saveCard() {
             localStorage.setItem('card', JSON.stringify(this.card))
-            this.$refs.green2.innerHTML = 'Данные успешно сохранены'
+            this.$store.commit('setAlert', ['Платежные данные успешно сохранены', 'green'])
         },
         showSavedCard() {
             if (localStorage.card) {
@@ -161,11 +154,13 @@ export default {
             this.card.validity = this.card.validity.replace(/(\d{2})(?!$)/g, "$1/");
         },
         logout() {
-            const auth = getAuth();
-            auth.signOut().then(() => {
-                console.log('Successfully logged out');
+            getAuth().signOut().then(() => {
+                setTimeout(() => {
+                    this.$store.commit('setAlert', ['Выход из учетной записи выполнен успешно', 'green'])                    
+                }, 0);
                 this.$router.push('/')
             }).catch((error) => {
+                this.$store.commit('setAlert', [error, 'red'])
                 console.error(error);
             });
         },

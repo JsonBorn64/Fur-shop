@@ -55,7 +55,7 @@ export default {
                         updateProfile(auth.currentUser, {
                             displayName: this.registerName
                         }).then(() => {
-                            console.log('Success registered');
+                            this.$store.commit('setAlert', ['Регистрация выполнена успешно', 'green'])
                             this.$store.dispatch('getAuthState')
                             this.showRegistrationPopup = false;
                         }).catch((error) => {
@@ -65,9 +65,8 @@ export default {
                 })
                 .catch((error) => {
                     this.$store.commit('setFursLoaded', true)
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.log(errorMessage)
+                    this.$store.commit('setAlert', [error.code, 'red'])
+                    console.log(error.message)
                 });
         },
         singIn() {
@@ -76,14 +75,13 @@ export default {
                 .then((userCredential) => {
                     this.$store.commit('setFursLoaded', true)
                     const user = userCredential.user;
-                    if (user) console.log('Success logined')
+                    if (user) this.$store.commit('setAlert', ['Вход выполнен успешно', 'green'])
                     this.showAuthPopup = false
                 })
                 .catch((error) => {
                     this.$store.commit('setFursLoaded', true)
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.log(errorMessage)
+                    this.$store.commit('setAlert', [error.code, 'red'])
+                    console.log(error.message)
                 });
             },
             userIconClick() {

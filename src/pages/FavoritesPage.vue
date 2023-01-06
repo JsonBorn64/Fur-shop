@@ -90,8 +90,8 @@ export default {
             -webkit-box-orient: vertical;
             overflow: hidden;
             display: -webkit-box;
-            @media (max-width: 600px) {
-                -webkit-line-clamp: 3;
+            @media (max-width: 700px) {
+                -webkit-line-clamp: 4;
             }
         }
         .size {

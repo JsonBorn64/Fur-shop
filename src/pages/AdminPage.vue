@@ -28,12 +28,14 @@
         </form>
         <button type="submit">Добавить</button>
     </form>
+    <a href="https://console.firebase.google.com/project/fur-shop-696b1/firestore/data/~2FFurs"
+    target="_blank" class="editBtn">Редактировать товары в Firestore&nbsp;→</a>
     <section class="goods">
         <div class="sort_wrap">
             <p style="margin-bottom: 10px">Сортировать по:</p>
-            <input type="radio" name="sort" value="Data" v-model="sortBy"> Дате создания
-            <input type="radio" name="sort" value="Orders" v-model="sortBy"> Количеству продаж
-            <input type="radio" name="sort" value="InStock" v-model="sortBy"> Количеству на складе
+            <input type="radio" name="sort" value="Data" v-model="sortBy"> Дате создания <br>
+            <input type="radio" name="sort" value="Orders" v-model="sortBy"> Количеству продаж <br>
+            <input type="radio" name="sort" value="InStock" v-model="sortBy"> Количеству на складе <br>
             <input type="radio" name="sort" value="Price" v-model="sortBy"> Цене
         </div>
         <ul class="list">
@@ -48,7 +50,6 @@
                     <p>Количество покупок: {{item.Orders || 0}}</p>
                     <p>Наличие на складе: {{item.InStock}}</p>
                 </div>
-                <a href="https://console.firebase.google.com/project/fur-shop-696b1/firestore/data/~2FFurs" target="_blank" class="editBtn">Редактировать</a>
                 <a class="deleteBtn" @click="deleteGood(item.id)">Удалить</a>
             </li>
         </ul>
@@ -76,9 +77,8 @@ export default {
             InStock: null,
             Images: [],
             Created: serverTimestamp(),
-            Characteristics: 'Модель................................................Шуба Фасон...................................................Кокон Мех........................................................Норка Ворот....................................................Стойка   Длина изделия.................................110 см Узор.......................................................Поперечный Застёжка.............................................Крючки КиЗ.........................................................KZ-7656756-7HJ76OL',
+            Characteristics: `Модель................................................Шуба Фасон...................................................Кокон Мех........................................................Норка Ворот....................................................Стойка   Длина_изделия.................................110 см Узор.......................................................Поперечный Застёжка.............................................Крючки КиЗ.........................................................KZ-7656756-7HJ76OL`,
         },
-        furs: this.$store.state.furs,
         sortBy: 'Data',
     }
   },
@@ -96,7 +96,7 @@ export default {
     },
     deleteGood(id) {
         deleteDoc(doc(db, "Furs", id))
-        this.$store.commit('setAlert', [`Товар с id ${id} удален из каталога сайта`, 'green'])
+        this.$store.commit('setAlert', [`Товар удален из каталога сайта`, 'green'])
         this.$store.dispatch('getData')
     }
   },
@@ -111,6 +111,9 @@ export default {
         } else if (this.sortBy === 'Price') {
             return [...this.furs].sort((a, b) => b.Price - a.Price);
         }
+    },
+    furs() {
+        return this.$store.state.furs
     }
   },
 }
@@ -122,12 +125,20 @@ export default {
         margin-bottom: 50px;
     }
     .add_form {
+        width: 100%;
+        max-width: 442px;
         border: 1px solid black;
         padding: 40px 60px;
         display: flex;
         flex-direction: column;
         align-self: flex-start;
         margin-top: 50px;
+        @media (max-width: 741px) {
+            margin-top: 100px;
+        }
+        @media (max-width: 462px) {
+            padding: 30px 10px;
+        }
         select {
             margin-bottom: 15px;
         }
@@ -137,6 +148,7 @@ export default {
         }
         h2 {
             margin-bottom: 40px;
+            text-align: center;
         }
         input {
             margin-bottom: 15px;
@@ -158,41 +170,67 @@ export default {
     }
 
     .goods {
-        margin-top: 50px;
+        margin-top: 40px;
         align-self: flex-start;
         width: 100%;
-        padding: 60px 80px;
+        padding: 20px 10px;
         border: 1px solid black;
         margin-bottom: 100px;
     }
+
     .list {
         margin-top: 40px;
     }
     .good {
         display: flex;
         align-items: center;
-        margin-bottom: 40px;
+        margin-bottom: 10px;
+        position: relative;
         > img {
-            width: 100px;
+            min-width: 100px;
             height: 100px;
             object-fit: cover;
             margin-right: 20px;
+            @media (max-width: 410px) {
+                min-width: 50;
+                width: 50px;
+                height: 120px;
+                margin-right: 4px;
+            }
         }
     }
-    .deleteBtn, .editBtn {
+    .deleteBtn {
         display: grid;
         place-content: center;
-        height: 30px;
-        width: 120px;
-        background: rgb(255, 118, 118);
-        color: white;
-        font-weight: 600;
         cursor: pointer;
-    }
-    .editBtn {
         margin-left: auto;
+        width: 120px;
+        height: 30px;
+        color: white;
         width: 140px;
+        font-weight: 600;
         margin-right: 10px;
-        background: rgb(127, 118, 255);
+        background: rgb(255, 118, 118);
+        @media (max-width: 650px) {
+            position: absolute;
+            max-width: 100px;
+            bottom: 0px;
+            font-size: 14px;
+            height: 20px;
+        }
+    }
+
+    .editBtn {
+        display: grid;
+        place-content: center;
+        cursor: pointer;
+        width: 100%;
+        color: black;
+        border: 1px solid black;
+        padding: 20px;
+        margin-top: 40px;
+        font-size: 20px;
+        align-self: start;
+        text-align: center;
     }
 </style>

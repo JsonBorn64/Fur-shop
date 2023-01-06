@@ -61,7 +61,7 @@ if (isset($_FILES['images'])) {
             // Сократим .jpeg до .jpg
             $format = str_replace('jpeg', 'jpg', $extension);
             // Переместим картинку с новым именем и расширением в папку /upload
-            if (!move_uploaded_file($fileTmpName, __DIR__ . '/upload/' . $fileName)) {
+            if (!move_uploaded_file($fileTmpName, __DIR__ . '/../upload/' . $fileName)) {
                 die('При записи изображения на диск произошла ошибка.');
             }
         }

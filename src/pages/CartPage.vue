@@ -2,7 +2,7 @@
     <header-comp/>
     <bread-crumps-search/>
     <section class="cart">
-        <ul class="cart_list">
+        <ul v-if="cartItems.length > 0" class="cart_list">
             <div class="top_sep_line"></div>
             <li class="cart_item" v-for="item in cartItems">
                 <div class="item_img">
@@ -19,7 +19,7 @@
                 </div>
             </li>
         </ul>
-        <div class="total">
+        <div v-if="cartItems.length > 0" class="total">
             <div class="wrapper">
                 <div class="total_price">Сумма: <div class="item_price">{{new Intl.NumberFormat('ru-RU').format(totalPrice)}} <span>тг</span></div></div>
                 <div class="total_selected">Выбрано: <span>{{selectedItems.length}}</span></div>
@@ -29,6 +29,10 @@
                     @click="order"
                 >Оформить заказ</div>
             </div>
+        </div>
+        <div v-if="cartItems.length < 1" class="empty_cart">
+            Корзина пуста! Однако, её можно наполнить в
+            <router-link to="/catalog#header">каталоге</router-link>.
         </div>
     </section>
     <footer-comp/>
@@ -236,6 +240,15 @@ export default {
         align-items: center;
         width: 100%;
         margin-bottom: 15px;
+    }
+
+    .empty_cart {
+        margin: 100px auto;
+        font-size: 24px;
+        text-align: center;
+        > * {
+            text-decoration: underline;
+        }
     }
 
 </style>

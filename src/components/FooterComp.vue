@@ -10,7 +10,7 @@
                 <img @click="$router.push('/cart#header')" src="../assets/images/footer/ri_shopping-cart-2-line.svg" alt="cart">
             </div>
             <div class="row3">
-                <router-link to="/#catalog" class="link">Каталог</router-link>
+                <router-link to="/catalog#header" class="link">Каталог</router-link>
                 <user-icon :footer="true"/>
             </div>
         </div>

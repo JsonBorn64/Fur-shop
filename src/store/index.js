@@ -98,6 +98,7 @@ export default createStore({
           commit('setIsAuth', false);
           commit('setUid', null);
           commit('setUserName', null);
+          commit('setUserEmail', null);
         }
       });
     },

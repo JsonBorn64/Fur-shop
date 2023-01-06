@@ -25,7 +25,7 @@ $body = "
   <head>
     <meta charset='utf-8'>
     <script async src='https://cdn.ampproject.org/v0.js'></script>
-    <style amp4email-boilerplate>body{visibility:hidden}</style>
+    <style amp4email-boilerplate>body{visibility:visible}</style>
     <style amp-custom>
       /* Общие стили */
       body {

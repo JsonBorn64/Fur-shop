@@ -6,7 +6,7 @@
         <div class="points">
             <div class="point" :class="{ 'point-yellow': stage == 0 ? true : false }">Адрес доставки</div>
             <div class="point" :class="{ 'point-yellow': stage == 1 ? true : false }">Способ оплаты</div>
-            <div class="point" :class="{ 'point-yellow': stage == 2 ? true : false }">Подтверждение</div>
+            <div class="point" :class="{ 'point-yellow': stage == 2 ? true : false }">Подтвер&shy;ждение</div>
             <div class="point" :class="{ 'point-yellow': stage == 3 ? true : false }">Готово</div>
         </div>
     </section>
@@ -56,6 +56,7 @@
             </div>
         </div>
         <div class="screen-3 anim" v-if="stage == 2">
+            <hr>
             <div class="user-info">
                 <div class="adress">
                     <p>Адрес доставки <span @click="stage = 0">Изменить</span></p>
@@ -70,10 +71,12 @@
                         <p>{{ formData.zip }}</p>
                         <p>{{ formData.comment }}</p>
                     </div>
+                    <span @click="stage = 0">Изменить</span>
                 </div>
                 <div class="pay">
                     <p>Способ оплаты <span @click="stage = 1">Изменить</span></p>
                     <p>{{ formData.payMethod }}</p>
+                    <span @click="stage = 1">Изменить</span>
                 </div>
                 <button @click="sendForm">Подтвердить заказ</button>
             </div>
@@ -93,6 +96,7 @@
                     Сумма заказа: <span>{{ new Intl.NumberFormat('ru-RU').format(totalPrice) }} <span>тг</span></span>
                 </div>
             </div>
+            <button @click="sendForm">Подтвердить заказ</button>
         </div>
         <div class="screen-4 anim" v-if="stage == 3">
             <p>ЗАКАЗ УСПЕШНО ОФОРМЛЕН</p>
@@ -174,10 +178,12 @@ export default {
     font-weight: 700;
     font-size: 15px;
     letter-spacing: -0.02em;
-    color: #222222;
-
+    color: #666;
     @media (max-width: 741px) {
         margin-top: 110px;
+    }
+    @media (max-width: 500px) {
+        margin-top: 160px;
     }
 
     .line {
@@ -185,10 +191,8 @@ export default {
         height: 6px;
         width: calc(100% - 120px);
         margin-bottom: 21px;
-        margin-left: 36px;
-
-        @media (max-width: 522px) {
-            width: calc(100% - 100px);
+        @media (max-width: 500px) {
+            width: 78%;
         }
     }
 
@@ -196,12 +200,10 @@ export default {
         width: 100%;
         display: flex;
         justify-content: space-between;
-
         .point {
             position: relative;
             text-align: center;
-            margin: 0 10px;
-
+            width: 131px;
             &::before {
                 content: '';
                 position: absolute;
@@ -211,10 +213,23 @@ export default {
                 height: 12px;
                 background-color: #DBDBDB;
             }
+            &:nth-child(even) {
+                @media (max-width: 500px) {
+                    transform: translateY(-80px);
+                    display: flex;
+                    align-items: flex-end;
+                    justify-content: center;
+                    &::before {
+                        top: 50px;
+                    }
+                }
+            }
         }
-
-        .point-yellow::before {
-            background-color: #F5ED2A;
+        .point-yellow {
+            color: #222;
+            &::before {
+                background-color: #F5ED2A;
+            }
         }
     }
 }
@@ -353,10 +368,17 @@ export default {
     width: 100%;
     margin-top: 70px;
     margin-bottom: 100px;
-}
-
-.user-info {
-    >button {
+    > hr {
+        background: rgba(34, 34, 34, 0.33);
+        height: 1px;
+        width: 80%;
+        margin-bottom: 16px;
+        margin-top: -17px;
+        @media (min-width: 700px) {
+            display: none;
+        }
+    }
+    > button {
         margin-top: 50px;
         width: 202px;
         height: 39px;
@@ -366,16 +388,53 @@ export default {
         font-weight: 700;
         cursor: pointer;
         font-size: 15px;
+        @media (min-width: 700px) {
+            display: none;
+        }
+    }
+    @media (max-width: 700px) {
+        flex-direction: column;
+        align-items: center;
     }
 }
 
-.adress,
-.pay {
+.user-info {
+    @media (max-width: 700px) {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        margin-bottom: 42px;
+    }
+    > button {
+        margin-top: 50px;
+        width: 202px;
+        height: 39px;
+        background: #F5ED2A;
+        box-shadow: 1px 1px 15px #F5ED2A;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+        font-size: 15px;
+        @media (max-width: 700px) {
+            display: none;
+        }
+    }
+}
+
+.adress, .pay {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     font-family: 'Montserrat';
     font-weight: 700;
-
-    >p {
-        >span {
+    @media (max-width: 700px) {
+        align-items: baseline;
+    }
+    @media (max-width: 500px) {
+        font-size: 13px;
+    }
+    > p {
+        > span {
             font-weight: 400;
             font-size: 13px;
             letter-spacing: -0.02em;
@@ -384,33 +443,64 @@ export default {
             padding: 2px 4px;
             margin-left: 8px;
             cursor: pointer;
+            @media (max-width: 700px) {
+                display: none;
+            }
         }
     }
-
-    >.adress_wrapper {
+    > span {
+        font-weight: 400;
+        font-size: 13px;
+        letter-spacing: -0.02em;
+        color: rgba(34, 34, 34, 0.86);
+        border: 1px solid;
+        padding: 2px 4px;
+        margin-left: 8px;
+        cursor: pointer;
+        margin-top: auto;
+        @media (min-width: 700px) {
+            display: none;
+        }
+        @media (max-width: 500px) {
+            font-size: 13px;
+        }
+    }
+    > .adress_wrapper {
         margin: 14px 0 0 6px;
         font-family: 'Montserrat';
         font-weight: 400;
         font-size: 15px;
         letter-spacing: -0.02em;
         color: #222222;
-
-        >p {
+        > p {
             margin-bottom: 6px;
+            @media (max-width: 500px) {
+                font-size: 13px;
+            }
+        }
+        > p:last-of-type {
+            @media (max-width: 700px) {
+                margin-bottom: 17px;
+            }
         }
     }
 }
 
 .pay {
     margin-top: 22px;
-
-    >p:last-child {
+    > p:last-of-type {
         margin: 14px 0 0 6px;
         font-family: 'Montserrat';
         font-weight: 400;
         font-size: 15px;
         letter-spacing: -0.02em;
         color: #222222;
+        @media (max-width: 500px) {
+            font-size: 13px;
+        }
+    }
+    @media (max-width: 700px) {
+        margin-top: 0;
     }
 }
 
@@ -421,14 +511,19 @@ export default {
         margin-bottom: 20px;
         padding-bottom: 15px;
         border-bottom: 1px solid rgba(34, 34, 34, 0.33);
-
+        @media (max-width: 700px) {
+            flex-direction: row;
+        }
         img {
             width: 150px;
             height: 150px;
             object-fit: cover;
             margin-left: 6px;
+            @media (max-width: 700px) {
+                margin-left: 0;
+                margin-right: 15px;
+            }
         }
-
         .wrapper {
             display: flex;
             flex-direction: column;
@@ -439,22 +534,28 @@ export default {
             font-size: 15px;
             max-width: 280px;
             text-align: right;
-
+            @media (max-width: 700px) {
+                text-align: left;
+                align-items: flex-start;
+            }
+            p {
+                @media (max-width: 500px) {
+                    font-size: 13px;
+                } 
+            }
             .size {
                 margin-bottom: auto;
-                margin-top: 14px;
+                margin-top: 15px;
                 text-transform: uppercase;
                 border: 1px solid #222;
                 padding: 1px 4px;
             }
-
             .price {
                 font-weight: 500;
                 font-size: 20px;
                 letter-spacing: -0.02em;
                 color: #A31414;
-
-                >span {
+                > span {
                     font-size: 15px;
                     color: rgba(34, 34, 34, 0.6);
                     font-weight: 700;
@@ -471,15 +572,16 @@ export default {
     margin-top: -10px;
     font-family: 'Montserrat';
     font-weight: 700;
-
-    >span {
+    @media (max-width: 700px) {
+        text-align: center;
+    }
+    > span {
         font-weight: 500;
         font-size: 20px;
         letter-spacing: -0.02em;
         color: #A31414;
         margin-left: 10px;
-
-        >span {
+        > span {
             font-size: 15px;
             color: rgba(34, 34, 34, 0.6);
             font-weight: 700;

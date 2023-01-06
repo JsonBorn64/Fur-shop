@@ -23,7 +23,7 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 999;
   display: grid;
   place-content: center;
   font-size: 64px;

@@ -1,5 +1,12 @@
 <template>
-    <div class="alert" ref="alert">{{ message || this.$store.state.alert[0] }}</div>
+    <div class="alert" ref="alert">
+        {{ message || this.$store.state.alert[0] }}
+        <img
+            @click="closeAlert"
+            src="../assets/images/header/Cross.svg"
+            alt="x"
+        >
+    </div>
 </template>
 
 <script>
@@ -16,14 +23,22 @@ export default {
             if (!state) return
             if (this.$store.state.alert[0] === 'auth/user-not-found') this.message = "Пользователя с таким email не существует"
             if (this.$store.state.alert[0] === 'auth/wrong-password') this.message = "Пароль неверный"
-            this.$refs.alert.style.top = "60px"
-            this.$refs.alert.style.background = state[1] === "green" ? '#58f84a' : "#f84a4a"
+            this.$refs.alert.style.left = "160px"
+            this.$refs.alert.style.background = state[1] === "green" ? '#F5ED2A' : "#ec041f"
             clearTimeout(this.timerId)
             clearTimeout(this.timerId2)
-            this.timerId = setTimeout(() => { this.$refs.alert.style.top = "-40px" }, 5000)
+            this.timerId = setTimeout(() => { this.$refs.alert.style.left = "-160px" }, 5000)
             this.timerId2 = setTimeout(() => { this.$store.state.alert = "", this.message = '' }, 5300)
         }
-    }
+    },
+    methods: {
+        closeAlert() {
+            clearTimeout(this.timerId)
+            clearTimeout(this.timerId2)
+            this.$refs.alert.style.left = "-160px"
+            setTimeout(() => { this.$store.state.alert = "", this.message = '' }, 300)
+        }
+    },
 }
 </script>
 
@@ -31,15 +46,26 @@ export default {
     .alert {
         position: fixed;
         display: grid;
-        left: 50%;
-        top: -60px;
+        left: -160px;
+        top: 135px;
         transform: translateX(-50%);
         place-content: center;
-        padding: 10px 20px;
-        font-family: 'Montserrat', sans-serif;
+        padding: 15px 65px 15px 35px;
+        font-family: 'Montserrat';
         font-weight: 700;
-        background: #58f84a;
+        font-size: 15px;
+        background: #ec041f;
+        color: #222;
         transition: 300ms;
-        z-index: 999;
+        z-index: 1000;
+        width: max-content;
+        width: 320px;
+        box-shadow: 0 0 30px 0px rgba(0, 0, 0, 0.2);
+        img {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+        }
     }
 </style>

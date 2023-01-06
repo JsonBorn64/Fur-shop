@@ -99,8 +99,17 @@ export default {
         return {
             aboutActive: false,
             showPhotoPopup: false,
+            sizeAlert: false,
             photos: [],
+            selectedSize: '',
             activePhoto: 0
+        }
+    },
+    watch: {
+        "$route.params.id": function() {
+            this.aboutActive = false,
+            this.sizeAlert = false,
+            this.selectedSize = ''
         }
     },
     methods: {

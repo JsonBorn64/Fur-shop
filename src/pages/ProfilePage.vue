@@ -126,6 +126,7 @@ export default {
                 displayName: name
             }).then(() => {
                 this.$store.commit('setAlert', ['Имя успешно изменено', 'green'])
+                this.$store.dispatch('getAuthState')
             }).catch((error) => {
                 this.$store.commit('setAlert', ['Ошибка изменения имени', 'red'])
                 console.log(error)
@@ -318,5 +319,8 @@ export default {
         margin-bottom: 60px;
         margin-top: 20px;
         background: #F5ED2A;
+        @media (max-width: 580px) {
+            align-self: center;
+        }
     }
 </style>

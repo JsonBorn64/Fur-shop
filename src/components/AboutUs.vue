@@ -40,6 +40,12 @@ export default {
         updateContent(e, field) {
             updateDoc(doc(db, "EditableContent", "fields"), {
                 [field]: e.target.textContent
+            }).then(() => {
+                this.$store.commit('setAlert', ['Изменения сохранены успешно', 'green'])
+            })
+            .catch((error) => {
+                this.$store.commit('setAlert', ['Ошибка сохранения изменений', 'red'])
+                console.log(error.message)
             });
         }
     },

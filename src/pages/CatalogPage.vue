@@ -44,7 +44,7 @@
             <div class="keywords"></div>
         </header>
         <div class="cards_and_filter">
-            <div class="filter">
+            <div class="filter" ref="filter">
                 <div class="filter_type" :style="{'max-height': !filterTypeOpen ? '17px' : '100px'}">
                     <div class="title" @click="filterTypeOpen = !filterTypeOpen" :class="{'filter_close': !filterTypeOpen}">Тип</div>
                     <div class="options">
@@ -78,6 +78,7 @@
                     </div>
                 </div>
             </div>
+            <div class="filter_btn" @click="filterShow">Фильтр→</div>
             <ul class="catalog_cards">
                 <transition-group name="list">
                     <template v-for="(item, idx) in sortedSearchedAndFilterd" :key="item.id">
@@ -142,6 +143,18 @@ export default {
             if (sessionStorage.getItem('searchQuery')) {
                 this.searchQuery = sessionStorage.getItem('searchQuery')
                 sessionStorage.removeItem('searchQuery')                
+            }
+        },
+        filterShow() {
+            const filter = this.$refs.filter
+            if (!filter.style.maxWidth) {
+                filter.style.maxWidth = '141px'
+                filter.style.minWidth = '141px'
+                filter.style.marginRight = '12px'
+            } else {
+                filter.style.maxWidth = ''
+                filter.style.minWidth = ''
+                filter.style.marginRight = ''
             }
         }
     },
@@ -267,6 +280,7 @@ export default {
         font-size: 16px;
         letter-spacing: -0.02em;
         color: #222222;
+        transition: 300ms;
         .filter_type {
             > .options {
                 font-size: 13px;
@@ -313,6 +327,26 @@ export default {
             height: 1px;
             background-color: rgba(34, 34, 34, 0.33);
             margin: 15px 0;
+        }
+        @media (max-width: 510px) {
+            max-width: 0px;
+            min-width: 0px;
+        }
+    }
+    .filter_btn {
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        cursor: pointer;
+        position: sticky;
+        font-family: 'Montserrat', sans-serif;
+        letter-spacing: -2.7px;
+        height: fit-content;
+        top: 10px;
+        @media (min-width: 510px) {
+            display: none;
+        }
+        @media (max-width: 370px) {
+            margin: 0 -2px 0 -12px;
         }
     }
     .filter_type, .filter_price, .filter_size {
@@ -393,7 +427,7 @@ export default {
             -webkit-box-orient: vertical;
             overflow: hidden;
             display: -webkit-box;
-            @media (max-width: 600px) {
+            @media (max-width: 760px) {
                 -webkit-line-clamp: 3;
             }
         }
@@ -472,6 +506,7 @@ export default {
         font-size: 30px;
         margin-top: 70px;
         height: 34.5px;
+        text-align: center;
     }
     .card, .extra_info {
         transition: all 0.3s ease;

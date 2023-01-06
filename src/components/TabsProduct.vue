@@ -72,7 +72,7 @@
             :class="{'tab_name-active': activeTab === 3}"
         >Производство</div>
             <div class="mobile_tab_content" :class="{'active': activeTab === 3}">
-                <div class="made_by" v-if="activeTab === 3">Производство</div>
+                <div class="made_by" v-if="activeTab === 3">Хорошее</div>
             </div>
     </div>
     <div class="tab_content">
@@ -127,7 +127,7 @@
                 </tr>
             </table>
         </div>
-        <div class="made_by" v-if="activeTab === 3">Производство</div>
+        <div class="made_by" v-if="activeTab === 3">Хорошее</div>
     </div>
 </section>
 </template>

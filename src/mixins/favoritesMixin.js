@@ -27,7 +27,7 @@ export default {
                     localStorage.setItem('favorites', JSON.stringify(favArr))
                 }
             }
-            this.$store.commit('updateFavorites')
+            this.$store.dispatch('saveUserLocalStorage')
         },
         furByIdArg(id) {
             return this.$store.getters.specialFurById(id)

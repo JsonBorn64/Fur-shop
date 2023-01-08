@@ -81,7 +81,6 @@ export default {
                 .then((userCredential) => {
                     this.$store.commit('setFursLoaded', true)
                     this.$store.dispatch('getAuthState')
-                    this.$store.dispatch('getUserLocalStorage')
                     const user = userCredential.user;
                     if (user) this.$store.commit('setAlert', ['Вход выполнен успешно', 'green'])
                     this.showAuthPopup = false

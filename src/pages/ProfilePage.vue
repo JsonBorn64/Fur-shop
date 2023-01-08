@@ -155,7 +155,6 @@ export default {
             this.card.validity = this.card.validity.replace(/(\d{2})(?!$)/g, "$1/");
         },
         logout() {
-            this.$store.dispatch('saveUserLocalStorage', this.$store.state.uid)
             getAuth().signOut().then(() => {
             setTimeout(() => {
                 this.$store.commit('setAlert', ['Выход из учетной записи выполнен успешно', 'green'])

@@ -39,7 +39,7 @@ export default {
                     localStorage.setItem('cart', JSON.stringify(cartArr))
                 }
             }
-            this.$store.commit('updateCart')
+            this.$store.dispatch('saveUserLocalStorage')
         },
         furByIdArg(id) {
             return this.$store.getters.specialFurById(id)

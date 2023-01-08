@@ -111,17 +111,18 @@ export default createStore({
         console.log("Getting editable content error");
       }
     },
-    saveUserLocalStorage({ state }, uid) {
-      setDoc(doc(db, "Users", uid), {
+    saveUserLocalStorage({ state, commit }) {
+      setDoc(doc(db, "Users", state.uid), {
         favorites: JSON.parse(localStorage.getItem('favorites')),
         cart: JSON.parse(localStorage.getItem('cart'))
       })
+      commit('updateCart')
+      commit('updateFavorites')
     },
     async getUserLocalStorage({ state, commit }) {
       const docRef = doc(db, "Users", state.uid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
         localStorage.setItem('favorites', JSON.stringify(docSnap.data().favorites))
         localStorage.setItem('cart', JSON.stringify(docSnap.data().cart))
         commit('updateCart')

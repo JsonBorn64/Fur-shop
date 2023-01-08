@@ -1,22 +1,23 @@
 <template>
-    <router-view></router-view>
-    <transition name="fade">
-      <div class="loader" v-if="!this.$store.state.fursLoaded"><span class="square"></span></div>
-    </transition>
+  <router-view></router-view>
+  <transition name="fade">
+    <div class="loader" v-if="!this.$store.state.fursLoaded"><span class="square"></span></div>
+  </transition>
 </template>
 
 <script>
 export default {
+  watch: {
+    "$store.state.uid": function (state) {
+      if (state) this.$store.dispatch('getUserLocalStorage')
+    }
+  },
   beforeCreate() {
     if (!localStorage.getItem('favorites')) localStorage.setItem('favorites', JSON.stringify([]))
     if (!localStorage.getItem('cart')) localStorage.setItem('cart', JSON.stringify([]))
-    if (this.$store.state.uid) this.$store.dispatch('getUserLocalStorage')
     this.$store.dispatch('getAuthState')
     this.$store.dispatch('getData')
     this.$store.dispatch('getEditableContent')
-  },
-  beforeUnmount() {
-    if (this.$store.state.uid) this.$store.dispatch('saveUserLocalStorage', this.$store.state.uid)
   }
 }
 </script>

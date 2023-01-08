@@ -9,9 +9,14 @@
 export default {
   beforeCreate() {
     if (!localStorage.getItem('favorites')) localStorage.setItem('favorites', JSON.stringify([]))
+    if (!localStorage.getItem('cart')) localStorage.setItem('cart', JSON.stringify([]))
+    if (this.$store.state.uid) this.$store.dispatch('getUserLocalStorage')
     this.$store.dispatch('getAuthState')
     this.$store.dispatch('getData')
     this.$store.dispatch('getEditableContent')
+  },
+  beforeUnmount() {
+    if (this.$store.state.uid) this.$store.dispatch('saveUserLocalStorage', this.$store.state.uid)
   }
 }
 </script>

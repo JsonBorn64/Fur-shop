@@ -1,10 +1,10 @@
 import { createStore } from 'vuex'
 import { db, auth } from '@/firebase/firebase.js'
-import { collection, getDocs, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs, getDoc, setDoc, doc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
 export default createStore({
-  state () {
+  state() {
     return {
       furs: [],
       fursLoaded: false,
@@ -72,7 +72,7 @@ export default createStore({
     }
   },
   actions: {
-    async getData({state, commit}) {
+    async getData({ state, commit }) {
       commit('setFursLoaded', false);
       commit('clearFurs');
       const querySnapshot = await getDocs(collection(db, "Furs"));
@@ -84,7 +84,7 @@ export default createStore({
       })
       commit('setFursLoaded', true);
     },
-    getAuthState({state, commit}) {
+    getAuthState({ state, commit }) {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           const uid = user.uid
@@ -102,13 +102,32 @@ export default createStore({
         }
       });
     },
-    async getEditableContent({state, commit}) {
+    async getEditableContent({ state, commit }) {
       const docRef = doc(db, "EditableContent", "fields");
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         commit('setEditableContent', docSnap.data());
       } else {
         console.log("Getting editable content error");
+      }
+    },
+    saveUserLocalStorage({ state }, uid) {
+      setDoc(doc(db, "Users", uid), {
+        favorites: JSON.parse(localStorage.getItem('favorites')),
+        cart: JSON.parse(localStorage.getItem('cart'))
+      })
+    },
+    async getUserLocalStorage({ state, commit }) {
+      const docRef = doc(db, "Users", state.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        console.log("Document data:", docSnap.data());
+        localStorage.setItem('favorites', JSON.stringify(docSnap.data().favorites))
+        localStorage.setItem('cart', JSON.stringify(docSnap.data().cart))
+        commit('updateCart')
+        commit('updateFavorites')
+      } else {
+        console.log("No such document!");
       }
     }
   }

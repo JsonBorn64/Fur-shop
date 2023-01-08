@@ -244,7 +244,7 @@ export default {
 
     .empty_cart {
         margin: 100px auto;
-        font-size: 24px;
+        font-size: 20px;
         text-align: center;
         > * {
             text-decoration: underline;

@@ -27,7 +27,7 @@ export default {
             this.$refs.alert.style.background = state[1] === "green" ? '#F5ED2A' : "#ec041f"
             clearTimeout(this.timerId)
             clearTimeout(this.timerId2)
-            this.timerId = setTimeout(() => { this.$refs.alert.style.left = "-160px" }, 5000)
+            this.timerId = setTimeout(() => { if (this.$refs.alert) this.$refs.alert.style.left = "-160px" }, 5000)
             this.timerId2 = setTimeout(() => { this.$store.state.alert = "", this.message = '' }, 5300)
         }
     },
@@ -39,6 +39,10 @@ export default {
             setTimeout(() => { this.$store.state.alert = "", this.message = '' }, 300)
         }
     },
+    beforeDestroy() {
+        clearTimeout(this.timerId)
+        clearTimeout(this.timerId2)
+    }
 }
 </script>
 

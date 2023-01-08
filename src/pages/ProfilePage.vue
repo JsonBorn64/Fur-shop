@@ -155,15 +155,20 @@ export default {
             this.card.validity = this.card.validity.replace(/(\d{2})(?!$)/g, "$1/");
         },
         logout() {
+            this.$store.dispatch('saveUserLocalStorage', this.$store.state.uid)
             getAuth().signOut().then(() => {
-                setTimeout(() => {
-                    this.$store.commit('setAlert', ['Выход из учетной записи выполнен успешно', 'green'])                    
-                }, 0);
-                this.$router.push('/')
+            setTimeout(() => {
+                this.$store.commit('setAlert', ['Выход из учетной записи выполнен успешно', 'green'])
+                localStorage.setItem('favorites', JSON.stringify([]))
+                localStorage.setItem('cart', JSON.stringify([]))
+                this.$store.commit('updateCart')
+                this.$store.commit('updateFavorites')
+            }, 0);
+            this.$router.push('/')
             }).catch((error) => {
                 this.$store.commit('setAlert', [error, 'red'])
                 console.error(error);
-            });
+            }); 
         },
     },
     mounted() {
@@ -305,6 +310,7 @@ export default {
         width: 120px;
         height: 39px;
         background: #F5ED2A;
+        color: #222222;
         cursor: pointer;
         border: none;
         font-family: 'Montserrat';
@@ -314,11 +320,12 @@ export default {
 
     .logout {
         width: auto;
-        padding: 0 20px;
+        padding: 0;
         align-self: start;
         margin-bottom: 60px;
         margin-top: 20px;
-        background: #F5ED2A;
+        background: transparent;
+        color: #666;
         @media (max-width: 580px) {
             align-self: center;
         }

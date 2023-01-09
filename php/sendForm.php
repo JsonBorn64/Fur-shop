@@ -103,7 +103,7 @@ $body = "
   </head>
   <body>
     <div class='header'>
-      <h1>Ваш заказ из <a href='$url'>интернет-магазина шуб Nexted</a></h1>
+      <h1>Ваш заказ из <a href='$url/5'>интернет-магазина шуб Nexted</a></h1>
     </div>
     <div class='main'>
       <h2>Детали заказа</h2>
@@ -190,7 +190,7 @@ $body .="
       </div>
       <div class='footer'>
         <p>Спасибо за ваш заказ!</p>
-        <p>С уважением,<br> <a href='$url'>Интернет-магазин шуб Nexted</a></p>
+        <p>С уважением,<br> <a href='$url/5'>Интернет-магазин шуб Nexted</a></p>
       </div>
     </body>
   </html>

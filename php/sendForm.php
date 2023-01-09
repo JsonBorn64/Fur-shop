@@ -15,10 +15,11 @@ $payMethod = $data['payMethod'];
 $items = $data['items'];
 $totalPrice = $data['totalPrice'];
 $currentDate = date("d.m.Y");
+$url = 'http://' . $_SERVER['HTTP_HOST'];
 
 $to = "xaker6444@gmail.com, $email";
-$subject = 'Ваш заказ из магазина шуб';
-$headers = "From: Магазин шуб <furs@shop.com>\r\nReply-To: <furs@shop.com>\r\nContent-Type: text/html; charset=utf-8\r\n";
+$subject = 'Ваш заказ из магазина шуб Nexted';
+$headers = "From: Магазин шуб Nexted <furs@shop.com>\r\nReply-To: <furs@shop.com>\r\nContent-Type: text/html; charset=utf-8\r\n";
 $body = "
 <!doctype html>
 <html ⚡4email data-css-strict>
@@ -102,7 +103,7 @@ $body = "
   </head>
   <body>
     <div class='header'>
-      <h1>Заказ шубы</h1>
+      <h1>Ваш заказ из <a href='$url'>интернет-магазина шуб Nexted</a></h1>
     </div>
     <div class='main'>
       <h2>Детали заказа</h2>
@@ -189,7 +190,7 @@ $body .="
       </div>
       <div class='footer'>
         <p>Спасибо за ваш заказ!</p>
-        <p>С уважением,<br> Интернет-магазин шуб</p>
+        <p>С уважением,<br> <a href='$url'>Интернет-магазин шуб Nexted</a></p>
       </div>
     </body>
   </html>

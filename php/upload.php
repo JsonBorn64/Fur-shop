@@ -47,11 +47,11 @@ if (isset($_FILES['images'])) {
             // Результат функции запишем в переменную
             $image = getimagesize($fileTmpName);
             // Зададим ограничения для картинок
-            $limitBytes  = 1024 * 1024 * 2;
+            $limitBytes  = 1024 * 1024 * 5;
             $limitWidth  = 9999;
             $limitHeight = 9999;
             // Проверим нужные параметры
-            if (filesize($fileTmpName) > $limitBytes) die('Размер изображения не должен превышать 2 Мбайт.');
+            if (filesize($fileTmpName) > $limitBytes) die('Размер изображения не должен превышать 5 Мбайт.');
             if ($image[1] > $limitHeight)             die('Высота изображения не должна превышать 9999 точек.');
             if ($image[0] > $limitWidth)              die('Ширина изображения не должна превышать 9999 точек.');
             // Сгенерируем новое имя файла через функцию getRandomFileName()
@@ -66,7 +66,9 @@ if (isset($_FILES['images'])) {
             }
         }
     };
-    echo 'Файлы успешно загружены!';
+    echo "<script>localStorage.setItem('upload', 'ok');</script>";
+    header('Location: /5/#/admin');
+    exit;
 };
 
 

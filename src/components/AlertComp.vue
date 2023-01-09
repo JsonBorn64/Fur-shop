@@ -64,6 +64,7 @@ export default {
         z-index: 1000;
         width: max-content;
         width: 320px;
+        min-height: 47px;
         box-shadow: 0 0 30px 0px rgba(0, 0, 0, 0.2);
         img {
             position: absolute;

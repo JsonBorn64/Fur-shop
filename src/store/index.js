@@ -128,7 +128,8 @@ export default createStore({
         commit('updateCart')
         commit('updateFavorites')
       } else {
-        console.log("No such document!");
+        state.alert = ["Ошибка получения данных пользователя", 'red']
+        console.log("getUserLocalStorage error");
       }
     }
   }

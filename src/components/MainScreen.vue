@@ -1,9 +1,9 @@
 <template>
     <div v-if="!this.$store.state.fursLoaded" style="height: 700px;"></div>
     <section class="general_screen" ref="genScreen" v-show="this.$store.state.fursLoaded">
-        <img class="women_part1" src="@/assets/images/general_screen/Group_3.jpg" alt="women">
-        <img class="women_part2" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_1.jpg" alt="women">
-        <img class="women_part3" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_2.jpg" alt="women">
+        <img class="women_part1" src="@/assets/images/general_screen/Group_3.webp" alt="@/assets/images/general_screen/Group_3.jpg">
+        <img class="women_part2" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_1.webp" alt="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_1.jpg">
+        <img class="women_part3" src="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_2.webp" alt="@/assets/images/general_screen/todd-kent-qWdIX3I5_BY-unsplash_2.jpg">
         <div class="decore_text1">
             <div>NEX</div>
             <div>TED</div>
@@ -16,7 +16,7 @@
         <router-link to="/#catalog" class="btn">Посмотреть каталог</router-link>
     </section>
     <section class="mobile">
-        <img src="@/assets/images/general_screen/Group_5.jpg" alt="img">
+        <img src="@/assets/images/general_screen/Group_5.webp" alt="@/assets/images/general_screen/Group_5.jpg">
         <router-link to="/#catalog" class="btn mobile_btn">Посмотреть каталог</router-link>
         <img class="decore_text-mobile" src="@/assets/images/general_screen/svg_nexted.svg" alt="nexted" />
     </section>

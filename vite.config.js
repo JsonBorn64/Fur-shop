@@ -4,7 +4,9 @@ import path from 'path'
 import autoprefixer from 'autoprefixer'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+  ],
   base: './',
   resolve: {
     alias: {

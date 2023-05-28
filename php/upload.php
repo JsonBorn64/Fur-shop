@@ -67,7 +67,7 @@ if (isset($_FILES['images'])) {
         }
     };
     echo "<script>localStorage.setItem('upload', 'ok');</script>";
-    header('Location: /5/#/admin');
+    header('Location: /admin');
     exit;
 };
 

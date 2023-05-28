@@ -107,9 +107,12 @@ export default {
             this.formData.Images = names
         },
         deleteGood(id) {
-            deleteDoc(doc(db, "Furs", id))
-            this.$store.commit('setAlert', [`Товар удален из каталога сайта`, 'green'])
-            this.$store.dispatch('getData')
+            deleteDoc(doc(db, "Furs", id)).then(() => {
+                this.$store.commit('setAlert', [`Товар удален из каталога сайта`, 'green'])
+                this.$store.dispatch('getData')
+            }).catch(() => {
+                this.$store.commit('setAlert', [`Ошибка удаления товара`, 'red'])
+            });
         },
         getMessageFromUploadPhp() {
             if (localStorage.getItem('upload') === "ok") {

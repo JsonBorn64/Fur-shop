@@ -12,25 +12,25 @@
         </div>
             <div class="photos_and_btns">
                 <div class="photos" v-if="photos?.length > 0">
-                    <img class="first_photo" :src="`upload/${photos[0]}`" @click="showPopup" alt="fur">
+                    <img class="first_photo" :src="`/upload/${photos[0]}`" @click="showPopup" alt="fur">
                     <div class="second_photos">
                         <img
                             class="second_photo"
-                            :src="`upload/${photos[1]}`"
+                            :src="`/upload/${photos[1]}`"
                             v-if="photos?.length > 1"
                             @click="switchPhotos(1)"
                             alt="fur"
                         >
                         <img
                             class="second_photo"
-                            :src="`upload/${photos[2]}`"
+                            :src="`/upload/${photos[2]}`"
                             v-if="photos?.length > 2"
                             @click="switchPhotos(2)"
                             alt="fur"
                         >
                         <img
                             class="second_photo"
-                            :src="`upload/${photos[3]}`"
+                            :src="`/upload/${photos[3]}`"
                             v-if="photos?.length > 3"
                             @click="switchPhotos(3)"
                             alt="fur"
@@ -78,7 +78,7 @@
                 <div @click="prevPhoto" v-show="activePhoto > 0" class="popup_btn"><img src="@/assets/images/card_product/prev.svg" alt="Назад"></div>
                 <img
                     v-for="img in photos"
-                    :src="`upload/${img}`"
+                    :src="`/upload/${img}`"
                     class="popup_photo"
                     alt="fur photo"
                     ref="popup_photos"

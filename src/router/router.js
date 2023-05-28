@@ -6,7 +6,8 @@ import ProfilePage from '@/pages/ProfilePage.vue'
 import CatalogPage from '@/pages/CatalogPage.vue'
 import FavoritesPage from '@/pages/FavoritesPage.vue'
 import OrderPage from '@/pages/OrderPage.vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
+import NotFound from '@/pages/NotFound.vue'
+import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
     { path: '/', component: Main, name: 'Главная страница' },
@@ -17,11 +18,19 @@ const routes = [
     { path: '/favorites', component: FavoritesPage, name: 'Избранное' },
     { path: '/cart', component: CartPage, name: 'Корзина' },
     { path: '/order', component: OrderPage, name: 'Оформление заказа' },
+    {
+        path: "/:catchAll(.*)",
+        name: "NotFound",
+        component: Main,
+        meta: {
+          requiresAuth: false
+        }
+      }
 ]
 
 const router = createRouter({
     routes,
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     scrollBehavior(to, from, savedPosition) {
         if (to.hash) {
             return {

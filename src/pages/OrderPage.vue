@@ -144,7 +144,7 @@ export default {
             this.$store.commit('setFursLoaded', false)
             this.formData.totalPrice = this.totalPrice
             const body = JSON.stringify(this.formData)
-            fetch('/5/php/sendForm.php', {
+            fetch('/php/sendForm.php', {
                 method: 'POST',
                 body: body,
                 headers: { 'Content-Type': 'application/json' }

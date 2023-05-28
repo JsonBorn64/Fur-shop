@@ -4,7 +4,7 @@
         <div class="title" v-else>Возможно вам понравится</div>
         <ul class="cards_wrapper">
             <li class="card" v-for="fur in $store.getters.topFileredFurs(6, [...favoritesIds, $route.params.id])">
-                <img :src="`upload/${fur.Images[0]}`" width="149" alt="fur">
+                <img :src="`/upload/${fur.Images[0]}`" width="149" alt="fur">
                 <div class="favorite_btn" @click="addFavorite(fur.id)">
                     <img src="@/assets/images/header/ri_heart-line.svg" alt="heart">
                 </div>

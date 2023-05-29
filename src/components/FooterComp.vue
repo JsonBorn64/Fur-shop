@@ -7,19 +7,15 @@
             </div>
             <div class="row2">
                 <router-link to="/#about_us" class="link">О нас</router-link>
-                <img @click="$router.push('/cart#header')" src="../assets/images/footer/ri_shopping-cart-2-line.svg" alt="cart">
+                <img @click="$router.push('/cart#header')" src="../assets/images/footer/ri_shopping-cart-2-line.svg"
+                    alt="cart">
             </div>
             <div class="row3">
                 <router-link to="/catalog#header" class="link">Каталог</router-link>
-                <user-icon :footer="true"/>
+                <user-icon :footer="true" />
             </div>
         </div>
-        <img
-            class="logo"
-            src="../assets/images/footer/Vector.svg"
-            alt="logo"
-            @click="$router.push('/#header')"
-        >
+        <img class="logo" src="../assets/images/footer/Vector.svg" alt="logo" @click="$router.push('/#header')">
         <div id="map"></div>
     </footer>
 </template>
@@ -38,7 +34,10 @@ export default {
                     position: "topleft"
                 }
             }).addTo(map);
-            const marker = L.marker([51.140801800319586, 71.41488795264996]).addTo(map);
+            const markerIcon = L.icon({
+                iconUrl: '/leaflet icons/marker-icon.png',
+            });
+            const marker = L.marker([51.140801800319586, 71.41488795264996], { icon: markerIcon }).addTo(map);
             L.control.fullscreen({
                 position: "topleft",
                 title: "Show me the fullscreen !",
@@ -57,94 +56,109 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    .footer {
-        margin-top: auto;
-        height: 284px;
-        width: 100%;
-        max-width: 870px;
-        background: #222;
-        box-shadow: 0 1000px 0 1000px #222;
+.footer {
+    margin-top: auto;
+    height: 284px;
+    width: 100%;
+    max-width: 870px;
+    background: #222;
+    box-shadow: 0 1000px 0 1000px #222;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 980px) {
+        justify-content: space-around;
+    }
+
+    @media (max-width: 580px) {
+        height: 190px;
+    }
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    width: 210px;
+
+    @media (max-width: 580px) {
+        width: auto;
+    }
+
+    >div {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        @media (max-width: 980px) {
-            justify-content: space-around;
-        }
-        @media (max-width: 580px) {
-            height: 190px;
-        }
-    }
+        width: 100%;
 
-    .left {
-        display: flex;
-        flex-direction: column;
-        gap: 26px;
-        width: 210px;
-        @media (max-width: 580px) {
-            width: auto;
-        }
-        > div {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            > img {
-                cursor: pointer;
-                @media (max-width: 580px) {
-                    display: none;
-                }
-            }
-            .link {
-                font-family: 'Montserrat';
-                font-weight: 700;
-                font-size: 15px;
-                letter-spacing: -0.02em;
-                color: #F8F8F8;
+        >img {
+            cursor: pointer;
+
+            @media (max-width: 580px) {
+                display: none;
             }
         }
-    }
 
-    .logo {
-        cursor: pointer;
-        @media (max-width: 760px) {
-            display: none;
+        .link {
+            font-family: 'Montserrat';
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: -0.02em;
+            color: #F8F8F8;
         }
     }
+}
+
+.logo {
+    cursor: pointer;
+
+    @media (max-width: 760px) {
+        display: none;
+    }
+}
 </style>
 
 <style lang="scss">
-    // Map styles
-    #map {
-        width: 232px;
-        height: 194px;
-        border: 7px solid #F5ED2A;
-        z-index: 9;
-        @media (max-width: 580px) {
-            width: 140px;
-            height: 117px;
-        }
+// Map styles
+#map {
+    width: 232px;
+    height: 194px;
+    border: 7px solid #F5ED2A;
+    z-index: 9;
+
+    @media (max-width: 580px) {
+        width: 140px;
+        height: 117px;
     }
-    .leaflet-top .leaflet-control {
-	    margin-top: 0px;
-	}
-    .leaflet-left .leaflet-control {
-        margin-left: 0px;
-    }
-    .leaflet-bottom {
-        display: none;
-    }
-    .leaflet-touch .leaflet-bar {
-        border: none;
-    }
-    .leaflet-touch .leaflet-bar a {
-        width: 26px;
-        height: 26px;
-        line-height: 26px;
-    }
-    .leaflet-touch .leaflet-control-zoom-out {
-        font-size: 18px;
-    }
-    .leaflet-bar a:last-child {
-        border-bottom: 1px solid #ccc;
-    }
-</style>
+}
+
+.leaflet-top .leaflet-control {
+    margin-top: 0px;
+}
+
+.leaflet-left .leaflet-control {
+    margin-left: 0px;
+}
+
+.leaflet-bottom {
+    display: none;
+}
+
+.leaflet-touch .leaflet-bar {
+    border: none;
+}
+
+.leaflet-touch .leaflet-bar a {
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+}
+
+.leaflet-touch .leaflet-control-zoom-out {
+    font-size: 18px;
+}
+
+.leaflet-bar a:last-child {
+    border-bottom: 1px solid #ccc;
+}</style>

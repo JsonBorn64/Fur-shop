@@ -111,14 +111,22 @@ export default createStore({
         console.log("Getting editable content error");
       }
     },
-    saveUserLocalStorage({ state, commit }) {
-      setDoc(doc(db, "Users", state.uid), {
-        favorites: JSON.parse(localStorage.getItem('favorites')),
-        cart: JSON.parse(localStorage.getItem('cart'))
-      })
-      commit('updateCart')
-      commit('updateFavorites')
-    },
+    async saveUserLocalStorage({ state, commit }) {
+      try {
+        await setDoc(doc(db, "Users", state.uid), {
+          favorites: JSON.parse(localStorage.getItem('favorites')),
+          cart: JSON.parse(localStorage.getItem('cart'))
+        });
+        commit('updateCart');
+        commit('updateFavorites');
+      } catch (error) {
+        // state.alert = ["Авторизуйтесь чтобы товары корзины и избранных сохранялись на аккаунте, а не локально", 'red'];
+      } finally {
+        commit('updateCart');
+        commit('updateFavorites');
+      }
+    }
+    ,
     async getUserLocalStorage({ state, commit }) {
       const docRef = doc(db, "Users", state.uid);
       const docSnap = await getDoc(docRef);

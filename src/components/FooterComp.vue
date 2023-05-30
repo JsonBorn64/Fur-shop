@@ -26,7 +26,7 @@ export default {
     components: { UserIcon },
     methods: {
         mapInit() {
-            const map = L.map("map").setView([51.140801800319586, 71.41488795264996], 13);
+            const map = L.map("map").setView([51.137801800319586, 71.41688795264996], 13);
             L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 maxZoom: 18,
                 fullscreenControl: true,

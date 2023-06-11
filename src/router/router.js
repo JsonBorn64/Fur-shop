@@ -7,7 +7,7 @@ import CatalogPage from '@/pages/CatalogPage.vue'
 import FavoritesPage from '@/pages/FavoritesPage.vue'
 import OrderPage from '@/pages/OrderPage.vue'
 import NotFound from '@/pages/NotFound.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 
 const routes = [
     { path: '/', component: Main, name: 'Главная страница' },
@@ -30,7 +30,8 @@ const routes = [
 
 const router = createRouter({
     routes,
-    history: createWebHistory(),
+    // history: createWebHistory(),
+    history: createWebHashHistory(),
     scrollBehavior(to, from, savedPosition) {
         if (to.hash) {
             return {
